@@ -20,7 +20,7 @@ The model currently produces qualitatively plausible behaviour (tested in `tests
 |---|---|---|
 | L0 — Software correctness | Unit tests on equations, schemas, solver | ✓ Implemented (55 tests) |
 | L1 — Qualitative behaviour | Integration tests for direction-of-change | ✓ Implemented (23 tests) |
-| L2 — Steady-state validation | Compare model SS to published RBC measurements | Planned (Milestone 2) |
+| L2 — Steady-state validation | Compare model SS to published RBC measurements | ✓ Implemented (src/vblood/validation/l2_validator.py) |
 | L3 — Dynamic validation | Compare trajectories to published time-series | Planned (Milestone 2) |
 | L4 — External validation | Predict held-out experimental outcomes | Planned (Milestone 3+) |
 | L5 — Cross-model comparison | Compare predictions to RBC-GEM / iAB-RBC-283 flux predictions | Planned (Milestone 3+) |

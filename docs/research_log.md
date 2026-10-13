@@ -53,7 +53,25 @@ This log records scientific decisions, model changes, and evidence reviews in ch
 
 ### Next planned steps
 
-1. Ingest published RBC GSH/GSSG measurements for L2 steady-state validation.
+1. Ingest published RBC GSH/GSSG measurements for L2 steady-state validation. (Done in Task 2)
 2. Add sensitivity analysis module (local + global).
 3. Implement G6PD/PPP sub-model as a separate biology module.
-4. Begin data architecture for experimental records (Milestone 2).
+4. Begin data architecture for experimental records.
+
+---
+
+## 2026-10-13 — Milestone 2: Tasks 1 & 2 Execution
+
+### Task 1: Steady-State Solver and Drift Investigation
+- **Drift Root Cause Identified & Mathematically Proven:**
+  - Glutathione pool mass balance strictly enforces $[GSSG]^* = k_{\text{synth}} / (2 k_{\text{export}}) = 1.25 \times 10^{-4}$ mM ($0.125\ \mu$M), which is $\sim 200\times$ lower than resting physiological levels ($0.010\text{--}0.040$ mM).
+  - GR substrate saturation is limited by this minute $[GSSG]^*$, capping GR turnover to $\sim 4.99 \times 10^{-6}$ mM/s.
+  - PPP product inhibition forces $[NADPH]^*$ to accumulate to $9.01$ mM to balance the tiny GR sink.
+  - GPx turnover is limited by mass balance, forcing $[GSH]^*$ down to $1.99\ \mu$M and $[H_2O_2]^*$ to $75.1$ nM.
+- **Implementation:** Created reusable `SteadyStateSolver` in `src/vblood/simulation/steady_state.py` with analytical derivation, numerical root-finding, Jacobian eigenvalue stability checks, and automatic plausibility auditing.
+- **Workflow Integration:** Simulations default to equilibrium initialization unless explicit initial conditions are provided.
+
+### Task 2: Ingest L2 Validation Data
+- **Reference Ingestion:** Created `src/vblood/validation/reference_data.py` and `data/processed/l2_reference_ranges.json` with curated literature values (Sies 1999, Anderson 1998, Giustarini 2013, Antunes & Cadenas 2000, Gaetani 1994).
+- **Validation Engine:** Created `src/vblood/validation/l2_validator.py` with `L2Validator` and `validate_l2()` assessing state variables against strict ranges and failure criteria.
+- **Test Suite:** Added 28 new tests (106 tests total across unit and scientific suites). All 106 tests pass.

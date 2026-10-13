@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "description": "L2 steady-state physiological reference ranges for resting adult human erythrocytes.",
+  "validation_level": "L2_STEADY_STATE",
+  "references": [
+    {
+      "variable": "GSH",
+      "units": "mM",
+      "compartment": "RBC cytosol",
+      "reference_min": 1.5,
+      "reference_max": 3.0,
+      "typical_mean": 2.2,
+      "tolerance_min": 0.5,
+      "tolerance_max": 5.0,
+      "literature_source": "Sies (1999) Free Radic. Biol. Med. 27:916; Anderson (1998) Chem. Biol. Interact. 111:1",
+      "evidence_status": "LITERATURE_DERIVED",
+      "notes": "Standard intracellular reduced glutathione in healthy adult human erythrocytes."
+    },
+    {
+      "variable": "GSSG",
+      "units": "mM",
+      "compartment": "RBC cytosol",
+      "reference_min": 0.010,
+      "reference_max": 0.040,
+      "typical_mean": 0.025,
+      "tolerance_min": 0.001,
+      "tolerance_max": 0.100,
+      "literature_source": "Giustarini et al. (2013) Free Radic. Biol. Med. 65:1248-1262",
+      "evidence_status": "LITERATURE_DERIVED",
+      "notes": "True resting GSSG measured with NEM thiol-blocking to prevent artifactual ex vivo GSH oxidation."
+    },
+    {
+      "variable": "GSH_GSSG_RATIO",
+      "units": "dimensionless",
+      "compartment": "RBC cytosol",
+      "reference_min": 30.0,
+      "reference_max": 300.0,
+      "typical_mean": 100.0,
+      "tolerance_min": 5.0,
+      "tolerance_max": 1000.0,
+      "literature_source": "Giustarini et al. (2013) Free Radic. Biol. Med. 65:1248-1262",
+      "evidence_status": "LITERATURE_DERIVED",
+      "notes": "GSH/GSSG ratio in unstressed erythrocytes is typically > 30 and often ~50-150."
+    },
+    {
+      "variable": "H2O2",
+      "units": "mM",
+      "compartment": "RBC cytosol",
+      "reference_min": 0.00001,
+      "reference_max": 0.00100,
+      "typical_mean": 0.00010,
+      "tolerance_min": 0.00001,
+      "tolerance_max": 0.010,
+      "literature_source": "Antunes & Cadenas (2000) FEBS Lett. 475:121; Winterbourn & Metodiewa (1999) Free Radic. Biol. Med. 27:322",
+      "evidence_status": "LITERATURE_DERIVED",
+      "notes": "Basal intracellular H2O2 in erythrocytes under normal oxygen tension."
+    },
+    {
+      "variable": "NADPH",
+      "units": "mM",
+      "compartment": "RBC cytosol",
+      "reference_min": 0.010,
+      "reference_max": 0.050,
+      "typical_mean": 0.030,
+      "tolerance_min": 0.002,
+      "tolerance_max": 0.200,
+      "literature_source": "Gaetani et al. (1994) Blood 84:2018-2024",
+      "evidence_status": "LITERATURE_DERIVED",
+      "notes": "Concentration of reduced NADPH in normal erythrocytes (total NADP(H) pool is ~0.04-0.06 mM)."
+    }
+  ]
+}
