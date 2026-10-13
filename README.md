@@ -6,11 +6,15 @@
 
 ---
 
-## Current status: Milestone 1
+## Current status: Milestone 2 Complete
 
-Milestone 1 implements the minimal scientifically defensible mechanistic simulation of red blood cell (RBC) oxidative stress using a well-parameterised glutathione redox ODE model.
-
-See [docs/project_overview.md](docs/project_overview.md) for the full vision and [docs/scientific_scope.md](docs/scientific_scope.md) for the biological scope.
+Milestone 2 extends the platform with:
+- **Task 1: Steady-state analysis:** Robust algebraic/numerical solver (`SteadyStateSolver`), stability auditing, and explanation of model equilibrium vs. resting physiological drift.
+- **Task 2: L2 reference data validation:** Curated reference ranges from human erythrocytes (`data/processed/l2_reference_ranges.json`) and automated validation engine (`L2Validator`).
+- **Task 3: Local sensitivity analysis:** Finite-difference parameter sensitivity analyzer for GSH depletion metrics, generating reports and tornado plots (`src/vblood/uncertainty/sensitivity.py`).
+- **Task 4: Experimental data ingestion:** Pydantic `ExperimentalRecord` schema, unit conversion module, and immutable SHA-256 verified ingestion pipeline (`scripts/ingest_data.py`).
+- **Task 5: FastAPI backend:** Decoupled REST API (`/health`, `/models`, `/simulations`, `/simulations/{run_id}`) without contaminating core biological models (`src/vblood/api/`).
+- **Task 6: G6PD kinetic sub-model:** Bi-substrate kinetic rate law with competitive NADPH product inhibition and total pyridine nucleotide pool conservation (`rbc-g6pd-gsh-v2`), supporting in silico deficiency scenarios.
 
 ---
 
@@ -18,34 +22,54 @@ See [docs/project_overview.md](docs/project_overview.md) for the full vision and
 
 ### Requirements
 
-- Python 3.13+
-- [uv](https://github.com/astral-sh/uv) (recommended) or pip
+- Python 3.11+ (tested on Python 3.13)
+- uv or pip
 
 ### Installation
 
 ```bash
-# Clone and enter the repository
 git clone <repo-url>
 cd v-blood
-
-# Install with uv (creates a virtual environment automatically)
-uv sync --all-extras
-
-# Or with pip
 pip install -e ".[dev]"
 ```
 
-### Run the demo
+### Running Simulations & Analysis
 
-```bash
-python scripts/run_demo.py
-```
+1. **Run the baseline demonstration script:**
+   ```bash
+   python scripts/run_demo.py
+   ```
+
+2. **Run local sensitivity analysis:**
+   ```bash
+   python scripts/run_sensitivity_analysis.py
+   ```
+   Outputs are saved to `simulation_outputs/sensitivity_tornado.png`, `sensitivity_analysis.csv`, and `sensitivity_analysis.json`.
+
+3. **Run experimental data ingestion pipeline:**
+   ```bash
+   python scripts/ingest_data.py
+   ```
+   Processed records written to `data/processed/experimental_records.json`.
+
+4. **Run G6PD deficiency scenario comparison:**
+   ```bash
+   python scripts/compare_g6pd_deficiency.py
+   ```
+   Comparison saved to `simulation_outputs/g6pd_deficiency_comparison.csv`.
+
+5. **Start the FastAPI backend:**
+   ```bash
+   uvicorn main:app --reload --port 8000
+   ```
+   Interactive OpenAPI documentation available at `http://127.0.0.1:8000/docs`.
 
 ### Run tests
 
 ```bash
-pytest tests/ -v
+pytest
 ```
+*Currently 148 automated tests passing across unit, scientific, and API test suites.*
 
 ---
 

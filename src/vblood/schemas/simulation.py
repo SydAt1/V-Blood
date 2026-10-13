@@ -232,6 +232,10 @@ class SimulationRequest(BaseModel):
         default="",
         description="Optional human-readable label for this run.",
     )
+    parameter_overrides: dict[str, float] = Field(
+        default_factory=dict,
+        description="Optional parameter overrides for supported model parameters.",
+    )
 
     @model_validator(mode="after")
     def check_time_span(self) -> "SimulationRequest":

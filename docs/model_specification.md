@@ -236,3 +236,39 @@ This can be used as a partial consistency check. See scientific tests.
 - Maximum number of steps: 50000
 - Event detection: GSH < 0 (failure), H₂O₂ < 0 (failure)
 - Dense output: requested for interpolation
+
+---
+
+## 11. G6PD Kinetic Sub-Model — Version 2.0.0 (`rbc-g6pd-gsh-v2`)
+
+Implemented in Milestone 2 (Task 6), `rbc-g6pd-gsh-v2` replaces the simplified PPP surrogate reaction (R5) with an evidence-grounded, bi-substrate G6PD kinetic rate law incorporating competitive product inhibition by NADPH and pyridine nucleotide pool conservation.
+
+### Rate Equation (Option A)
+
+$$v_{\text{G6PD}} = \alpha \cdot \frac{V_{\max,\text{G6PD}} \cdot [\text{G6P}] \cdot [\text{NADP}^+]}{K_{m,\text{G6P}} K_{m,\text{NADP}^+} \left(1 + \frac{[\text{NADPH}]}{K_{i,\text{NADPH}}}\right) + K_{m,\text{NADP}^+} [\text{G6P}] + K_{m,\text{G6P}} [\text{NADP}^+] + [\text{G6P}] [\text{NADP}^+]}$$
+
+where total pyridine nucleotide pool conservation dictates:
+$$[\text{NADP}^+] = \max\left(0, [\text{NADP}]_{\text{tot}} - [\text{NADPH}]\right)$$
+
+### Parameter Provenance
+
+| Parameter | Value | Units | Source | Evidence Status | Notes |
+|---|---|---|---|---|---|
+| $V_{\max,\text{G6PD}}$ | 0.008 | mM s⁻¹ (8 µM/s) | Gaetani et al. (1994) Blood 84:2018; Kirkman & Gaetani (1986) JBC 261:4033 | LITERATURE | Intracellular enzyme velocity in adult human erythrocytes |
+| $K_{m,\text{G6P}}$ | 0.040 | mM (40 µM) | Yoshida (1973) Science 179:532; Mulquiney & Kuchel (1999) | LITERATURE | Substrate affinity for G6P |
+| $K_{m,\text{NADP}^+}$ | 0.008 | mM (8 µM) | Yoshida (1973); Kirkman et al. (1986) | LITERATURE | Cofactor affinity for NADP+ |
+| $K_{i,\text{NADPH}}$ | 0.012 | mM (12 µM) | Kirkman & Gaetani (1986); Gaetani et al. (1989) | LITERATURE | Competitive inhibition constant against NADP+ |
+| $[\text{NADP}]_{\text{tot}}$ | 0.040 | mM (40 µM) | Gaetani et al. (1994); Kirkman et al. (1986) | LITERATURE | Conserved intracellular pool: [NADP+] + [NADPH] |
+| $[\text{G6P}]_{\text{ss}}$ | 0.040 | mM (40 µM) | Minakami et al. (1965) BBRC 19:422; Mulquiney & Kuchel (1999) | LITERATURE | Steady-state erythrocyte glycolysis intermediate |
+| $\alpha$ | 1.0 | dimensionless | Model definition | ESTIMATED | Relative enzyme activity multiplier (1.0 = normal, 0.1 = severe deficiency) |
+
+### G6PD Deficiency Scenarios
+
+The activity multiplier $\alpha \in [0.0, 1.0]$ scales maximal enzyme activity $V_{\max,\text{G6PD}}$:
+- **$\alpha = 1.0$ (Normal):** Resting NADPH is buffered near $[\text{NADP}]_{\text{tot}} \approx 0.040\text{ mM}$. Under 0.05 mM H₂O₂ challenge, NADPH drops transiently to 0.0339 mM and rapidly recovers.
+- **$\alpha = 0.5$ (Moderate reduction):** Mimics heterozygous or moderate kinetic variant; minimum NADPH drops to 0.0294 mM.
+- **$\alpha = 0.1$ (Severe reduction):** Mimics severe WHO Class II (e.g. Mediterranean variant) residual activity; minimum NADPH drops to 0.0146 mM, showing impaired glutathione reductase recycling capacity.
+- **$\alpha = 0.0$ (Complete deficiency):** NADPH drops to zero; GSH recovery is blocked.
+
+*Cautionary Note:* $\alpha$ is a continuous mathematical scaling multiplier and must not be conflated with specific clinical genotypes or diagnostic forecasts without independent clinical calibration.
+

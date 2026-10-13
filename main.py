@@ -4,6 +4,12 @@ Main entry point for V-Blood.
 Exposes the FastAPI application instance for ASGI servers (e.g. uvicorn main:app).
 """
 
+import sys
+from pathlib import Path
+
+# Ensure src/ is on sys.path for direct execution
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
 from vblood.api.app import create_app
 
 app = create_app()

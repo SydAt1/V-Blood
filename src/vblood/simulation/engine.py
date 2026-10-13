@@ -53,6 +53,7 @@ from vblood.schemas.simulation import (
     SolverStatus,
     TrajectoryPoint,
 )
+from vblood.biology.rbc.g6pd_model import RBCG6PDGSHModel
 
 log = structlog.get_logger(__name__)
 
@@ -60,6 +61,7 @@ log = structlog.get_logger(__name__)
 # Extend this registry when new models are added.
 _MODEL_REGISTRY: dict[str, BiologicalModel] = {
     "rbc-gsh-redox-v1": RBCGSHRedoxModel(),
+    "rbc-g6pd-gsh-v2": RBCG6PDGSHModel(),
 }
 
 
@@ -75,7 +77,21 @@ def _build_params(request: SimulationRequest) -> dict[str, Any]:
     Returns:
         Parameter dictionary compatible with the model's rhs method.
     """
-    params = DEFAULT_PARAMETERS.to_dict()
+    model = _MODEL_REGISTRY.get(request.model_id)
+    if isinstance(model, RBCG6PDGSHModel):
+        params = model.default_parameters()
+    else:
+        params = DEFAULT_PARAMETERS.to_dict()
+
+    # Apply parameter overrides if supplied
+    if request.parameter_overrides:
+        for k, v in request.parameter_overrides.items():
+            if k not in params:
+                raise ValueError(f"Unsupported parameter override: '{k}' for model '{request.model_id}'")
+            if v < 0.0:
+                raise ValueError(f"Parameter override '{k}' cannot be negative, got {v}")
+            params[k] = float(v)
+
     # Inject reference GSH for damage equation
     if request.initial_conditions is not None:
         params["gsh_0"] = request.initial_conditions.gsh_0

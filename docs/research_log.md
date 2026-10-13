@@ -75,3 +75,35 @@ This log records scientific decisions, model changes, and evidence reviews in ch
 - **Reference Ingestion:** Created `src/vblood/validation/reference_data.py` and `data/processed/l2_reference_ranges.json` with curated literature values (Sies 1999, Anderson 1998, Giustarini 2013, Antunes & Cadenas 2000, Gaetani 1994).
 - **Validation Engine:** Created `src/vblood/validation/l2_validator.py` with `L2Validator` and `validate_l2()` assessing state variables against strict ranges and failure criteria.
 - **Test Suite:** Added 28 new tests (106 tests total across unit and scientific suites). All 106 tests pass.
+
+---
+
+## 2026-10-13 — Milestone 2: Tasks 3–6 Execution
+
+### Task 3: Local Sensitivity Analysis
+- **Module:** Created `src/vblood/uncertainty/sensitivity.py` implementing finite-difference local sensitivity analysis around the physiological steady-state baseline.
+- **Metrics Supported:** Maximum fractional GSH depletion ($D_{\max}$), minimum GSH concentration, fractional depletion at arbitrary time $t$, and 50% recovery time.
+- **Robustness & Provenance:** Handled zero baseline outputs, relative vs absolute perturbations, verified baseline restoration without modifying parameters in-place, and tracked parameter evidence tiers.
+- **Visualization:** Produced ranked tornado plot `simulation_outputs/sensitivity_tornado.png` and tabular outputs in JSON/CSV. Top sensitive parameters under 0.05 mM H2O2 challenge: $k_{\text{gpx}}$, $v_{\max,\text{gr}}$, $k_{\text{rem}}$, $k_{\text{synth}}$, $k_{\text{export}}$.
+
+### Task 4: ExperimentalRecord Schema and Immutable Ingestion Pipeline
+- **Pydantic Schema:** Created `src/vblood/schemas/experimental_record.py` containing complete metadata (Record ID, study DOI, sample compartment, chemical CID/InChIKey, experimental conditions, assay method, uncertainty).
+- **Unit Conversion:** Implemented `src/vblood/data/unit_conversion.py` supporting deterministic conversions ($\mu\text{M} \to \text{mM}$, $\text{nM} \to \text{mM}$, $\text{fraction} \to \%$) without inferring missing data.
+- **Pipeline:** Implemented `src/vblood/data/pipeline.py` enforcing SHA-256 pre/post immutability verification, duplicate detection, and structured summary reporting. Ingested published literature observations and synthetic challenge fixtures into `data/processed/`.
+
+### Task 5: FastAPI Backend
+- **Service Architecture:** Implemented `src/vblood/api/app.py` and `storage.py` with endpoints:
+  - `GET /health`: Service health and version status.
+  - `GET /models`: Model registry metadata and state variable schemas.
+  - `POST /simulations`: Synchronous execution with schema validation, parameter bounds checking, and steady-state default initial conditions.
+  - `GET /simulations/{run_id}`: Trajectory retrieval with structured 404 handling.
+- **Clean Decoupling:** Standalone Python simulation engine remains 100% independent of FastAPI and ASGI server.
+
+### Task 6: G6PD Kinetic Sub-Model (`rbc-g6pd-gsh-v2`)
+- **Biological Rationale:** Replaced the uncoupled simplified PPP surrogate with an evidence-grounded bi-substrate rate law (Option A):
+  $$v_{\text{G6PD}} = \alpha \cdot \frac{V_{\max,\text{G6PD}} \cdot [\text{G6P}] \cdot [\text{NADP}^+]}{K_{m,\text{G6P}} K_{m,\text{NADP}^+} (1 + [\text{NADPH}]/K_{i,\text{NADPH}}) + \dots}$$
+- **Pool Conservation:** Coupled with total pyridine nucleotide conservation $[\text{NADP}^+] = \max(0, [\text{NADP}]_{\text{tot}} - [\text{NADPH}])$.
+- **Deficiency Scenarios:** Simulated across $\alpha \in \{1.0, 0.5, 0.1, 0.0\}$. Under 0.05 mM H2O2 bolus, severe reduction ($\alpha=0.1$) causes minimum [NADPH] to plunge from 0.0339 mM down to 0.0146 mM, demonstrating impaired glutathione regeneration capacity.
+- **Regression Assurance:** Milestone 1 baseline model (`rbc-gsh-redox-v1`) preserved identically without side effects.
+- **Test Suite Status:** 148 total tests passing across all test modules.
+
