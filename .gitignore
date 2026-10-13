@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[oc]
+*.pyo
+*.pyd
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+*.egg
+*.whl
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env.local
+.env.*.local
+
+# Environment / secrets (never commit real values)
+.env
+!.env.example
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Data – exclude large raw data, keep processed schemas
+data/raw/
+data/processed/*.parquet
+data/processed/*.csv
+
+# Model artifacts – exclude large binary model files
+models/model_registry/*.pkl
+models/model_registry/*.pt
+models/model_registry/*.h5
+models/model_registry/*.onnx
+
+# Simulation outputs (potentially large)
+simulation_outputs/
+
+# Logs
+*.log
+logs/
+
+# uv
+.uv/
+uv.lock
