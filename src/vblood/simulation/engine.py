@@ -46,6 +46,7 @@ from vblood.biology.rbc.gsh_redox_model import (
 )
 from vblood.biology.rbc.parameters import DEFAULT_PARAMETERS
 from vblood.schemas.simulation import (
+    RBCGSHInitialConditions,
     SimulationRequest,
     SimulationResult,
     SimulationWarning,
@@ -65,7 +66,7 @@ _MODEL_REGISTRY: dict[str, BiologicalModel] = {
 def _build_params(request: SimulationRequest) -> dict[str, Any]:
     """Construct the parameter dictionary for the requested model.
 
-    For Milestone 1, only the default parameter set is used.
+    For Milestone 1 and 2, default parameter set is used as baseline.
     Future milestones will allow caller-specified parameter sets.
 
     Args:
@@ -75,8 +76,11 @@ def _build_params(request: SimulationRequest) -> dict[str, Any]:
         Parameter dictionary compatible with the model's rhs method.
     """
     params = DEFAULT_PARAMETERS.to_dict()
-    # Inject initial GSH for the damage equation reference concentration
-    params["gsh_0"] = request.initial_conditions.gsh_0
+    # Inject reference GSH for damage equation
+    if request.initial_conditions is not None:
+        params["gsh_0"] = request.initial_conditions.gsh_0
+    else:
+        params["gsh_0"] = 2.5
     return params
 
 
@@ -146,8 +150,47 @@ def run_simulation(request: SimulationRequest) -> SimulationResult:
     # ------------------------------------------------------------------ #
     # 3. Build initial state vector
     # ------------------------------------------------------------------ #
-    ic = request.initial_conditions
-    y0 = model.initial_state(ic)
+    use_ss = (
+        request.use_steady_state_ic
+        if request.use_steady_state_ic is not None
+        else (request.initial_conditions is None)
+    )
+
+    steady_state_summary: dict[str, Any] | None = None
+    if use_ss:
+        from vblood.simulation.steady_state import compute_steady_state
+
+        log.info("Computing model steady state for initial conditions", model_id=request.model_id)
+        ss_result = compute_steady_state(model, params)
+        if not ss_result.converged:
+            raise RuntimeError(
+                f"Steady-state calculation failed to converge for model '{request.model_id}'. "
+                f"Residual norm: {ss_result.residual_norm:.3e} > {ss_result.tolerance:.3e}."
+            )
+        y0 = np.array(ss_result.state_vector, dtype=float)
+        params["gsh_0"] = float(y0[IDX_GSH])
+        steady_state_summary = ss_result.model_dump()
+
+        if not ss_result.is_physiologically_plausible:
+            sim_warnings.append(
+                SimulationWarning(
+                    code="STEADY_STATE_UNPHYSIOLOGICAL",
+                    message=(
+                        f"Computed steady state for model '{request.model_id}' exhibits "
+                        f"unphysiological concentrations (e.g. [GSH]={y0[IDX_GSH]:.4e} mM, "
+                        f"[GSSG]={y0[IDX_GSSG]:.4e} mM, [NADPH]={y0[IDX_NADPH]:.4e} mM). "
+                        "See steady-state diagnostics for biochemical causes."
+                    ),
+                    severity="WARNING",
+                    details={
+                        "diagnostics": ss_result.diagnostics,
+                        "residual_norm": ss_result.residual_norm,
+                    },
+                )
+            )
+    else:
+        ic = request.initial_conditions if request.initial_conditions is not None else RBCGSHInitialConditions()
+        y0 = model.initial_state(ic)
 
     # Apply H2O2 bolus at t=0
     exposure = request.exposure
@@ -358,7 +401,14 @@ def run_simulation(request: SimulationRequest) -> SimulationResult:
         ),
         "solver_status": solver_status.value,
         "n_warnings": len(sim_warnings),
+        "steady_state_initialization": use_ss,
     }
+    if steady_state_summary is not None:
+        provenance["steady_state"] = {
+            "parameter_hash": steady_state_summary.get("parameter_hash"),
+            "residual_norm": steady_state_summary.get("residual_norm"),
+            "is_dynamically_stable": steady_state_summary.get("is_dynamically_stable"),
+        }
 
     return SimulationResult(
         run_id=run_id,
@@ -378,6 +428,8 @@ def run_simulation(request: SimulationRequest) -> SimulationResult:
         final_damage=final_d,
         final_hemolysis_pct=final_hemo,
         provenance=provenance,
+        steady_state_initialization=use_ss,
+        steady_state_summary=steady_state_summary,
     )
 
 

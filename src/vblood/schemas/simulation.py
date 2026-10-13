@@ -187,9 +187,22 @@ class SimulationRequest(BaseModel):
         default="rbc-gsh-redox-v1",
         description="Identifier of the biological model to run.",
     )
-    initial_conditions: RBCGSHInitialConditions = Field(
-        default_factory=RBCGSHInitialConditions,
-        description="Initial state of the biological system.",
+    initial_conditions: RBCGSHInitialConditions | None = Field(
+        default=None,
+        description=(
+            "Explicit initial state of the biological system. "
+            "If None (default), the model steady state is used as the default initial condition. "
+            "An explicitly supplied initial condition overrides the default equilibrium."
+        ),
+    )
+    use_steady_state_ic: bool | None = Field(
+        default=None,
+        description=(
+            "Explicit control over steady-state initialization: "
+            "True = always compute and use model steady state as initial condition; "
+            "False = use initial_conditions (or default RBCGSHInitialConditions if None); "
+            "None (default) = use steady state if initial_conditions is None, otherwise use initial_conditions."
+        ),
     )
     exposure: RBCGSHExposure = Field(
         default_factory=RBCGSHExposure,
@@ -318,6 +331,14 @@ class SimulationResult(BaseModel):
     provenance: dict[str, Any] = Field(
         default_factory=dict,
         description="Metadata for reproducibility: git hash, parameter set version, etc.",
+    )
+    steady_state_initialization: bool = Field(
+        default=False,
+        description="Whether the simulation was initialized from the computed model steady state.",
+    )
+    steady_state_summary: dict[str, Any] | None = Field(
+        default=None,
+        description="Steady-state solver metrics and provenance if steady-state initialization was used.",
     )
 
     # Interpretation contract (for future LLM assistant)
