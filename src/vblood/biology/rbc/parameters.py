@@ -358,6 +358,14 @@ class RBCGSHParameters:
         )
     )
 
+    def all_parameters(self) -> dict[str, Parameter]:
+        """Return dict of parameter_name -> Parameter object with full provenance metadata."""
+        return {
+            p.name: p
+            for p in self.__dict__.values()
+            if isinstance(p, Parameter)
+        }
+
     def to_dict(self) -> dict[str, float]:
         """Return a flat dict of parameter name → value for use in the ODE.
 
