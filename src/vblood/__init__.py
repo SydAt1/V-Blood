@@ -9,5 +9,5 @@ observations. V-Blood does not replace laboratory experiments, clinical
 trials, or human testing.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.4.0"
 __all__ = ["__version__"]

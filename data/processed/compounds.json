@@ -1,0 +1,131 @@
+[
+  {
+    "compound_id": "cmp_h2o2",
+    "name": "Hydrogen peroxide",
+    "smiles": "OO",
+    "inchikey": "MHAJPDPJQMAIIY-UHFFFAOYSA-N",
+    "mechanism_type": "DIRECT_OXIDANT",
+    "default_parameters": {
+      "bolus_mM": 0.05,
+      "influx_rate_mM_s": 0.0
+    },
+    "parameter_ranges": {
+      "bolus_mM": [0.0, 5.0],
+      "influx_rate_mM_s": [0.0, 0.01]
+    },
+    "exposure_units": "mM",
+    "evidence_level": "CURATED",
+    "provenance": "Gaetani et al. (1994) Blood 84:2018; Flohé (1979) Ciba Found. Symp. 65:95",
+    "confidence_score": 1.0
+  },
+  {
+    "compound_id": "cmp_menadione",
+    "name": "Menadione (Vitamin K3)",
+    "smiles": "CC1=CC(=O)C2=CC=CC=C2C1=O",
+    "inchikey": "MJGQHYZZJPFOCL-UHFFFAOYSA-N",
+    "mechanism_type": "REDOX_CYCLER",
+    "default_parameters": {
+      "catalytic_rate_s": 0.02,
+      "km_nadph_mM": 0.01
+    },
+    "parameter_ranges": {
+      "catalytic_rate_s": [0.001, 0.1],
+      "km_nadph_mM": [0.001, 0.05]
+    },
+    "exposure_units": "mM",
+    "evidence_level": "CURATED",
+    "provenance": "Winterbourn et al. (1979) Biochem. J. 182:87; Munday (1989) Free Radic. Biol. Med. 7:659",
+    "confidence_score": 0.95
+  },
+  {
+    "compound_id": "cmp_cdnb",
+    "name": "1-Chloro-2,4-dinitrobenzene (CDNB)",
+    "smiles": "C1=CC(=C(C=C1[N+](=O)[O-])[N+](=O)[O-])Cl",
+    "inchikey": "VYZAMTAEIAYCRO-UHFFFAOYSA-N",
+    "mechanism_type": "GSH_CONJUGATOR",
+    "default_parameters": {
+      "rate_constant_mM_s": 0.05
+    },
+    "parameter_ranges": {
+      "rate_constant_mM_s": [0.005, 0.5]
+    },
+    "exposure_units": "mM",
+    "evidence_level": "CURATED",
+    "provenance": "Habig et al. (1974) J. Biol. Chem. 249:7130; Awasthi et al. (1981) Blood 58:733",
+    "confidence_score": 0.95
+  },
+  {
+    "compound_id": "cmp_nem",
+    "name": "N-Ethylmaleimide (NEM)",
+    "smiles": "CCN1C(=O)C=CC1=O",
+    "inchikey": "BNDBCALAXNMOJD-UHFFFAOYSA-N",
+    "mechanism_type": "GSH_CONJUGATOR",
+    "default_parameters": {
+      "rate_constant_mM_s": 0.15
+    },
+    "parameter_ranges": {
+      "rate_constant_mM_s": [0.01, 1.0]
+    },
+    "exposure_units": "mM",
+    "evidence_level": "CURATED",
+    "provenance": "Giustarini et al. (2013) Free Radic. Biol. Med. 63:399; Jacob & Jandl (1962) J. Clin. Invest. 41:779",
+    "confidence_score": 0.95
+  },
+  {
+    "compound_id": "cmp_dhea",
+    "name": "Dehydroepiandrosterone (DHEA)",
+    "smiles": "CC12CCC(=O)C1CCC3C2CC=C4C3(CCC(C4)O)C",
+    "inchikey": "SEERZIQQUAZTOL-UHFFFAOYSA-N",
+    "mechanism_type": "ENZYME_INHIBITOR",
+    "default_parameters": {
+      "ki_mM": 0.015,
+      "target_enzyme": "G6PD",
+      "inhibition_type": "NON_COMPETITIVE"
+    },
+    "parameter_ranges": {
+      "ki_mM": [0.001, 0.1]
+    },
+    "exposure_units": "mM",
+    "evidence_level": "CURATED",
+    "provenance": "Marks & Banks (1960) PNAS 46:447; Gordon et al. (1995) J. Biol. Chem. 270:432",
+    "confidence_score": 0.9
+  },
+  {
+    "compound_id": "cmp_primaquine_quinone",
+    "name": "Primaquine 5,6-orthoquinone",
+    "smiles": "CC(CCCN)NC1=C2C(=O)C(=O)C=C(C2=NC=C1)OC",
+    "inchikey": "QQZJVRZPVYJMSX-UHFFFAOYSA-N",
+    "mechanism_type": "REDOX_CYCLER",
+    "default_parameters": {
+      "catalytic_rate_s": 0.035,
+      "km_nadph_mM": 0.008
+    },
+    "parameter_ranges": {
+      "catalytic_rate_s": [0.005, 0.2],
+      "km_nadph_mM": [0.001, 0.05]
+    },
+    "exposure_units": "mM",
+    "evidence_level": "ESTIMATED",
+    "provenance": "Vasquez-Vivar & Augusto (1992) J. Biol. Chem. 267:6848; Bowman et al. (2004) J. Pharmacol. Exp. Ther. 309:79",
+    "confidence_score": 0.75
+  },
+  {
+    "compound_id": "cmp_xenobiotic_x101",
+    "name": "Xenobiotic X-101 (Synthetic Test Lead)",
+    "smiles": "CC(=O)NC1=CC=C(C=C1)S(=O)(=O)N",
+    "inchikey": "XHXNVNMWQWSAQA-UHFFFAOYSA-N",
+    "mechanism_type": "NADPH_DRAIN",
+    "default_parameters": {
+      "drain_rate_s": 0.005,
+      "km_nadph_mM": 0.01
+    },
+    "parameter_ranges": {
+      "drain_rate_s": [0.0005, 0.05],
+      "km_nadph_mM": [0.001, 0.05]
+    },
+    "exposure_units": "mM",
+    "evidence_level": "UNVERIFIED",
+    "provenance": "Synthetic unverified lead for automated flagging tests and validation exclusion.",
+    "confidence_score": 0.2
+  }
+]

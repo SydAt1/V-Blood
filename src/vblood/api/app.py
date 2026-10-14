@@ -10,16 +10,29 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
 from vblood.api.schemas import (
+    CompoundResponse,
     HealthResponse,
     ModelDetailResponse,
+    ScenarioRunResponse,
     SimulationCreateRequest,
     SimulationDetailResponse,
 )
 from vblood.api.storage import InMemorySimulationStore, SimulationStore
 from vblood.biology.rbc.parameters import DEFAULT_PARAMETERS
+from vblood.reporting.visual_state import (
+    VisualTrajectoryResponse,
+    trajectory_to_visual_frames,
+)
+from vblood.scenarios.compounds import get_compound_library
+from vblood.scenarios.engine import ScenarioRequest, run_scenario
+from vblood.scenarios.population import (
+    PopulationRequest,
+    PopulationResult,
+    simulate_population,
+)
 from vblood.schemas.simulation import (
     SimulationRequest,
     SimulationResult,
@@ -236,5 +249,168 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
             provenance=res.provenance,
             trajectory_length=len(res.trajectory),
         )
+
+    # ------------------------------------------------------------------ #
+    # Milestone 4: Compounds & Scenarios Endpoints
+    # ------------------------------------------------------------------ #
+
+    @app.get(
+        "/compounds",
+        response_model=list[CompoundResponse],
+        summary="List all curated compounds in the library",
+    )
+    def list_compounds() -> list[CompoundResponse]:
+        """Return all curated compounds with metadata, mechanism, and evidence status."""
+        lib = get_compound_library()
+        return [
+            CompoundResponse(
+                compound_id=c.compound_id,
+                name=c.name,
+                smiles=c.smiles,
+                inchikey=c.inchikey,
+                mechanism_type=c.mechanism_type.value,
+                default_parameters=c.default_parameters,
+                parameter_ranges=c.parameter_ranges,
+                exposure_units=c.exposure_units,
+                evidence_level=c.evidence_level.value,
+                is_unverified=c.is_unverified,
+                provenance=c.provenance,
+                confidence_score=c.confidence_score,
+            )
+            for c in lib.list_all()
+        ]
+
+    @app.get(
+        "/compounds/{compound_id}",
+        response_model=CompoundResponse,
+        summary="Retrieve detailed compound metadata by ID",
+    )
+    def get_compound(compound_id: str) -> CompoundResponse:
+        """Return compound entry by ID, or 404 if not found."""
+        lib = get_compound_library()
+        c = lib.get(compound_id)
+        if c is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Compound '{compound_id}' not found in library.",
+            )
+        return CompoundResponse(
+            compound_id=c.compound_id,
+            name=c.name,
+            smiles=c.smiles,
+            inchikey=c.inchikey,
+            mechanism_type=c.mechanism_type.value,
+            default_parameters=c.default_parameters,
+            parameter_ranges=c.parameter_ranges,
+            exposure_units=c.exposure_units,
+            evidence_level=c.evidence_level.value,
+            is_unverified=c.is_unverified,
+            provenance=c.provenance,
+            confidence_score=c.confidence_score,
+        )
+
+    @app.post(
+        "/scenarios",
+        response_model=ScenarioRunResponse,
+        summary="Execute a chemical exposure scenario (single cell)",
+    )
+    def create_scenario(req: ScenarioRequest) -> ScenarioRunResponse:
+        """Simulate single-cell redox dynamics under one or more chemical exposures."""
+        for c in req.compounds:
+            if c.dose_mM > 20.0:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail=f"Dose {c.dose_mM} mM exceeds maximum allowable limit of 20.0 mM.",
+                )
+        if req.duration_s > 86400.0:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Duration {req.duration_s} s exceeds 24 h limit (86400 s).",
+            )
+
+        result = run_scenario(req)
+        simulation_store.save_scenario(result)
+        simulation_store.save(result.simulation_result)
+
+        return ScenarioRunResponse(
+            run_id=result.simulation_result.run_id,
+            scenario_request=req.model_dump(),
+            derived_metrics=result.derived_metrics.model_dump(),
+            has_unverified_compounds=result.has_unverified_compounds,
+            unverified_compounds=result.unverified_compounds,
+            compound_summaries=result.compound_summaries,
+            interaction_assumptions=result.interaction_assumptions,
+            trajectory_length=len(result.simulation_result.trajectory),
+            research_disclaimer=result.research_disclaimer,
+        )
+
+    @app.post(
+        "/scenarios/population",
+        response_model=PopulationResult,
+        summary="Simulate a cohort of cells (N cells) under chemical exposure",
+    )
+    def create_population_scenario(req: PopulationRequest) -> PopulationResult:
+        """Simulate cohort variability across N cells sampled from biological priors."""
+        if req.n_cells > 5000:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Cohort size n_cells={req.n_cells} exceeds limit of 5000.",
+            )
+        return simulate_population(req)
+
+    @app.get(
+        "/scenarios/{run_id}/visual",
+        response_model=VisualTrajectoryResponse,
+        summary="Retrieve visual-state frames for frontend animation playback",
+    )
+    def get_visual_scenario(run_id: str, max_frames: int = 300) -> VisualTrajectoryResponse:
+        """Retrieve downsampled visual frames classified by biochemical cell health."""
+        scen = simulation_store.get_scenario(run_id)
+        if scen is None:
+            sim = simulation_store.get(run_id)
+            if sim is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Simulation run '{run_id}' not found.",
+                )
+            traj = sim.trajectory
+            dur = sim.request.t_end_s - sim.request.t_start_s
+        else:
+            traj = scen.simulation_result.trajectory
+            dur = scen.scenario_request.duration_s
+
+        frames = trajectory_to_visual_frames(traj, max_frames=max_frames)
+        return VisualTrajectoryResponse(
+            run_id=run_id,
+            total_frames=len(frames),
+            playback_duration_s=dur,
+            frames=frames,
+        )
+
+    @app.get(
+        "/scenarios/{run_id}/stream",
+        summary="Server-Sent Events (SSE) stream of visual animation frames",
+    )
+    def stream_visual_scenario(run_id: str, max_frames: int = 200) -> StreamingResponse:
+        """Stream visual frames as Server-Sent Events for real-time frontend playback."""
+        scen = simulation_store.get_scenario(run_id)
+        sim = simulation_store.get(run_id) if scen is None else scen.simulation_result
+        if sim is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Simulation run '{run_id}' not found.",
+            )
+
+        frames = trajectory_to_visual_frames(sim.trajectory, max_frames=max_frames)
+
+        def event_generator():
+            import json as json_mod
+
+            for idx, frame in enumerate(frames):
+                payload = json_mod.dumps(frame.model_dump())
+                yield f"id: {idx}\nevent: frame\ndata: {payload}\n\n"
+            yield "event: complete\ndata: {}\n\n"
+
+        return StreamingResponse(event_generator(), media_type="text/event-stream")
 
     return app

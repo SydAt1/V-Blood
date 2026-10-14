@@ -104,3 +104,39 @@ class SimulationDetailResponse(BaseModel):
     steady_state_initialization: bool
     provenance: dict[str, Any]
     trajectory_length: int
+
+
+class CompoundResponse(BaseModel):
+    """API representation of a curated chemical compound."""
+
+    model_config = ConfigDict(frozen=True)
+
+    compound_id: str
+    name: str
+    smiles: str
+    inchikey: str
+    mechanism_type: str
+    default_parameters: dict[str, Any]
+    parameter_ranges: dict[str, list[float]]
+    exposure_units: str
+    evidence_level: str
+    is_unverified: bool
+    provenance: str
+    confidence_score: float
+
+
+class ScenarioRunResponse(BaseModel):
+    """API response for a single-cell exposure scenario."""
+
+    model_config = ConfigDict(frozen=True)
+
+    run_id: str
+    scenario_request: dict[str, Any]
+    derived_metrics: dict[str, Any]
+    has_unverified_compounds: bool
+    unverified_compounds: list[str]
+    compound_summaries: list[dict[str, Any]]
+    interaction_assumptions: list[str]
+    trajectory_length: int
+    research_disclaimer: str
+

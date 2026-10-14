@@ -6,15 +6,15 @@
 
 ---
 
-## Current status: Milestone 2 Complete
+## Current status: Milestone 4 Complete (v0.4.0)
 
-Milestone 2 extends the platform with:
-- **Task 1: Steady-state analysis:** Robust algebraic/numerical solver (`SteadyStateSolver`), stability auditing, and explanation of model equilibrium vs. resting physiological drift.
-- **Task 2: L2 reference data validation:** Curated reference ranges from human erythrocytes (`data/processed/l2_reference_ranges.json`) and automated validation engine (`L2Validator`).
-- **Task 3: Local sensitivity analysis:** Finite-difference parameter sensitivity analyzer for GSH depletion metrics, generating reports and tornado plots (`src/vblood/uncertainty/sensitivity.py`).
-- **Task 4: Experimental data ingestion:** Pydantic `ExperimentalRecord` schema, unit conversion module, and immutable SHA-256 verified ingestion pipeline (`scripts/ingest_data.py`).
-- **Task 5: FastAPI backend:** Decoupled REST API (`/health`, `/models`, `/simulations`, `/simulations/{run_id}`) without contaminating core biological models (`src/vblood/api/`).
-- **Task 6: G6PD kinetic sub-model:** Bi-substrate kinetic rate law with competitive NADPH product inhibition and total pyridine nucleotide pool conservation (`rbc-g6pd-gsh-v2`), supporting in silico deficiency scenarios.
+Milestone 4 introduces the chemical exposure and scenario simulation layer:
+- **Task 1: Mechanism preset library (`src/vblood/scenarios/mechanisms.py`):** Typed Pydantic specifications for 5 major toxicological mechanism classes (direct oxidant, GSH conjugator, redox cycler, G6PD/GR enzyme inhibitor, NADPH pool drain) with default-off hooks.
+- **Task 2: Curated compound library (`data/processed/compounds.json` & `src/vblood/scenarios/compounds.py`):** Curated database of oxidants, conjugators, and redox cyclers with SMILES/InChIKey validation, SHA-256 integrity verification, and evidence tier grading (`CURATED`, `ESTIMATED`, `UNVERIFIED`).
+- **Task 3: Scenario simulation engine (`src/vblood/scenarios/engine.py`):** Multi-compound exposure simulation with configurable profiles (`BOLUS`, `INFUSION`, `REPEATED_PULSES`), G6PD $\alpha$ vulnerability tuning, and dense early transient sampling.
+- **Task 4: High-performance cohort simulation (`src/vblood/scenarios/population.py`):** Vectorized RK4 batch simulator executing 1000 cells in under 2 seconds across biological parameter priors, outputting crisis percentages and percentile trajectories.
+- **Task 5: Frontend visual-state contract (`src/vblood/reporting/visual_state.py`):** Animation frame schema categorizing biochemical health (`healthy`, `stressed`, `severely_stressed`, `lysis_risk`) derived strictly from modeled variables.
+- **Task 6: FastAPI scenario endpoints (`src/vblood/api/`):** REST and Server-Sent Event streaming endpoints (`/compounds`, `/scenarios`, `/scenarios/population`, `/scenarios/{id}/visual`, `/scenarios/{id}/stream`).
 
 ---
 

@@ -231,11 +231,24 @@ class RBCG6PDGSHModel(BiologicalModel):
         d_damage = k_damage * (max(0.0, gsh_ref - gsh) / max(1e-6, gsh_ref)) * h2o2
         d_repair = k_repair * d
 
+        # Optional scenario mechanism rate terms (Milestone 4: default-off)
+        hooks = params.get("_scenario_hooks")
+        v_oxidant_influx = 0.0
+        v_gsh_conjugation = 0.0
+        v_redox_cycle = 0.0
+        v_nadph_drain = 0.0
+        if hooks is not None and hasattr(hooks, "compute_rates"):
+            extra = hooks.compute_rates(t, y)
+            v_oxidant_influx = float(extra.get("v_oxidant_influx", 0.0))
+            v_gsh_conjugation = float(extra.get("v_gsh_conjugation", 0.0))
+            v_redox_cycle = float(extra.get("v_redox_cycle", 0.0))
+            v_nadph_drain = float(extra.get("v_nadph_drain", 0.0))
+
         # ODE system
-        dgsh_dt = 2.0 * r_gr - 2.0 * r_gpx + r_synth
+        dgsh_dt = 2.0 * r_gr - 2.0 * r_gpx + r_synth - v_gsh_conjugation
         dgssg_dt = r_gpx - r_gr - r_export
-        dh2o2_dt = r_h2o2_prod - r_gpx - r_h2o2_rem
-        dnadph_dt = r_g6pd - r_gr
+        dh2o2_dt = r_h2o2_prod - r_gpx - r_h2o2_rem + v_oxidant_influx + v_redox_cycle
+        dnadph_dt = r_g6pd - r_gr - v_redox_cycle - v_nadph_drain
         dd_dt = d_damage - d_repair
 
         return np.array([dgsh_dt, dgssg_dt, dh2o2_dt, dnadph_dt, dd_dt])

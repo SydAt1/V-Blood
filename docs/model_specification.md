@@ -272,3 +272,33 @@ The activity multiplier $\alpha \in [0.0, 1.0]$ scales maximal enzyme activity $
 
 *Cautionary Note:* $\alpha$ is a continuous mathematical scaling multiplier and must not be conflated with specific clinical genotypes or diagnostic forecasts without independent clinical calibration.
 
+---
+
+## 12. Chemical Exposure Scenario Mechanisms (Milestone 4)
+
+Milestone 4 introduces optional, default-off kinetic terms coupling chemical compound exposures to the core ODE system:
+
+### A. Direct Influx
+$$v_{\text{oxidant\_influx}}(t) = k_{\text{influx}} \cdot \mathbb{I}_{[t_0, t_0 + \Delta t]}(t)$$
+Contributes $+v_{\text{oxidant\_influx}}$ to $\frac{d[\text{H}_2\text{O}_2]}{dt}$.
+
+### B. GSH Conjugation (Electrophilic Consumption)
+$$\text{GSH} + \text{Compound} \to \text{GS-Conjugate}$$
+$$v_{\text{conj}} = k_{\text{conj}} \cdot [\text{Compound}] \cdot [\text{GSH}]$$
+Contributes $-v_{\text{conj}}$ to $\frac{d[\text{GSH}]}{dt}$ without generating GSSG.
+
+### C. Redox Cycling (NADPH Oxidation + H₂O₂ Generation)
+$$\text{NADPH} + \text{O}_2 + \text{H}^+ \xrightarrow{\text{Compound}} \text{NADP}^+ + \text{H}_2\text{O}_2$$
+$$v_{\text{cycle}} = k_{\text{cycle}} \cdot [\text{Compound}] \cdot \frac{[\text{NADPH}]}{K_{m,\text{NADPH}} + [\text{NADPH}]}$$
+Contributes $+v_{\text{cycle}}$ to $\frac{d[\text{H}_2\text{O}_2]}{dt}$ and $-v_{\text{cycle}}$ to $\frac{d[\text{NADPH}]}{dt}$.
+
+### D. Direct NADPH Drain
+$$v_{\text{drain}} = k_{\text{drain}} \cdot [\text{Compound}] \cdot \frac{[\text{NADPH}]}{K_{m,\text{NADPH}} + [\text{NADPH}]}$$
+Contributes $-v_{\text{drain}}$ to $\frac{d[\text{NADPH}]}{dt}$.
+
+### E. Enzyme Inhibition
+Apparent Michaelis and maximal velocity parameters are adjusted according to inhibition type:
+- **Competitive:** $K_m^{\text{app}} = K_m \cdot \left(1 + \frac{[\text{Compound}]}{K_i}\right)$
+- **Non-Competitive:** $V_{\max}^{\text{app}} = \frac{V_{\max}}{1 + \frac{[\text{Compound}]}{K_i}}$
+
+

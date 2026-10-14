@@ -30,6 +30,14 @@ class SimulationStore(ABC):
     def list_all(self, limit: int = 100) -> list[SimulationResult]:
         """List stored simulation runs."""
 
+    @abstractmethod
+    def save_scenario(self, result: Any) -> None:
+        """Persist a scenario result."""
+
+    @abstractmethod
+    def get_scenario(self, run_id: str) -> Any | None:
+        """Retrieve a scenario result by run_id."""
+
 
 class InMemorySimulationStore(SimulationStore):
     """In-memory dictionary storage for simulation runs.
@@ -39,6 +47,7 @@ class InMemorySimulationStore(SimulationStore):
 
     def __init__(self) -> None:
         self._store: dict[str, SimulationResult] = {}
+        self._scenarios: dict[str, Any] = {}
 
     def save(self, result: SimulationResult) -> None:
         self._store[result.run_id] = result
@@ -49,6 +58,14 @@ class InMemorySimulationStore(SimulationStore):
     def list_all(self, limit: int = 100) -> list[SimulationResult]:
         return list(self._store.values())[:limit]
 
+    def save_scenario(self, result: Any) -> None:
+        self._scenarios[result.simulation_result.run_id] = result
+
+    def get_scenario(self, run_id: str) -> Any | None:
+        return self._scenarios.get(run_id)
+
     def clear(self) -> None:
         """Clear all stored runs (used in test teardown)."""
         self._store.clear()
+        self._scenarios.clear()
+

@@ -313,11 +313,24 @@ class RBCGSHRedoxModel(BiologicalModel):
         r_h2o2_prod = self.v_h2o2_prod(params["k_h2o2_prod"])
         r_h2o2_rem = self.v_h2o2_rem(h2o2, params["k_h2o2_rem"])
 
+        # Optional scenario mechanism rate terms (Milestone 4: default-off)
+        hooks = params.get("_scenario_hooks")
+        v_oxidant_influx = 0.0
+        v_gsh_conjugation = 0.0
+        v_redox_cycle = 0.0
+        v_nadph_drain = 0.0
+        if hooks is not None and hasattr(hooks, "compute_rates"):
+            extra = hooks.compute_rates(t, y)
+            v_oxidant_influx = float(extra.get("v_oxidant_influx", 0.0))
+            v_gsh_conjugation = float(extra.get("v_gsh_conjugation", 0.0))
+            v_redox_cycle = float(extra.get("v_redox_cycle", 0.0))
+            v_nadph_drain = float(extra.get("v_nadph_drain", 0.0))
+
         # Differential equations (from model specification §5)
-        dgsh_dt = 2.0 * r_gr - 2.0 * r_gpx + r_synth
+        dgsh_dt = 2.0 * r_gr - 2.0 * r_gpx + r_synth - v_gsh_conjugation
         dgssg_dt = r_gpx - r_gr - r_export
-        dh2o2_dt = r_h2o2_prod - r_gpx - r_h2o2_rem
-        dnadph_dt = r_ppp - r_gr
+        dh2o2_dt = r_h2o2_prod - r_gpx - r_h2o2_rem + v_oxidant_influx + v_redox_cycle
+        dnadph_dt = r_ppp - r_gr - v_redox_cycle - v_nadph_drain
 
         # Damage accumulation (R8) — SYNTHETIC parameters
         # GSH₀ is stored in params for this computation; defaults to 2.5 mM

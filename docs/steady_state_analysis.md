@@ -72,11 +72,61 @@ However, this mathematical fixed point is **unphysiological** because:
 2. The model lacks other physiological NADPH sinks (e.g. thioredoxin reductase, lipid peroxidation reduction, catalase maintenance).
 3. The model lacks feedback regulation on de novo GSH synthesis.
 
+### 2.4 Numerical Audit of the 2-Hour Baseline Transient ($t = 7200\text{ s}$)
+
+When `rbc-gsh-redox-v1` is integrated dynamically over 2 hours starting from standard resting physiological conditions:
+$$[\text{GSH}]_0 = 2.5\text{ mM}, \quad [\text{GSSG}]_0 = 0.025\text{ mM}, \quad [\text{H}_2\text{O}_2]_0 = 0.0001\text{ mM}, \quad [\text{NADPH}]_0 = 0.030\text{ mM}$$
+
+the trajectory reveals significant drift without achieving physiological rest:
+
+| Observable | $t = 0\text{ s}$ (Initial) | $t = 7200\text{ s}$ (2 h) | L2 Reference Range | Mechanism / Root Cause |
+|---|---|---|---|---|
+| $[\text{NADPH}]$ | $0.030\text{ mM}$ | **$0.7432\text{ mM}$** (rising) | $0.010–0.050\text{ mM}$ | No pyridine nucleotide conservation ($[NADP^+] + [NADPH] = \text{const}$) in v1. At $t=7200\text{ s}$, $v_{\text{PPP}} \approx 5.96 \times 10^{-5}\text{ mM s}^{-1}$ exceeds $v_{\text{GR}} \approx 9.96 \times 10^{-6}\text{ mM s}^{-1}$, driving continuous accumulation toward asymptotic $9.01\text{ mM}$. |
+| $[\text{GSSG}]$ | $0.025\text{ mM}$ | **$2.518 \times 10^{-4}\text{ mM}$** | $0.010–0.040\text{ mM}$ | Overestimated active export ($k_{\text{export}} = 0.02\text{ s}^{-1}$) drains GSSG 100-fold below normal physiological levels. |
+| $[\text{GSH}]/[\text{GSSG}]$ | $100$ | **$9,896$ ($\approx 10^4$)** | $30–250$ | Artificially elevated by the collapse of $[\text{GSSG}]$. |
+| $[\text{H}_2\text{O}_2]$ | $1.0 \times 10^{-4}\text{ mM}$ | **$1.203 \times 10^{-7}\text{ mM}$** | $1.0 \times 10^{-4}–1.0 \times 10^{-2}\text{ mM}$ | Bimolecular GPx clearance ($k_{\text{eff}} = k_{\text{rem}} + k_{\text{gpx}}[\text{GSH}] \approx 125.1\text{ s}^{-1}$) clears peroxide down to $k_{\text{prod}} / 125.1 \approx 0.12\text{ nM}$, conflicting with the documented reference interval. |
+| Total Glutathione ($G_{\text{tot}}$) | $2.550\text{ mM}$ | **$2.4926\text{ mM}$** | $1.5–3.0\text{ mM}$ | **Net loss of $2.25\%$ ($0.0574\text{ mM}$)** over 2 h because $2 v_{\text{export}} > v_{\text{synth}}$ ($1.007 \times 10^{-5}\text{ mM s}^{-1} > 5.0 \times 10^{-6}\text{ mM s}^{-1}$). |
+
+### 2.5 Solver & Validator Audit: Why Was This Missed in Standard Runs?
+
+1. **`SteadyStateSolver` Behaviour:**
+   - The steady-state solver **correctly detected** the asymptotic unphysiological fixed point ($[\text{NADPH}]^* = 9.01\text{ mM}$, $[\text{GSH}]^* = 1.99\ \mu\text{M}$) and flagged `is_physiologically_plausible = False`.
+   - When `use_steady_state_ic = True`, `engine.py` emits `SimulationWarning(code="STEADY_STATE_UNPHYSIOLOGICAL")`.
+   - **Gap:** In user scripts and demonstration workflows (e.g. `scripts/run_demo.py`), simulations are initialized with user-provided `RBCGSHInitialConditions()`, setting `use_ss = False`. In this path, `SteadyStateSolver` is **never executed**.
+
+2. **`L2Validator` Behaviour:**
+   - `L2Validator` was designed as an offline validation tool for testing fixed states (unit tests in `tests/scientific/test_l2_validation.py`).
+   - It was **not integrated into `engine.py`'s simulation post-processing pipeline**.
+   - Consequently, long-duration transient runs can drift far out of L2 reference bounds without raising warnings or failing validation checks.
+
+### 2.6 Verification of Model `rbc-g6pd-gsh-v2`
+
+Model `rbc-g6pd-gsh-v2` introduces total pyridine nucleotide pool conservation:
+$$[\text{NADP}^+] = \max\left(0, [\text{NADP}]_{\text{tot}} - [\text{NADPH}]\right), \quad [\text{NADP}]_{\text{tot}} = 0.040\text{ mM}$$
+and bi-substrate competitive G6PD rate kinetics.
+
+- **Pool Conservation Verification:**
+  When simulated over a 2-hour unperturbed baseline run ($t = 7200\text{ s}$), $[\text{NADPH}]$ peaks at **$0.03995\text{ mM}$** and asymptotically approaches $[\text{NADP}]_{\text{tot}} = 0.040\text{ mM}$.
+- As $[\text{NADPH}] \to 0.040\text{ mM}$, $[\text{NADP}^+] \to 0\text{ mM}$, causing G6PD velocity $v_{\text{G6PD}} \to 0\text{ mM s}^{-1}$.
+- This mathematically and computationally guarantees that $[\text{NADPH}]$ **cannot exceed $0.040\text{ mM}$**, resolving the runaway NADPH behavior observed in `rbc-gsh-redox-v1`.
+
+### 2.7 Proposed Fixes and Regression Testing Plan
+
+1. **Model Parameter Calibration & Export Tuning (Milestone 3 / Task 5):**
+   - Re-evaluate $k_{\text{export}}$: Replace high-stress export constant ($0.02\text{ s}^{-1}$) with basal transport rate or saturable Michaelis-Menten kinetics ($v_{\text{export}} = V_{\max,\text{export}} [\text{GSSG}] / (K_{m,\text{export}} + [\text{GSSG}])$).
+   - Reconcile $H_2O_2$ reference expectations ($10^{-5}\text{–}10^{-3}\text{ mM}$) with effective GPx and autoxidation kinetics.
+2. **Online L2 Drift Auditing in `SimulationEngine`:**
+   - Add optional end-of-run L2 health checking in `SimulationResult` that flags when baseline simulations drift outside physiological bounds.
+3. **Regression Tests:**
+   - Test 1: Verify 2-hour baseline run of `rbc-g6pd-gsh-v2` enforces $[\text{NADPH}] \le [\text{NADP}]_{\text{tot}} = 0.040\text{ mM}$.
+   - Test 2: Verify total glutathione rate of change $|\frac{dG_{\text{tot}}}{dt}| \le \epsilon$ at physiological steady state.
+   - Test 3: Automated regression test asserting `L2Validator` flags unphysiological states if drift exceeds tolerance thresholds.
+
 ---
 
 ## 3. Solver Implementation
 
-The solver is implemented in [`src/vblood/simulation/steady_state.py`](file:///Users/sydatsin/Blood%20Med/src/vblood/simulation/steady_state.py).
+The solver is implemented in [`src/vblood/simulation/steady_state.py`](file:///c:/new%20project/V-Blood/src/vblood/simulation/steady_state.py).
 
 ### Key Features
 1. **Closed-form + Root Hybrid:** Combines exact analytical derivation with 1D root-finding (`brentq` for NADPH) and multi-dimensional cross-verification (`scipy.optimize.root`).
@@ -89,7 +139,8 @@ The solver is implemented in [`src/vblood/simulation/steady_state.py`](file:///U
 
 ## 4. Simulation Workflow Integration
 
-In [`src/vblood/simulation/engine.py`](file:///Users/sydatsin/Blood%20Med/src/vblood/simulation/engine.py):
+In [`src/vblood/simulation/engine.py`](file:///c:/new%20project/V-Blood/src/vblood/simulation/engine.py):
 - `SimulationRequest()` defaults to equilibrium initialization (`use_steady_state_ic = None` and `initial_conditions = None`).
 - If `initial_conditions` is provided, it **overrides** the default equilibrium.
 - When equilibrium initialization is used, `SimulationResult.steady_state_summary` stores solver provenance and residuals, and `SimulationWarning(code="STEADY_STATE_UNPHYSIOLOGICAL")` is emitted to maintain transparency.
+

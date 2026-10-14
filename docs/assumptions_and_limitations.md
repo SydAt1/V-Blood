@@ -28,6 +28,11 @@ V-Blood is a research simulation platform. All outputs are **model predictions**
 | A-08 | The cumulative damage index `D` is a mechanistic proxy. It is not directly measurable. | Damage | No experimental calibration of D | Link to haemoglobin release data (Milestone 2) |
 | A-09 | GSSG export is modelled as first-order in [GSSG]. The transporter is saturable at high [GSSG]; saturation is not modelled. | GSSG export | May underestimate protection at high oxidant load | Michaelis-Menten transport model |
 | A-10 | Endogenous H₂O₂ production from haemoglobin autoxidation is modelled as a small constant baseline flux. | H₂O₂ | Does not respond to haemoglobin concentration changes | Haemoglobin sub-model |
+| A-11 | Chemical exposure scenarios simulate an in vitro isolated erythrocyte suspension with no systemic PK/ADME clearance. | Scenario Engine | In vivo drug clearance and metabolite kinetics are not captured | Full PBPK coupling (planned) |
+| A-12 | Multi-compound combinations assume independent rate flux additivity and no direct extracellular chemical-chemical adduct formation. | Scenario Engine | May miss synergistic chemical reactions in the suspension medium | Adduct kinetic sub-models |
+| A-13 | Visual-state health categories are strictly biochemical; physical erythrocyte morphology (echinocytes, crenation) is explicitly unmodeled. | Reporting | Does not predict membrane shape changes or mechanical fragility | Biomechanical membrane model |
+| A-14 | Glycolytic intermediates (ATP, 2,3-BPG, NADH) are unmodeled; scenarios cannot predict ATP-dependent deformability loss. | Metabolism | Misses ATP-dependent active transport collapse | Glycolysis sub-model |
+| A-15 | Compounds with UNVERIFIED evidence status are exploratory synthetic entries excluded from validation pass/fail scoring. | Compounds | Prevents synthetic parameters from distorting validation benchmarks | Strict validation filtering |
 
 ## Parameter-level assumptions
 

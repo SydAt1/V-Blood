@@ -100,7 +100,7 @@ def _build_params(request: SimulationRequest) -> dict[str, Any]:
     return params
 
 
-def run_simulation(request: SimulationRequest) -> SimulationResult:
+def run_simulation(request: SimulationRequest, scenario_hooks: Any = None) -> SimulationResult:
     """Run a single simulation from a validated SimulationRequest.
 
     This is the primary entry point for the simulation engine.
@@ -109,6 +109,7 @@ def run_simulation(request: SimulationRequest) -> SimulationResult:
 
     Args:
         request: A validated :class:`SimulationRequest` object.
+        scenario_hooks: Optional scenario dynamic mechanism hooks (Milestone 4).
 
     Returns:
         A :class:`SimulationResult` containing the full trajectory,
@@ -135,6 +136,9 @@ def run_simulation(request: SimulationRequest) -> SimulationResult:
     # 2. Build and validate parameters
     # ------------------------------------------------------------------ #
     params = _build_params(request)
+    if scenario_hooks is not None:
+        params["_scenario_hooks"] = scenario_hooks
+
     param_errors = model.validate_params(params)
     if param_errors:
         raise ValueError(
