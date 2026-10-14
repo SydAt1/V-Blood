@@ -57,7 +57,7 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
     @app.exception_handler(ValueError)
     async def value_error_handler(request, exc: ValueError):
         return JSONResponse(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             content={"detail": str(exc)},
         )
 
@@ -147,12 +147,12 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
             for k, v in req_body.parameter_overrides.items():
                 if k not in valid_keys:
                     raise HTTPException(
-                        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                         detail=f"Unknown parameter override '{k}'. Supported: {sorted(list(valid_keys))}.",
                     )
                 if v < 0.0:
                     raise HTTPException(
-                        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                         detail=f"Parameter '{k}' cannot be negative, got {v}.",
                     )
 
@@ -174,7 +174,7 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
         # If solver failed, do not present as valid scientific result
         if sim_result.solver_status != SolverStatus.SUCCESS:
             raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail=f"Numerical ODE solver failed: {sim_result.solver_message}",
             )
 
@@ -319,12 +319,12 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
         for c in req.compounds:
             if c.dose_mM > 20.0:
                 raise HTTPException(
-                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                     detail=f"Dose {c.dose_mM} mM exceeds maximum allowable limit of 20.0 mM.",
                 )
         if req.duration_s > 86400.0:
             raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail=f"Duration {req.duration_s} s exceeds 24 h limit (86400 s).",
             )
 
@@ -353,7 +353,7 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
         """Simulate cohort variability across N cells sampled from biological priors."""
         if req.n_cells > 5000:
             raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail=f"Cohort size n_cells={req.n_cells} exceeds limit of 5000.",
             )
         return simulate_population(req)

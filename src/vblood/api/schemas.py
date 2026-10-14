@@ -55,7 +55,23 @@ class ModelDetailResponse(BaseModel):
 class SimulationCreateRequest(BaseModel):
     """API payload for launching a simulation."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(
+        frozen=True,
+        json_schema_extra={
+            "example": {
+                "model_id": "rbc-gsh-redox-v1",
+                "t_start_s": 0.0,
+                "t_end_s": 3600.0,
+                "n_eval_points": 500,
+                "exposure": {
+                    "bolus_time_s": 100.0,
+                    "bolus_amount_mM": 0.05,
+                    "continuous_infusion_rate_mM_per_s": 0.0,
+                },
+                "run_label": "sample_bolus_run",
+            }
+        },
+    )
 
     model_id: str = Field(default="rbc-gsh-redox-v1", description="Registered model ID.")
     t_start_s: float = Field(default=0.0, ge=0.0, description="Start time in seconds.")

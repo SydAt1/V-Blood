@@ -35,7 +35,27 @@ from vblood.scenarios.mechanisms import (
 class PopulationRequest(BaseModel):
     """Input specification for a population cohort simulation."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(
+        frozen=True,
+        json_schema_extra={
+            "example": {
+                "scenario_request": {
+                    "model_version": "rbc-g6pd-gsh-v2",
+                    "g6pd_alpha": 0.2,
+                    "duration_s": 1800.0,
+                    "exposure_profile": "BOLUS",
+                    "compounds": [
+                        {
+                            "compound_id": "cmp_menadione",
+                            "dose_mM": 0.03,
+                        }
+                    ],
+                },
+                "n_cells": 1000,
+                "random_seed": 42,
+            }
+        },
+    )
 
     scenario_request: ScenarioRequest
     n_cells: int = Field(default=1000, ge=10, le=5000, description="Number of individual cells to simulate.")

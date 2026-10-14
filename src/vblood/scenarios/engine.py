@@ -64,7 +64,23 @@ class CompoundExposure(BaseModel):
 class ScenarioRequest(BaseModel):
     """Input request for a chemical exposure scenario."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(
+        frozen=True,
+        json_schema_extra={
+            "example": {
+                "model_version": "rbc-g6pd-gsh-v2",
+                "g6pd_alpha": 0.2,
+                "duration_s": 3600.0,
+                "exposure_profile": "BOLUS",
+                "compounds": [
+                    {
+                        "compound_id": "cmp_menadione",
+                        "dose_mM": 0.05,
+                    }
+                ],
+            }
+        },
+    )
 
     compounds: list[CompoundExposure] = Field(
         default_factory=list,
