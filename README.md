@@ -6,24 +6,37 @@
 
 ---
 
-## Current status: Milestone 4 Complete (v0.4.0)
+## Current status: Milestone 5 Complete (v0.5.0)
 
-Milestone 4 introduces the chemical exposure and scenario simulation layer:
-- **Task 1: Mechanism preset library (`src/vblood/scenarios/mechanisms.py`):** Typed Pydantic specifications for 5 major toxicological mechanism classes (direct oxidant, GSH conjugator, redox cycler, G6PD/GR enzyme inhibitor, NADPH pool drain) with default-off hooks.
-- **Task 2: Curated compound library (`data/processed/compounds.json` & `src/vblood/scenarios/compounds.py`):** Curated database of oxidants, conjugators, and redox cyclers with SMILES/InChIKey validation, SHA-256 integrity verification, and evidence tier grading (`CURATED`, `ESTIMATED`, `UNVERIFIED`).
-- **Task 3: Scenario simulation engine (`src/vblood/scenarios/engine.py`):** Multi-compound exposure simulation with configurable profiles (`BOLUS`, `INFUSION`, `REPEATED_PULSES`), G6PD $\alpha$ vulnerability tuning, and dense early transient sampling.
-- **Task 4: High-performance cohort simulation (`src/vblood/scenarios/population.py`):** Vectorized RK4 batch simulator executing 1000 cells in under 2 seconds across biological parameter priors, outputting crisis percentages and percentile trajectories.
-- **Task 5: Frontend visual-state contract (`src/vblood/reporting/visual_state.py`):** Animation frame schema categorizing biochemical health (`healthy`, `stressed`, `severely_stressed`, `lysis_risk`) derived strictly from modeled variables.
-- **Task 6: FastAPI scenario endpoints (`src/vblood/api/`):** REST and Server-Sent Event streaming endpoints (`/compounds`, `/scenarios`, `/scenarios/population`, `/scenarios/{id}/visual`, `/scenarios/{id}/stream`).
+Milestone 5 introduces the **Blood Playground Frontend**: an interactive, production-quality research workstation built with React 19, TypeScript, Vite, and Tailwind CSS.
+- **Task 1: Chemical Compound Catalog:** Searchable and filterable chemical catalog with real-time evidence grading (`CURATED`, `ESTIMATED`, `UNVERIFIED`) and literature provenance.
+- **Task 2: Single-Cell Scenario Builder & Visualizer:** Configure chemical mixtures, exposure waveforms (`BOLUS`, `INFUSION`, `REPEATED_PULSES`), G6PD $\alpha$ enzymatic activity, parallel baseline control comparisons, and interactive multi-channel time-series charts.
+- **Task 3: Heterogeneous Population Cohort Simulator:** Vectorized cohort runs (100 to 5,000 cells) executed in ~1.2s, displaying $p_5 \dots p_{95}$ percentile bands, median trajectories, and model-defined crisis fractions.
+- **Task 4: Erythrocyte Dynamics Playback:** Scalable SVG biconcave disc animation with normalized biochemical health states, scrubbing controls, and real-time Server-Sent Events (SSE) streaming.
+- **Task 5: Session Run History & Data Export:** Complete local session auditing with CSV and JSON exports for simulation trajectories and provenance.
+- **Task 6: Model & Scientific Boundaries:** Transparent documentation of biological scope (no ATP/glycolysis, no unmodeled physical membrane morphology).
 
 ---
 
 ## Quick start
 
-### Requirements
+### Frontend Research Workstation
+```bash
+# Terminal 1: Start FastAPI Backend
+.\.venv\Scripts\python.exe -m uvicorn vblood.api.app:app --reload --host 127.0.0.1 --port 8000
 
-- Python 3.11+ (tested on Python 3.13)
-- uv or pip
+# Terminal 2: Start Vite Frontend
+cd frontend
+npm install
+npm run dev
+```
+Open **`http://localhost:5173`** in your browser to access the Blood Playground workstation.
+Interactive OpenAPI/Swagger docs are available at `http://127.0.0.1:8000/docs`.
+
+### Running Automated Test Suites
+- **Backend (Python):** `pytest` (176 tests passing across unit, scientific, and API suites)
+- **Frontend (TypeScript):** `cd frontend && npm test` (15 tests passing across component and API suites)
+
 
 ### Installation
 

@@ -155,4 +155,5 @@ class ScenarioRunResponse(BaseModel):
     interaction_assumptions: list[str]
     trajectory_length: int
     research_disclaimer: str
+    trajectory: list[dict[str, Any]] | None = None
 

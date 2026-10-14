@@ -10,7 +10,9 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
+
 
 from vblood.api.schemas import (
     CompoundResponse,
@@ -50,6 +52,14 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
             "REST API for running mechanistic blood simulations and inspecting biological models. "
             "WARNING: For research simulation only — NOT for clinical, diagnostic, or regulatory use."
         ),
+    )
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     simulation_store = store or InMemorySimulationStore()
@@ -208,6 +218,44 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
         )
 
     @app.get(
+        "/simulations",
+        response_model=list[SimulationDetailResponse],
+        summary="List recent simulation runs from store",
+    )
+    def list_simulations(limit: int = 50) -> list[SimulationDetailResponse]:
+        """List recently stored simulation runs."""
+        stored = simulation_store.list_all(limit=limit)
+        results = []
+        for res in stored:
+            ic_source = "steady_state" if res.steady_state_initialization else "explicit_initial_conditions"
+            results.append(
+                SimulationDetailResponse(
+                    run_id=res.run_id,
+                    model_id=res.model_id,
+                    model_version=res.model_version,
+                    parameter_set="default_v1",
+                    scenario_description=res.request.exposure.description or "Default scenario",
+                    initial_condition_source=ic_source,
+                    solver_status=res.solver_status.value,
+                    solver_message=res.solver_message,
+                    solver_time_s=res.solver_time_s,
+                    n_evaluations=res.n_function_evaluations,
+                    final_gsh_mM=res.final_gsh_mM,
+                    final_gssg_mM=res.final_gssg_mM,
+                    min_gsh_mM=res.min_gsh_mM,
+                    max_h2o2_mM=res.max_h2o2_mM,
+                    final_damage=res.final_damage,
+                    final_hemolysis_pct=res.final_hemolysis_pct,
+                    warnings_count=len(res.warnings),
+                    warnings=[w.model_dump() for w in res.warnings],
+                    steady_state_initialization=res.steady_state_initialization,
+                    provenance=res.provenance,
+                    trajectory_length=len(res.trajectory),
+                )
+            )
+        return results
+
+    @app.get(
         "/simulations/{run_id}",
         response_model=SimulationDetailResponse,
         summary="Retrieve simulation run by run_id",
@@ -342,6 +390,33 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
             interaction_assumptions=result.interaction_assumptions,
             trajectory_length=len(result.simulation_result.trajectory),
             research_disclaimer=result.research_disclaimer,
+            trajectory=[p.model_dump() for p in result.simulation_result.trajectory],
+        )
+
+    @app.get(
+        "/scenarios/{run_id}",
+        response_model=ScenarioRunResponse,
+        summary="Retrieve detailed scenario run by run_id",
+    )
+    def get_scenario(run_id: str) -> ScenarioRunResponse:
+        """Retrieve stored chemical scenario run by run_id."""
+        scen = simulation_store.get_scenario(run_id)
+        if scen is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Scenario run '{run_id}' not found.",
+            )
+        return ScenarioRunResponse(
+            run_id=scen.simulation_result.run_id,
+            scenario_request=scen.scenario_request.model_dump(),
+            derived_metrics=scen.derived_metrics.model_dump(),
+            has_unverified_compounds=scen.has_unverified_compounds,
+            unverified_compounds=scen.unverified_compounds,
+            compound_summaries=scen.compound_summaries,
+            interaction_assumptions=scen.interaction_assumptions,
+            trajectory_length=len(scen.simulation_result.trajectory),
+            research_disclaimer=scen.research_disclaimer,
+            trajectory=[p.model_dump() for p in scen.simulation_result.trajectory],
         )
 
     @app.post(

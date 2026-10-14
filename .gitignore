@@ -72,3 +72,9 @@ logs/
 # uv
 .uv/
 uv.lock
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local

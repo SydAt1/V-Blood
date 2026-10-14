@@ -6,13 +6,13 @@ V-Blood separates six distinct concerns, each in its own Python sub-package. No 
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│              Frontend (React / TypeScript)            │   ← Milestone 7
+│              Frontend (React / TypeScript)            │   ← Milestone 5 ✓
 │           Interactive research dashboard              │
 └────────────────────────┬────────────────────────────┘
-                         │ HTTP (JSON)
+                         │ HTTP (JSON / SSE)
 ┌────────────────────────▼────────────────────────────┐
-│              API Layer  (FastAPI)                     │   ← Milestone 4
-│          /simulations, /models, /reports              │
+│              API Layer  (FastAPI)                     │   ← Milestone 2 / 4 ✓
+│          /simulations, /models, /scenarios, /compounds│
 └────────────────────────┬────────────────────────────┘
                          │ Python function call
 ┌────────────────────────▼────────────────────────────┐
