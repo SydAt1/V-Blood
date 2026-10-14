@@ -414,3 +414,6 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
         return StreamingResponse(event_generator(), media_type="text/event-stream")
 
     return app
+
+
+app = create_app()
