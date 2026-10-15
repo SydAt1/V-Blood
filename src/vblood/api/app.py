@@ -35,6 +35,14 @@ from vblood.scenarios.population import (
     PopulationResult,
     simulate_population,
 )
+from vblood.interpretation.schemas import (
+    CohortInterpretationRequest,
+    CohortInterpretationResponse,
+    InterpretationStatusResponse,
+    PlaygroundInterpretationRequest,
+    PlaygroundInterpretationResponse,
+)
+from vblood.interpretation.service import get_interpretation_service
 from vblood.schemas.simulation import (
     SimulationRequest,
     SimulationResult,
@@ -487,6 +495,56 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
             yield "event: complete\ndata: {}\n\n"
 
         return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+    # =========================================================================
+    # Milestone 6: Scientific Interpretation Endpoints
+    # =========================================================================
+
+    @app.get(
+        "/interpret/status",
+        response_model=InterpretationStatusResponse,
+        summary="Check interpretation service status and active providers",
+    )
+    def get_interpretation_status() -> InterpretationStatusResponse:
+        """Return readiness of deterministic rule engine and external LLM provider."""
+        service = get_interpretation_service()
+        return service.get_status()
+
+    @app.post(
+        "/interpret/playground",
+        response_model=PlaygroundInterpretationResponse,
+        summary="Generate scientific interpretation for a single-cell playground simulation",
+    )
+    async def interpret_playground_scenario(
+        req: PlaygroundInterpretationRequest,
+    ) -> PlaygroundInterpretationResponse:
+        """Synthesize an evidence-grounded scientific interpretation memorandum for a single-cell run."""
+        service = get_interpretation_service()
+        try:
+            return await service.interpret_playground(req)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Interpretation failed: {exc}",
+            )
+
+    @app.post(
+        "/interpret/cohort",
+        response_model=CohortInterpretationResponse,
+        summary="Generate scientific interpretation for a population cohort simulation",
+    )
+    async def interpret_cohort_scenario(
+        req: CohortInterpretationRequest,
+    ) -> CohortInterpretationResponse:
+        """Synthesize an evidence-grounded scientific interpretation memorandum for a population cohort run."""
+        service = get_interpretation_service()
+        try:
+            return await service.interpret_cohort(req)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Cohort interpretation failed: {exc}",
+            )
 
     return app
 

@@ -39,6 +39,7 @@ export const App: React.FC = () => {
   const [activeLoadedRun, setActiveLoadedRun] = useState<ScenarioRunResponse | null>(null);
 
   // Population Cohort state
+  const [populationRequest, setPopulationRequest] = useState<PopulationRequest | null>(null);
   const [populationResult, setPopulationResult] = useState<PopulationResult | null>(null);
   const [populationLoading, setPopulationLoading] = useState<boolean>(false);
   const [populationError, setPopulationError] = useState<string | null>(null);
@@ -131,6 +132,7 @@ export const App: React.FC = () => {
   };
 
   const handleRunPopulation = async (req: PopulationRequest) => {
+    setPopulationRequest(req);
     setPopulationLoading(true);
     setPopulationError(null);
 
@@ -259,7 +261,7 @@ export const App: React.FC = () => {
                 loading={populationLoading}
               />
 
-              <PopulationResults result={populationResult} />
+              <PopulationResults result={populationResult} request={populationRequest} />
             </div>
           )}
 

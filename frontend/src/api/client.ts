@@ -4,9 +4,14 @@
  */
 
 import type {
+  CohortInterpretationRequest,
+  CohortInterpretationResponse,
   CompoundResponse,
   HealthResponse,
+  InterpretationStatusResponse,
   ModelDetailResponse,
+  PlaygroundInterpretationRequest,
+  PlaygroundInterpretationResponse,
   PopulationRequest,
   PopulationResult,
   ScenarioRequest,
@@ -170,4 +175,34 @@ export function subscribeVisualFrames(
   return () => {
     eventSource.close();
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* Milestone 6: Scientific Interpretation Methods                     */
+/* ------------------------------------------------------------------ */
+
+export async function getInterpretationStatus(): Promise<InterpretationStatusResponse> {
+  return apiFetch<InterpretationStatusResponse>('/interpret/status');
+}
+
+export async function interpretPlayground(
+  request: PlaygroundInterpretationRequest,
+  signal?: AbortSignal
+): Promise<PlaygroundInterpretationResponse> {
+  return apiFetch<PlaygroundInterpretationResponse>('/interpret/playground', {
+    method: 'POST',
+    body: JSON.stringify(request),
+    signal,
+  });
+}
+
+export async function interpretCohort(
+  request: CohortInterpretationRequest,
+  signal?: AbortSignal
+): Promise<CohortInterpretationResponse> {
+  return apiFetch<CohortInterpretationResponse>('/interpret/cohort', {
+    method: 'POST',
+    body: JSON.stringify(request),
+    signal,
+  });
 }

@@ -1,14 +1,110 @@
-import React from 'react';
-import type { PopulationResult } from '../../types/api';
+import React, { useState, useEffect } from 'react';
+import type { CohortInterpretationResponse, PopulationRequest, PopulationResult } from '../../types/api';
 import { PopulationPercentileChart } from './PopulationPercentileChart';
 import { AlertBox } from '../../components/AlertBox';
+import { InterpretationPlate } from '../../components/InterpretationPlate';
+import { interpretCohort } from '../../api/client';
 import { Clock, Users } from 'lucide-react';
 
 interface Props {
   result: PopulationResult | null;
+  request?: PopulationRequest | null;
 }
 
-export const PopulationResults: React.FC<Props> = ({ result }) => {
+export const PopulationResults: React.FC<Props> = ({ result, request }) => {
+  const [interpretation, setInterpretation] = useState<CohortInterpretationResponse | null>(null);
+  const [interpLoading, setInterpLoading] = useState<boolean>(false);
+  const [interpError, setInterpError] = useState<string | null>(null);
+  const [providerPreference, setProviderPreference] = useState<'auto' | 'deterministic' | 'llm'>('auto');
+  const [interpretationCache, setInterpretationCache] = useState<Record<string, CohortInterpretationResponse>>({});
+
+  const getCohortKey = (res: any, pref: string) => {
+    const id = res?.run_id || `${res?.n_cells}_${res?.execution_time_ms}`;
+    return `cohort:${id}:${pref}`;
+  };
+
+  const fetchInterpretation = async (
+    pref: 'auto' | 'deterministic' | 'llm',
+    forceRefresh: boolean = false
+  ) => {
+    if (!result) return;
+    const key = getCohortKey(result, pref);
+
+    if (!forceRefresh && interpretationCache[key]) {
+      setInterpretation(interpretationCache[key]);
+      setInterpLoading(false);
+      setInterpError(null);
+      return;
+    }
+
+    setInterpLoading(true);
+    setInterpError(null);
+
+    // Fallback constructed request if not explicitly passed
+    const popRequest: PopulationRequest = request || {
+      scenario_request: {
+        compounds: [],
+        exposure_profile: 'BOLUS',
+        duration_s: 1800,
+        g6pd_alpha: 1.0,
+        model_version: 'rbc-g6pd-gsh-v2',
+      },
+      n_cells: result.n_cells,
+    };
+
+    try {
+      const resp = await interpretCohort({
+        population_request: popRequest,
+        population_result: result,
+        provider_preference: pref,
+        force_refresh: forceRefresh,
+      });
+
+      setInterpretationCache((prev) => {
+        const next = { ...prev, [key]: resp };
+        if (pref === 'auto') {
+          const effectiveMode = resp.provider_used.includes('external-llm') ? 'llm' : 'deterministic';
+          next[getCohortKey(result, effectiveMode)] = resp;
+        } else if (pref === 'llm' && !resp.fallback_applied) {
+          next[getCohortKey(result, 'auto')] = resp;
+        }
+        return next;
+      });
+
+      setInterpretation(resp);
+    } catch (err: any) {
+      setInterpError(err.detail || err.message || 'Cohort interpretation failed.');
+    } finally {
+      setInterpLoading(false);
+    }
+  };
+
+  const handleProviderPreferenceChange = (newPref: 'auto' | 'deterministic' | 'llm') => {
+    setProviderPreference(newPref);
+    if (!result) return;
+    const key = getCohortKey(result, newPref);
+
+    if (interpretationCache[key]) {
+      setInterpretation(interpretationCache[key]);
+      setInterpError(null);
+    } else {
+      fetchInterpretation(newPref, false);
+    }
+  };
+
+  useEffect(() => {
+    if (result) {
+      const key = getCohortKey(result, providerPreference);
+      if (interpretationCache[key]) {
+        setInterpretation(interpretationCache[key]);
+      } else {
+        fetchInterpretation(providerPreference, false);
+      }
+    } else {
+      setInterpretation(null);
+    }
+  }, [result?.n_cells, result?.execution_time_ms]);
+
   if (!result) return null;
 
   const bands = result.percentile_bands;
@@ -160,6 +256,18 @@ export const PopulationResults: React.FC<Props> = ({ result }) => {
 
       {/* Percentile Trajectory Visualizer */}
       {bands && <PopulationPercentileChart bands={bands} />}
+
+      {/* Milestone 6: Scientific Cohort Interpretation Memorandum */}
+      <InterpretationPlate
+        type="cohort"
+        interpretation={interpretation}
+        isLoading={interpLoading}
+        error={interpError}
+        onRefresh={(pref) => fetchInterpretation(pref, true)}
+        providerPreference={providerPreference}
+        onProviderPreferenceChange={handleProviderPreferenceChange}
+        hasUnverifiedCompounds={false}
+      />
     </div>
   );
 };

@@ -13,6 +13,7 @@ export default defineConfig({
       '/models': 'http://127.0.0.1:8000',
       '/health': 'http://127.0.0.1:8000',
       '/simulations': 'http://127.0.0.1:8000',
+      '/interpret': 'http://127.0.0.1:8000',
     },
   },
   test: {

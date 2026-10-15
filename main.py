@@ -6,6 +6,10 @@ Exposes the FastAPI application instance for ASGI servers (e.g. uvicorn main:app
 
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment configuration from .env if present
+load_dotenv()
 
 # Ensure src/ is on sys.path for direct execution
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))

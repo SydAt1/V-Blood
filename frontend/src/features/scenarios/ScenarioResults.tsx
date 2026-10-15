@@ -1,7 +1,9 @@
-import React from 'react';
-import type { ScenarioRunResponse } from '../../types/api';
+import React, { useState, useEffect } from 'react';
+import type { PlaygroundInterpretationResponse, ScenarioRunResponse } from '../../types/api';
 import { TimeSeriesChart } from '../../components/TimeSeriesChart';
 import { AlertBox } from '../../components/AlertBox';
+import { InterpretationPlate } from '../../components/InterpretationPlate';
+import { interpretPlayground } from '../../api/client';
 import { FileJson, FileSpreadsheet, Film, ShieldAlert } from 'lucide-react';
 
 interface Props {
@@ -15,6 +17,90 @@ export const ScenarioResults: React.FC<Props> = ({
   controlResult,
   onOpenPlayback,
 }) => {
+  const [interpretation, setInterpretation] = useState<PlaygroundInterpretationResponse | null>(null);
+  const [interpLoading, setInterpLoading] = useState<boolean>(false);
+  const [interpError, setInterpError] = useState<string | null>(null);
+  const [providerPreference, setProviderPreference] = useState<'auto' | 'deterministic' | 'llm'>('auto');
+  const [interpretationCache, setInterpretationCache] = useState<Record<string, PlaygroundInterpretationResponse>>({});
+
+  const getCacheKey = (runId: string, pref: string) => `${runId}:${pref}`;
+
+  const fetchInterpretation = async (
+    pref: 'auto' | 'deterministic' | 'llm',
+    forceRefresh: boolean = false
+  ) => {
+    if (!treatmentResult) return;
+    const runId = treatmentResult.run_id;
+    const key = getCacheKey(runId, pref);
+
+    // If cached and not explicitly forcing refresh, restore instantly with zero network
+    if (!forceRefresh && interpretationCache[key]) {
+      setInterpretation(interpretationCache[key]);
+      setInterpLoading(false);
+      setInterpError(null);
+      return;
+    }
+
+    setInterpLoading(true);
+    setInterpError(null);
+
+    try {
+      const resp = await interpretPlayground({
+        scenario_request: treatmentResult.scenario_request,
+        scenario_result: treatmentResult,
+        control_result: controlResult || undefined,
+        provider_preference: pref,
+        force_refresh: forceRefresh,
+      });
+
+      setInterpretationCache((prev) => {
+        const next = { ...prev, [key]: resp };
+        if (pref === 'auto') {
+          const effectiveMode = resp.provider_used.includes('external-llm') ? 'llm' : 'deterministic';
+          next[getCacheKey(runId, effectiveMode)] = resp;
+        } else if (pref === 'llm' && !resp.fallback_applied) {
+          next[getCacheKey(runId, 'auto')] = resp;
+        }
+        return next;
+      });
+
+      setInterpretation(resp);
+    } catch (err: any) {
+      setInterpError(err.detail || err.message || 'Interpretation request failed.');
+    } finally {
+      setInterpLoading(false);
+    }
+  };
+
+  const handleProviderPreferenceChange = (newPref: 'auto' | 'deterministic' | 'llm') => {
+    setProviderPreference(newPref);
+    if (!treatmentResult) return;
+    const runId = treatmentResult.run_id;
+    const key = getCacheKey(runId, newPref);
+
+    if (interpretationCache[key]) {
+      // Instant switch without wiping text or loading
+      setInterpretation(interpretationCache[key]);
+      setInterpError(null);
+    } else {
+      fetchInterpretation(newPref, false);
+    }
+  };
+
+  useEffect(() => {
+    if (treatmentResult) {
+      const runId = treatmentResult.run_id;
+      const key = getCacheKey(runId, providerPreference);
+      if (interpretationCache[key]) {
+        setInterpretation(interpretationCache[key]);
+      } else {
+        fetchInterpretation(providerPreference, false);
+      }
+    } else {
+      setInterpretation(null);
+    }
+  }, [treatmentResult?.run_id]);
+
   if (!treatmentResult) return null;
 
   const m = treatmentResult.derived_metrics;
@@ -236,6 +322,18 @@ export const ScenarioResults: React.FC<Props> = ({
           </ul>
         </div>
       )}
+
+      {/* Milestone 6: Scientific Interpretation Memorandum */}
+      <InterpretationPlate
+        type="playground"
+        interpretation={interpretation}
+        isLoading={interpLoading}
+        error={interpError}
+        onRefresh={(pref) => fetchInterpretation(pref, true)}
+        providerPreference={providerPreference}
+        onProviderPreferenceChange={handleProviderPreferenceChange}
+        hasUnverifiedCompounds={treatmentResult.has_unverified_compounds}
+      />
     </div>
   );
 };

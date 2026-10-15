@@ -185,3 +185,67 @@ export interface StoredRunRecord {
   result?: ScenarioRunResponse;
   populationResult?: PopulationResult;
 }
+
+// =========================================================================
+// Milestone 6: Scientific Interpretation Interfaces
+// =========================================================================
+
+export interface GroundingEvaluation {
+  passed: boolean;
+  checked_metrics: Record<string, any>;
+  disclaimers_present: boolean;
+  unverified_compound_warning_present: boolean;
+  flags: string[];
+}
+
+export interface PlaygroundInterpretationRequest {
+  scenario_request: ScenarioRequest;
+  scenario_result: any;
+  control_result?: any;
+  provider_preference?: 'auto' | 'deterministic' | 'llm';
+  force_refresh?: boolean;
+}
+
+export interface PlaygroundInterpretationResponse {
+  executive_summary: string;
+  nadir_analysis: string;
+  pathway_flux_breakdown: string;
+  control_comparison: string;
+  uncertainty_and_limitations: string;
+  suggested_experiments: string[];
+  provider_used: string;
+  fallback_applied: boolean;
+  fallback_reason?: string | null;
+  grounding?: GroundingEvaluation | null;
+  generated_at_utc: string;
+}
+
+export interface CohortInterpretationRequest {
+  population_request: PopulationRequest;
+  population_result: any;
+  provider_preference?: 'auto' | 'deterministic' | 'llm';
+  force_refresh?: boolean;
+}
+
+export interface CohortInterpretationResponse {
+  executive_summary: string;
+  tail_risk_analysis: string;
+  g6pd_interaction_analysis: string;
+  lysis_risk_evaluation: string;
+  uncertainty_and_limitations: string;
+  suggested_experiments: string[];
+  provider_used: string;
+  fallback_applied: boolean;
+  fallback_reason?: string | null;
+  grounding?: GroundingEvaluation | null;
+  generated_at_utc: string;
+}
+
+export interface InterpretationStatusResponse {
+  providers_available: string[];
+  default_provider: string;
+  llm_configured: boolean;
+  llm_model?: string | null;
+  guardrails_active: boolean;
+  unmodeled_physics_declared: string[];
+}
