@@ -16,33 +16,44 @@ export const AlertBox: React.FC<Props> = ({
 }) => {
   const styles = {
     warning: {
-      bg: 'bg-amber-950/40 border-amber-800 text-amber-200',
-      icon: <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />,
-      titleColor: 'text-amber-300',
+      container: 'bg-[#F9F4EB] border-[#D6C4A5] text-[#543815]',
+      icon: <AlertTriangle className="w-4 h-4 text-[#8C5A20] shrink-0 mt-0.5" />,
+      titleColor: 'text-[#6C4412]',
+      tag: 'CAUTION // PARAMETRIC ADVISORY',
     },
     error: {
-      bg: 'bg-rose-950/40 border-rose-800 text-rose-200',
-      icon: <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />,
-      titleColor: 'text-rose-300',
+      container: 'bg-[#F9ECEB] border-[#DCB0AC] text-[#6B201A]',
+      icon: <AlertCircle className="w-4 h-4 text-[#9B332B] shrink-0 mt-0.5" />,
+      titleColor: 'text-[#7D221C]',
+      tag: 'ERROR // VALIDATION EXCEPTION',
     },
     info: {
-      bg: 'bg-blue-950/30 border-blue-800 text-blue-200',
-      icon: <Info className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />,
-      titleColor: 'text-blue-300',
+      container: 'bg-[#EFF4F7] border-[#BCD0DC] text-[#224458]',
+      icon: <Info className="w-4 h-4 text-[#2E5875] shrink-0 mt-0.5" />,
+      titleColor: 'text-[#244B64]',
+      tag: 'NOTE // SYSTEM STATE',
     },
     disclaimer: {
-      bg: 'bg-slate-900 border-slate-700 text-slate-300',
-      icon: <ShieldAlert className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />,
-      titleColor: 'text-slate-200',
+      container: 'bg-[#F2ECE1] border-[#C9BFAD] text-[#3A3F3A]',
+      icon: <ShieldAlert className="w-4 h-4 text-[#5F675E] shrink-0 mt-0.5" />,
+      titleColor: 'text-[#1F221F]',
+      tag: 'PROTOCOL // RESEARCH BOUNDARY',
     },
   }[type];
 
   return (
-    <div className={`border rounded-lg p-3.5 flex gap-3 text-sm leading-relaxed ${styles.bg} ${className}`}>
+    <div
+      className={`border rounded-none p-3.5 flex gap-3 text-xs leading-relaxed shadow-[1px_1px_0px_0px_rgba(24,27,24,0.06)] ${styles.container} ${className}`}
+    >
       {styles.icon}
       <div className="flex-1 space-y-1">
-        {title && <div className={`font-semibold ${styles.titleColor}`}>{title}</div>}
-        <div className="text-xs leading-normal opacity-90">{children}</div>
+        <div className="flex items-center justify-between gap-2">
+          {title && <span className={`font-semibold tracking-tight text-xs ${styles.titleColor}`}>{title}</span>}
+          <span className="font-mono text-[9px] uppercase tracking-wider text-[#757D74] opacity-80">
+            {styles.tag}
+          </span>
+        </div>
+        <div className="text-[11.5px] leading-relaxed opacity-95">{children}</div>
       </div>
     </div>
   );

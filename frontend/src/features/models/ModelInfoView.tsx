@@ -13,15 +13,22 @@ export const ModelInfoView: React.FC<Props> = ({ models, loading = false, error 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-slate-800 pb-3">
-        <h1 className="text-xl font-bold text-slate-100 tracking-tight">Registered Biological Models & Evidence</h1>
-        <p className="text-xs text-slate-400 mt-1">
+      <div className="border-b border-[#D8D1C2] pb-4">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] text-[#767D75] uppercase tracking-wider">
+            REGISTRY //
+          </span>
+          <h1 className="font-editorial text-2xl font-bold text-[#181B18] tracking-tight">
+            Registered Biological Models & Evidence
+          </h1>
+        </div>
+        <p className="text-xs text-[#666E65] mt-1 font-sans">
           Mechanistic ODE model specifications, parameter evidence grading, and biological boundaries.
         </p>
       </div>
 
       {loading && models.length === 0 && (
-        <div className="text-xs text-slate-400 py-6 text-center">
+        <div className="text-xs text-[#767D75] py-8 text-center font-mono border border-dashed border-[#D8D1C2] bg-[#FAF7F2]">
           Loading registered biological models from API...
         </div>
       )}
@@ -35,7 +42,7 @@ export const ModelInfoView: React.FC<Props> = ({ models, loading = false, error 
             V-Blood simulates the cytosolic glutathione redox cycle and pentose phosphate pathway in human erythrocytes.
             Researchers must be mindful of the following explicit model boundaries:
           </p>
-          <ul className="list-disc list-inside space-y-1 text-slate-400">
+          <ul className="list-disc list-inside space-y-1 text-[#484E48] font-sans">
             <li>
               <strong>No Glycolysis or ATP Generation:</strong> Glycolytic ATP turnover is not simulated; glucose-6-phosphate
               influx into the PPP is represented via saturating Michaelis-Menten kinetics.
@@ -52,49 +59,53 @@ export const ModelInfoView: React.FC<Props> = ({ models, loading = false, error 
         </div>
       </AlertBox>
 
-      {/* Models Grid */}
-      <div className="grid grid-cols-1 gap-6">
+      {/* Models Grid / Dossiers */}
+      <div className="space-y-6">
         {models.map((m) => {
           return (
-            <div key={m.model_id} className="bg-slate-900/90 rounded-xl border border-slate-800 p-6 space-y-5 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div
+              key={m.model_id}
+              className="bg-[#FFFFFF] border border-[#D8D1C2] p-6 space-y-5 shadow-[2px_2px_0px_0px_rgba(24,27,24,0.08)]"
+            >
+              {/* Dossier Header */}
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8D1C2] pb-4">
                 <div>
                   <div className="flex items-center gap-3">
-                    <h2 className="text-base font-bold text-slate-100">{m.name}</h2>
-                    <span className="text-xs font-mono bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700">
+                    <h2 className="font-editorial text-xl font-bold text-[#181B18]">{m.name}</h2>
+                    <span className="font-mono text-[10px] bg-[#FAF7F2] text-[#181B18] px-2 py-0.5 border border-[#B5AC99] font-bold">
                       v{m.version}
                     </span>
                   </div>
-                  <p className="text-xs font-mono text-slate-400 mt-0.5">Model ID: {m.model_id}</p>
+                  <p className="text-xs font-mono text-[#666E65] mt-0.5">SPECIFICATION ID: {m.model_id}</p>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs">
-                  <span className="text-slate-400 font-mono">Compartment:</span>
-                  <span className="text-slate-200 font-semibold bg-slate-950 px-2.5 py-1 rounded border border-slate-800">
+                <div className="flex items-center gap-2 text-xs font-mono">
+                  <span className="text-[#767D75]">COMPARTMENT:</span>
+                  <span className="text-[#181B18] font-bold bg-[#FAF7F2] px-2.5 py-1 border border-[#B5AC99]">
                     {m.compartment}
                   </span>
                 </div>
               </div>
 
-              {/* Description */}
-              <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-lg border border-slate-800/80">
+              {/* Description in editorial text */}
+              <p className="text-xs text-[#383E38] leading-relaxed bg-[#FAF8F3] p-3.5 border border-[#EDE8DE] font-serif">
                 {m.description}
               </p>
 
               {/* State Variables Table */}
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-blue-400" />
+                <h3 className="text-[10px] font-mono uppercase tracking-wider text-[#767D75] flex items-center gap-1.5">
+                  <Database className="w-3.5 h-3.5 text-[#2E5875]" />
                   <span>State Variables ({m.state_variables.length})</span>
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-xs">
                   {m.state_variables.map((varName, idx) => (
                     <div
                       key={varName}
-                      className="bg-slate-950 p-2.5 rounded-lg border border-slate-800 flex flex-col justify-between"
+                      className="bg-[#FAF7F2] p-2.5 border border-[#EDE8DE] flex flex-col justify-between"
                     >
-                      <span className="font-mono font-semibold text-slate-200">{varName}</span>
-                      <span className="text-[11px] text-slate-500 font-mono mt-1">
+                      <span className="font-mono font-bold text-[#181B18]">{varName}</span>
+                      <span className="text-[10.5px] text-[#767D75] font-mono mt-1">
                         {m.state_variable_units[idx] || 'dimensionless'}
                       </span>
                     </div>
@@ -102,31 +113,31 @@ export const ModelInfoView: React.FC<Props> = ({ models, loading = false, error 
                 </div>
               </div>
 
-              {/* Parameter Evidence Breakdown */}
+              {/* Parameter Evidence Provenance Breakdown */}
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                <h3 className="text-[10px] font-mono uppercase tracking-wider text-[#767D75] flex items-center gap-1.5">
+                  <CheckCircle className="w-3.5 h-3.5 text-[#435E4B]" />
                   <span>Parameter Provenance Breakdown ({m.parameter_count} total parameters)</span>
                 </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="bg-emerald-950/30 border border-emerald-800/80 p-3 rounded-lg flex items-center justify-between">
-                    <span className="text-xs text-emerald-300 font-medium">Curated Parameters:</span>
-                    <span className="font-mono font-bold text-emerald-400 text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono">
+                  <div className="bg-[#EDF3EE] border border-[#BCD0C1] p-3 flex items-center justify-between">
+                    <span className="text-xs text-[#284431] font-semibold">Curated Parameters:</span>
+                    <span className="font-bold text-[#286345] text-base">
                       {m.evidence_status_summary['curated'] || 0}
                     </span>
                   </div>
 
-                  <div className="bg-amber-950/30 border border-amber-800/80 p-3 rounded-lg flex items-center justify-between">
-                    <span className="text-xs text-amber-300 font-medium">Estimated Parameters:</span>
-                    <span className="font-mono font-bold text-amber-400 text-sm">
+                  <div className="bg-[#F8F2E8] border border-[#E2CEB1] p-3 flex items-center justify-between">
+                    <span className="text-xs text-[#5C3911] font-semibold">Estimated Parameters:</span>
+                    <span className="font-bold text-[#8E5A1E] text-base">
                       {m.evidence_status_summary['estimated'] || 0}
                     </span>
                   </div>
 
-                  <div className="bg-rose-950/30 border border-rose-800/80 p-3 rounded-lg flex items-center justify-between">
-                    <span className="text-xs text-rose-300 font-medium">Unverified Parameters:</span>
-                    <span className="font-mono font-bold text-rose-400 text-sm">
+                  <div className="bg-[#F9ECEB] border border-[#DCB0AC] p-3 flex items-center justify-between">
+                    <span className="text-xs text-[#7D221C] font-semibold">Unverified Parameters:</span>
+                    <span className="font-bold text-[#9B332B] text-base">
                       {m.evidence_status_summary['unverified'] || 0}
                     </span>
                   </div>
@@ -135,11 +146,11 @@ export const ModelInfoView: React.FC<Props> = ({ models, loading = false, error 
 
               {/* Literature Citations */}
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-purple-400" />
+                <h3 className="text-[10px] font-mono uppercase tracking-wider text-[#767D75] flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-[#4B466D]" />
                   <span>Literature Sources & Citations</span>
                 </h3>
-                <ul className="text-xs text-slate-400 space-y-1 list-disc list-inside bg-slate-950/60 p-3 rounded-lg border border-slate-800/80 font-serif leading-relaxed">
+                <ul className="text-xs text-[#484E48] space-y-1 list-disc list-inside bg-[#FAF8F3] p-3.5 border border-[#EDE8DE] font-serif leading-relaxed">
                   {m.literature_sources.map((cit, idx) => (
                     <li key={idx}>{cit}</li>
                   ))}

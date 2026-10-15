@@ -12,69 +12,69 @@ type SelectedMetric = 'gsh' | 'damage' | 'nadph';
 export const PopulationPercentileChart: React.FC<Props> = ({
   bands,
   title = 'Simulated Population Cohort Distribution Over Time',
-  height = 340,
+  height = 360,
 }) => {
   const [metric, setMetric] = useState<SelectedMetric>('gsh');
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
-  const timePoints = bands.time_points_s || [];
+  const timePoints = bands?.time_points_s || [];
   const maxTime_s = timePoints[timePoints.length - 1] || 1;
 
-  // Extract selected bands
+  // Extract selected bands safely
   const { p5, p25, p50, p75, p95, label, unit, color } = useMemo(() => {
     switch (metric) {
       case 'damage':
         return {
-          p5: bands.damage_p5,
-          p25: bands.damage_p25,
-          p50: bands.damage_p50,
-          p75: bands.damage_p75,
-          p95: bands.damage_p95,
+          p5: bands?.damage_p5 || [],
+          p25: bands?.damage_p25 || [],
+          p50: bands?.damage_p50 || [],
+          p75: bands?.damage_p75 || [],
+          p95: bands?.damage_p95 || [],
           label: 'Cumulative Damage Index [D]',
           unit: '[0, 1]',
-          color: '#f43f5e',
+          color: '#9B332B', // Oxidized crimson
         };
       case 'nadph':
         return {
-          p5: bands.nadph_p5,
-          p25: bands.nadph_p25,
-          p50: bands.nadph_p50,
-          p75: bands.nadph_p75,
-          p95: bands.nadph_p95,
+          p5: bands?.nadph_p5 || [],
+          p25: bands?.nadph_p25 || [],
+          p50: bands?.nadph_p50 || [],
+          p75: bands?.nadph_p75 || [],
+          p95: bands?.nadph_p95 || [],
           label: 'Intracellular [NADPH]',
           unit: 'mM',
-          color: '#a855f7',
+          color: '#4B466D', // Slate indigo
         };
       case 'gsh':
       default:
         return {
-          p5: bands.gsh_p5,
-          p25: bands.gsh_p25,
-          p50: bands.gsh_p50,
-          p75: bands.gsh_p75,
-          p95: bands.gsh_p95,
+          p5: bands?.gsh_p5 || [],
+          p25: bands?.gsh_p25 || [],
+          p50: bands?.gsh_p50 || [],
+          p75: bands?.gsh_p75 || [],
+          p95: bands?.gsh_p95 || [],
           label: 'Reduced Glutathione [GSH]',
           unit: 'mM',
-          color: '#10b981',
+          color: '#286345', // Deep physiological sage
         };
     }
   }, [bands, metric]);
 
-  // Compute Y bounds
+  // Compute Y bounds safely
   const { minY, maxY } = useMemo(() => {
     let min = 0;
     let max = 0.05;
-    p95.forEach((v) => {
-      if (v > max) max = v;
+    (p95 || []).forEach((v) => {
+      if (typeof v === 'number' && v > max) max = v;
     });
-    p5.forEach((v) => {
-      if (v < min) min = v;
+    (p5 || []).forEach((v) => {
+      if (typeof v === 'number' && v < min) min = v;
     });
     return { minY: min, maxY: max * 1.05 };
   }, [p5, p95]);
 
-  const width = 800;
-  const padding = { top: 25, right: 30, bottom: 45, left: 60 };
+  const width = 860;
+  const padding = { top: 25, right: 35, bottom: 45, left: 65 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
 
@@ -84,78 +84,91 @@ export const PopulationPercentileChart: React.FC<Props> = ({
 
   // Build area polygons
   const outerAreaPath = useMemo(() => {
-    if (timePoints.length === 0) return '';
-    const upper = timePoints.map((t, i) => `${scaleX(t).toFixed(1)},${scaleY(p95[i]).toFixed(1)}`).join(' ');
+    if (!timePoints || timePoints.length === 0 || !p95 || !p5) return '';
+    const upper = timePoints.map((t, i) => `${scaleX(t).toFixed(1)},${scaleY(p95[i] || 0).toFixed(1)}`).join(' ');
     const lower = timePoints
       .slice()
       .reverse()
       .map((t, i) => {
         const revIdx = timePoints.length - 1 - i;
-        return `${scaleX(t).toFixed(1)},${scaleY(p5[revIdx]).toFixed(1)}`;
+        return `${scaleX(t).toFixed(1)},${scaleY(p5[revIdx] || 0).toFixed(1)}`;
       })
       .join(' ');
     return `M ${upper} L ${lower} Z`;
   }, [timePoints, p5, p95, maxY, minY]);
 
   const innerAreaPath = useMemo(() => {
-    if (timePoints.length === 0) return '';
-    const upper = timePoints.map((t, i) => `${scaleX(t).toFixed(1)},${scaleY(p75[i]).toFixed(1)}`).join(' ');
+    if (!timePoints || timePoints.length === 0 || !p75 || !p25) return '';
+    const upper = timePoints.map((t, i) => `${scaleX(t).toFixed(1)},${scaleY(p75[i] || 0).toFixed(1)}`).join(' ');
     const lower = timePoints
       .slice()
       .reverse()
       .map((t, i) => {
         const revIdx = timePoints.length - 1 - i;
-        return `${scaleX(t).toFixed(1)},${scaleY(p25[revIdx]).toFixed(1)}`;
+        return `${scaleX(t).toFixed(1)},${scaleY(p25[revIdx] || 0).toFixed(1)}`;
       })
       .join(' ');
     return `M ${upper} L ${lower} Z`;
   }, [timePoints, p25, p75, maxY, minY]);
 
   const medianPath = useMemo(() => {
-    if (timePoints.length === 0) return '';
+    if (!timePoints || timePoints.length === 0 || !p50) return '';
     return timePoints.reduce((acc, t, i) => {
       const x = scaleX(t).toFixed(1);
-      const y = scaleY(p50[i]).toFixed(1);
+      const y = scaleY(p50[i] || 0).toFixed(1);
       return i === 0 ? `M ${x} ${y}` : `${acc} L ${x} ${y}`;
     }, '');
   }, [timePoints, p50, maxY, minY]);
 
   // Hover state
-  const hoveredTime = hoverIndex !== null ? timePoints[hoverIndex] : null;
+  const hoveredTime = hoverIndex !== null && timePoints ? timePoints[hoverIndex] : null;
 
   return (
-    <div className="space-y-3 bg-slate-900/90 rounded-lg border border-slate-800 p-4">
+    <div className="space-y-3 bg-[#FFFFFF] border border-[#D8D1C2] p-4 shadow-[2px_2px_0px_0px_rgba(24,27,24,0.08)]">
       {/* Header & Metric Switcher */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8D1C2] pb-3">
         <div>
-          <h3 className="text-sm font-semibold text-slate-200">{title}</h3>
-          <p className="text-xs text-slate-400">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#767D75]">
+              COHORT SPREAD //
+            </span>
+            <h3 className="font-editorial text-base font-bold text-[#181B18] tracking-tight">
+              {title}
+            </h3>
+          </div>
+          <p className="text-xs text-[#666E65] font-sans mt-0.5">
             Median trajectory (p50) with interquartile band (p25–p75) and 90% simulated cohort envelope (p5–p95).
           </p>
         </div>
 
-        {/* Variable Switcher */}
-        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
+        {/* Variable Channel Switcher */}
+        <div className="flex items-center gap-1.5 bg-[#FAF7F2] p-1 border border-[#D8D1C2]">
           <button
             onClick={() => setMetric('gsh')}
-            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-              metric === 'gsh' ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1 text-xs font-mono transition-colors border ${
+              metric === 'gsh'
+                ? 'bg-[#FFFFFF] text-[#286345] border-[#286345] font-bold shadow-[1px_1px_0px_0px_rgba(24,27,24,0.08)]'
+                : 'bg-transparent border-transparent text-[#666E65] hover:text-[#181B18]'
             }`}
           >
             Glutathione [GSH]
           </button>
           <button
             onClick={() => setMetric('damage')}
-            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-              metric === 'damage' ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1 text-xs font-mono transition-colors border ${
+              metric === 'damage'
+                ? 'bg-[#FFFFFF] text-[#9B332B] border-[#9B332B] font-bold shadow-[1px_1px_0px_0px_rgba(24,27,24,0.08)]'
+                : 'bg-transparent border-transparent text-[#666E65] hover:text-[#181B18]'
             }`}
           >
             Damage Proxy [D]
           </button>
           <button
             onClick={() => setMetric('nadph')}
-            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-              metric === 'nadph' ? 'bg-purple-950 text-purple-300 border border-purple-800' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1 text-xs font-mono transition-colors border ${
+              metric === 'nadph'
+                ? 'bg-[#FFFFFF] text-[#4B466D] border-[#4B466D] font-bold shadow-[1px_1px_0px_0px_rgba(24,27,24,0.08)]'
+                : 'bg-transparent border-transparent text-[#666E65] hover:text-[#181B18]'
             }`}
           >
             NADPH Pool
@@ -164,7 +177,7 @@ export const PopulationPercentileChart: React.FC<Props> = ({
       </div>
 
       {/* SVG Container */}
-      <div className="relative">
+      <div className="relative bg-[#FCFBF9] border border-[#EDE8DE]">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="w-full h-auto overflow-visible select-none"
@@ -185,6 +198,17 @@ export const PopulationPercentileChart: React.FC<Props> = ({
             }
           }}
         >
+          {/* Plot Background Tint */}
+          <rect
+            x={padding.left}
+            y={padding.top}
+            width={plotWidth}
+            height={plotHeight}
+            fill="#FAF8F3"
+            stroke="#D8D1C2"
+            strokeWidth="1"
+          />
+
           {/* Y-Axis Gridlines */}
           {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
             const val = minY + ratio * (maxY - minY);
@@ -196,17 +220,17 @@ export const PopulationPercentileChart: React.FC<Props> = ({
                   y1={y}
                   x2={padding.left + plotWidth}
                   y2={y}
-                  stroke="#1e293b"
+                  stroke="#E8E2D5"
                   strokeWidth="1"
-                  strokeDasharray="4 4"
+                  strokeDasharray="2 2"
                 />
                 <text
                   x={padding.left - 8}
                   y={y + 3.5}
                   textAnchor="end"
-                  fill="#64748b"
-                  fontSize="10"
-                  fontFamily="monospace"
+                  fill="#767D75"
+                  fontSize="9.5"
+                  fontFamily="'JetBrains Mono', monospace"
                 >
                   {val >= 1 ? val.toFixed(1) : val.toFixed(3)}
                 </text>
@@ -225,17 +249,17 @@ export const PopulationPercentileChart: React.FC<Props> = ({
                   y1={padding.top}
                   x2={x}
                   y2={padding.top + plotHeight}
-                  stroke="#1e293b"
+                  stroke="#E8E2D5"
                   strokeWidth="1"
-                  strokeDasharray="4 4"
+                  strokeDasharray="2 2"
                 />
                 <text
                   x={x}
-                  y={padding.top + plotHeight + 18}
+                  y={padding.top + plotHeight + 16}
                   textAnchor="middle"
-                  fill="#64748b"
-                  fontSize="10"
-                  fontFamily="monospace"
+                  fill="#767D75"
+                  fontSize="9.5"
+                  fontFamily="'JetBrains Mono', monospace"
                 >
                   {(t / 60).toFixed(0)}m
                 </text>
@@ -248,11 +272,13 @@ export const PopulationPercentileChart: React.FC<Props> = ({
             x={padding.left + plotWidth / 2}
             y={height - 8}
             textAnchor="middle"
-            fill="#94a3b8"
-            fontSize="11"
-            fontWeight="500"
+            fill="#484E48"
+            fontSize="10"
+            fontFamily="'Plus Jakarta Sans', sans-serif"
+            fontWeight="600"
+            letterSpacing="0.02em"
           >
-            Simulation Elapsed Time (minutes)
+            SIMULATION ELAPSED TIME (MINUTES)
           </text>
 
           <text
@@ -260,66 +286,68 @@ export const PopulationPercentileChart: React.FC<Props> = ({
             x={-(padding.top + plotHeight / 2)}
             y={16}
             textAnchor="middle"
-            fill="#94a3b8"
-            fontSize="11"
-            fontWeight="500"
+            fill="#484E48"
+            fontSize="10"
+            fontFamily="'Plus Jakarta Sans', sans-serif"
+            fontWeight="600"
+            letterSpacing="0.02em"
           >
-            {label} ({unit})
+            {label.toUpperCase()} ({unit})
           </text>
 
           {/* Shaded Outer Percentile Interval: p5 to p95 */}
-          <path d={outerAreaPath} fill={color} fillOpacity="0.12" />
+          <path d={outerAreaPath} fill={color} fillOpacity="0.10" />
 
           {/* Shaded Interquartile Interval: p25 to p75 */}
-          <path d={innerAreaPath} fill={color} fillOpacity="0.25" />
+          <path d={innerAreaPath} fill={color} fillOpacity="0.22" />
 
           {/* Median Trajectory: p50 */}
           <path d={medianPath} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
 
           {/* Boundary stroke for p5 and p95 */}
-          {timePoints.length > 0 && (
+          {timePoints.length > 0 && p95 && p5 && (
             <>
               <path
                 d={timePoints
-                  .map((t, i) => `${i === 0 ? 'M' : 'L'} ${scaleX(t).toFixed(1)} ${scaleY(p95[i]).toFixed(1)}`)
+                  .map((t, i) => `${i === 0 ? 'M' : 'L'} ${scaleX(t).toFixed(1)} ${scaleY(p95[i] || 0).toFixed(1)}`)
                   .join(' ')}
                 fill="none"
                 stroke={color}
                 strokeWidth="1"
-                strokeDasharray="3 3"
-                opacity="0.4"
+                strokeDasharray="3 2"
+                opacity="0.45"
               />
               <path
                 d={timePoints
-                  .map((t, i) => `${i === 0 ? 'M' : 'L'} ${scaleX(t).toFixed(1)} ${scaleY(p5[i]).toFixed(1)}`)
+                  .map((t, i) => `${i === 0 ? 'M' : 'L'} ${scaleX(t).toFixed(1)} ${scaleY(p5[i] || 0).toFixed(1)}`)
                   .join(' ')}
                 fill="none"
                 stroke={color}
                 strokeWidth="1"
-                strokeDasharray="3 3"
-                opacity="0.4"
+                strokeDasharray="3 2"
+                opacity="0.45"
               />
             </>
           )}
 
-          {/* Hover Crosshair & Points */}
-          {hoverIndex !== null && hoveredTime !== null && (
+          {/* Hover Crosshair & Data Dot */}
+          {hoverIndex !== null && hoveredTime !== null && p50 && (
             <g>
               <line
                 x1={scaleX(hoveredTime)}
                 y1={padding.top}
                 x2={scaleX(hoveredTime)}
                 y2={padding.top + plotHeight}
-                stroke="#cbd5e1"
-                strokeWidth="1.2"
-                strokeDasharray="3 3"
+                stroke="#181B18"
+                strokeWidth="1"
+                strokeDasharray="3 2"
               />
               <circle
                 cx={scaleX(hoveredTime)}
-                cy={scaleY(p50[hoverIndex])}
-                r="4.5"
+                cy={scaleY(p50[hoverIndex] || 0)}
+                r="4"
                 fill={color}
-                stroke="#0f172a"
+                stroke="#FFFFFF"
                 strokeWidth="2"
               />
             </g>
@@ -327,56 +355,56 @@ export const PopulationPercentileChart: React.FC<Props> = ({
         </svg>
 
         {/* Hover Tooltip Box */}
-        {hoverIndex !== null && hoveredTime !== null && (
-          <div className="absolute top-3 right-3 bg-slate-950/95 border border-slate-700/80 rounded-md p-3 shadow-xl text-xs space-y-1.5 pointer-events-none min-w-[210px] backdrop-blur">
-            <div className="font-semibold text-slate-200 border-b border-slate-800 pb-1 flex justify-between">
+        {hoverIndex !== null && hoveredTime !== null && p50 && p95 && p75 && p25 && p5 && (
+          <div className="absolute top-3 right-3 bg-[#FFFFFF] border border-[#181B18] p-3 shadow-[3px_3px_0px_0px_rgba(24,27,24,0.15)] text-xs space-y-1.5 pointer-events-none min-w-[210px]">
+            <div className="font-mono text-[10px] text-[#484E48] border-b border-[#D8D1C2] pb-1 flex justify-between uppercase">
               <span>t = {(hoveredTime / 60).toFixed(1)} min</span>
-              <span className="font-mono text-slate-400">({hoveredTime.toFixed(0)}s)</span>
+              <span className="text-[#868E85]">({hoveredTime.toFixed(0)}s)</span>
             </div>
 
             <div className="space-y-1 font-mono text-[11px]">
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#767D75]">
                 <span>95th percentile:</span>
-                <span className="text-slate-200">{p95[hoverIndex].toFixed(3)} {unit}</span>
+                <span className="text-[#181B18]">{(p95[hoverIndex] || 0).toFixed(3)} {unit}</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#767D75]">
                 <span>75th percentile:</span>
-                <span className="text-slate-200">{p75[hoverIndex].toFixed(3)} {unit}</span>
+                <span className="text-[#181B18]">{(p75[hoverIndex] || 0).toFixed(3)} {unit}</span>
               </div>
-              <div className="flex justify-between text-emerald-300 font-bold">
+              <div className="flex justify-between font-bold" style={{ color }}>
                 <span>Median (p50):</span>
-                <span>{p50[hoverIndex].toFixed(3)} {unit}</span>
+                <span>{(p50[hoverIndex] || 0).toFixed(3)} {unit}</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#767D75]">
                 <span>25th percentile:</span>
-                <span className="text-slate-200">{p25[hoverIndex].toFixed(3)} {unit}</span>
+                <span className="text-[#181B18]">{(p25[hoverIndex] || 0).toFixed(3)} {unit}</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-[#767D75]">
                 <span>5th percentile:</span>
-                <span className="text-slate-200">{p5[hoverIndex].toFixed(3)} {unit}</span>
+                <span className="text-[#181B18]">{(p5[hoverIndex] || 0).toFixed(3)} {unit}</span>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Legend & Interpretation */}
-      <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-400 bg-slate-950/50 p-2.5 rounded border border-slate-800/80">
+      {/* Legend & Calibration Reference */}
+      <div className="flex flex-wrap items-center justify-between text-[10.5px] font-mono text-[#666E65] bg-[#FAF8F3] p-2.5 border border-[#EDE8DE]">
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
-            <span className="w-3 h-1 bg-current rounded-full" style={{ color }} />
-            <span>Median (p50)</span>
+            <span className="w-3 h-0.5 bg-current rounded-none" style={{ color }} />
+            <span className="font-semibold text-[#181B18]">Median (p50)</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded" style={{ backgroundColor: color, opacity: 0.25 }} />
-            <span>Interquartile range (p25–p75)</span>
+            <span className="w-3 h-2 border border-[#B5AC99]" style={{ backgroundColor: color, opacity: 0.22 }} />
+            <span>Interquartile (p25–p75)</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded" style={{ backgroundColor: color, opacity: 0.12 }} />
-            <span>90% Cohort interval (p5–p95)</span>
+            <span className="w-3 h-2 border border-[#B5AC99]" style={{ backgroundColor: color, opacity: 0.10 }} />
+            <span>90% Envelope (p5–p95)</span>
           </span>
         </div>
-        <span className="italic text-slate-500">
+        <span className="italic text-[#868E85]">
           Sampled over prior enzymatic heterogeneity (G6PD, GR, GPx capacities).
         </span>
       </div>

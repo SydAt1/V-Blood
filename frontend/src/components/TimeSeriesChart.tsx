@@ -4,17 +4,48 @@ import type { TrajectoryPoint } from '../types/api';
 export interface SeriesConfig {
   key: keyof TrajectoryPoint;
   label: string;
+  chemicalFormula: string;
   unit: string;
   color: string;
-  scale?: number; // Optional visual multiplier for trace readability
+  scale?: number;
 }
 
 const DEFAULT_SERIES: SeriesConfig[] = [
-  { key: 'gsh_mM', label: 'Reduced Glutathione [GSH]', unit: 'mM', color: '#10b981' },
-  { key: 'gssg_mM', label: 'Glutathione Disulfide [GSSG]', unit: 'mM', color: '#f59e0b' },
-  { key: 'nadph_mM', label: 'NADPH Pool [NADPH]', unit: 'mM', color: '#a855f7' },
-  { key: 'h2o2_mM', label: 'Intracellular [H₂O₂]', unit: 'mM', color: '#06b6d4' },
-  { key: 'damage', label: 'Oxidative Damage Index [D]', unit: '[0, 1]', color: '#f43f5e' },
+  {
+    key: 'gsh_mM',
+    label: 'Reduced Glutathione',
+    chemicalFormula: '[GSH]',
+    unit: 'mM',
+    color: '#286345', // Deep physiological sage
+  },
+  {
+    key: 'gssg_mM',
+    label: 'Glutathione Disulfide',
+    chemicalFormula: '[GSSG]',
+    unit: 'mM',
+    color: '#8F5C1E', // Oxidized amber
+  },
+  {
+    key: 'nadph_mM',
+    label: 'NADPH Cofactor Pool',
+    chemicalFormula: '[NADPH]',
+    unit: 'mM',
+    color: '#4B466D', // Slate indigo
+  },
+  {
+    key: 'h2o2_mM',
+    label: 'Hydrogen Peroxide',
+    chemicalFormula: '[H₂O₂]',
+    unit: 'mM',
+    color: '#2A5A6E', // Prussian steel
+  },
+  {
+    key: 'damage',
+    label: 'Oxidative Damage Index',
+    chemicalFormula: '[D]',
+    unit: '[0, 1]',
+    color: '#9B332B', // Oxidized crimson
+  },
 ];
 
 interface Props {
@@ -29,10 +60,10 @@ interface Props {
 export const TimeSeriesChart: React.FC<Props> = ({
   treatmentTrajectory = [],
   controlTrajectory = [],
-  treatmentLabel = 'Treated',
-  controlLabel = 'Control (Untreated Baseline)',
-  title = 'Intracellular Biochemical Dynamics',
-  height = 340,
+  treatmentLabel = 'Treatment Challenge',
+  controlLabel = 'Untreated Baseline Control',
+  title = 'Intracellular Biochemical Dynamics & Redox Kinetics',
+  height = 360,
 }) => {
   const [activeSeries, setActiveSeries] = useState<Record<string, boolean>>({
     gsh_mM: true,
@@ -84,8 +115,8 @@ export const TimeSeriesChart: React.FC<Props> = ({
     return { minY: min, maxY: max * 1.05 };
   }, [treatmentTrajectory, controlTrajectory, activeSeries]);
 
-  const width = 800;
-  const padding = { top: 25, right: 30, bottom: 45, left: 60 };
+  const width = 860;
+  const padding = { top: 25, right: 35, bottom: 45, left: 65 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
 
@@ -109,13 +140,16 @@ export const TimeSeriesChart: React.FC<Props> = ({
 
   if (!hasData) {
     return (
-      <div className="flex flex-col items-center justify-center h-80 rounded-lg border border-dashed border-slate-800 bg-slate-900/40 text-slate-400 p-8 text-center">
-        <div className="w-12 h-12 rounded-full bg-slate-800/80 flex items-center justify-center text-slate-500 mb-3 font-mono text-lg">
-          📈
+      <div className="flex flex-col items-center justify-center h-80 border border-dashed border-[#D8D1C2] bg-[#FAF7F2] text-[#767D75] p-8 text-center shadow-[1px_1px_0px_0px_rgba(24,27,24,0.04)]">
+        <div className="w-10 h-10 border border-[#B5AC99] bg-[#EDE8DE] flex items-center justify-center text-[#484E48] mb-3 font-mono text-sm">
+          FIG.1
         </div>
-        <div className="text-sm font-medium text-slate-300">No Simulation Trajectory Available</div>
-        <div className="text-xs text-slate-500 max-w-sm mt-1">
-          Configure chemical compounds, dosage profile, and model version above, then click "Run Simulation" to visualize intracellular dynamics.
+        <div className="font-editorial text-base font-bold text-[#181B18]">
+          Awaiting Numerical Trajectory Integration
+        </div>
+        <div className="text-xs text-[#666E65] max-w-md mt-1 leading-relaxed">
+          Select chemical compounds and exposure parameters in the scenario builder above, then click{' '}
+          <strong className="text-[#9B332B]">"Execute Simulation"</strong> to evaluate the ODE system.
         </div>
       </div>
     );
@@ -123,16 +157,29 @@ export const TimeSeriesChart: React.FC<Props> = ({
 
   // Hover position & values
   const hoveredPoint = hoverIndex !== null ? primaryTraj[hoverIndex] : null;
-  const hoveredControl = hoverIndex !== null && controlTrajectory.length > hoverIndex ? controlTrajectory[hoverIndex] : null;
+  const hoveredControl =
+    hoverIndex !== null && controlTrajectory.length > hoverIndex ? controlTrajectory[hoverIndex] : null;
 
   return (
-    <div className="space-y-3 bg-slate-900/90 rounded-lg border border-slate-800 p-4">
-      {/* Chart Header & Toggles */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+    <div className="space-y-3 bg-[#FFFFFF] border border-[#D8D1C2] p-4 shadow-[2px_2px_0px_0px_rgba(24,27,24,0.08)]">
+      {/* Chart Masthead & Calibrated Series Selector */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#D8D1C2] pb-3">
         <div>
-          <h3 className="text-sm font-semibold text-slate-200">{title}</h3>
-          <p className="text-xs text-slate-400">
-            Solid line = {treatmentLabel} {controlTrajectory.length > 0 && `• Dashed line = ${controlLabel}`}
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#767D75]">
+              INSTRUMENT READOUT //
+            </span>
+            <h3 className="font-editorial text-base font-bold text-[#181B18] tracking-tight">
+              {title}
+            </h3>
+          </div>
+          <p className="text-[11px] text-[#666E65] mt-0.5 font-mono">
+            Solid line = <span className="font-semibold text-[#181B18]">{treatmentLabel}</span>
+            {controlTrajectory.length > 0 && (
+              <>
+                {' '}• Dashed line = <span className="text-[#767D75]">{controlLabel}</span>
+              </>
+            )}
           </p>
         </div>
 
@@ -144,26 +191,26 @@ export const TimeSeriesChart: React.FC<Props> = ({
               <button
                 key={s.key as string}
                 onClick={() => toggleSeries(s.key as string)}
-                className={`px-2.5 py-1 rounded text-xs font-medium border flex items-center gap-1.5 transition-all ${
+                className={`px-2 py-1 text-xs font-mono transition-all border flex items-center gap-1.5 ${
                   active
-                    ? 'bg-slate-800 border-slate-600 text-slate-100 shadow-sm'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-500 hover:text-slate-400'
+                    ? 'bg-[#FAF7F2] border-[#181B18] text-[#181B18] font-semibold shadow-[1px_1px_0px_0px_rgba(24,27,24,0.1)]'
+                    : 'bg-[#FCFAF6] border-[#D8D1C2] text-[#868E85] hover:border-[#B5AC99] hover:text-[#484E48]'
                 }`}
                 title={`Toggle ${s.label} (${s.unit})`}
               >
                 <span
-                  className="w-2.5 h-2.5 rounded-full inline-block"
-                  style={{ backgroundColor: active ? s.color : '#475569' }}
+                  className="w-2 h-2 inline-block rounded-none"
+                  style={{ backgroundColor: active ? s.color : '#B5AC99' }}
                 />
-                <span>{s.label.split(' ')[0]}</span>
+                <span>{s.chemicalFormula}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* SVG Container */}
-      <div className="relative">
+      {/* SVG Plate Container */}
+      <div className="relative bg-[#FCFBF9] border border-[#EDE8DE]">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="w-full h-auto overflow-visible select-none"
@@ -184,6 +231,17 @@ export const TimeSeriesChart: React.FC<Props> = ({
             }
           }}
         >
+          {/* Plot Background Tint */}
+          <rect
+            x={padding.left}
+            y={padding.top}
+            width={plotWidth}
+            height={plotHeight}
+            fill="#FAF8F3"
+            stroke="#D8D1C2"
+            strokeWidth="1"
+          />
+
           {/* Y-Axis Gridlines & Ticks */}
           {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
             const val = minY + ratio * (maxY - minY);
@@ -195,17 +253,17 @@ export const TimeSeriesChart: React.FC<Props> = ({
                   y1={y}
                   x2={padding.left + plotWidth}
                   y2={y}
-                  stroke="#1e293b"
+                  stroke="#E8E2D5"
                   strokeWidth="1"
-                  strokeDasharray="4 4"
+                  strokeDasharray="2 2"
                 />
                 <text
                   x={padding.left - 8}
                   y={y + 3.5}
                   textAnchor="end"
-                  fill="#64748b"
-                  fontSize="10"
-                  fontFamily="monospace"
+                  fill="#767D75"
+                  fontSize="9.5"
+                  fontFamily="'JetBrains Mono', monospace"
                 >
                   {val >= 1 ? val.toFixed(1) : val.toExponential(1).replace('e-0', 'e-')}
                 </text>
@@ -225,17 +283,17 @@ export const TimeSeriesChart: React.FC<Props> = ({
                   y1={padding.top}
                   x2={x}
                   y2={padding.top + plotHeight}
-                  stroke="#1e293b"
+                  stroke="#E8E2D5"
                   strokeWidth="1"
-                  strokeDasharray="4 4"
+                  strokeDasharray="2 2"
                 />
                 <text
                   x={x}
-                  y={padding.top + plotHeight + 18}
+                  y={padding.top + plotHeight + 16}
                   textAnchor="middle"
-                  fill="#64748b"
-                  fontSize="10"
-                  fontFamily="monospace"
+                  fill="#767D75"
+                  fontSize="9.5"
+                  fontFamily="'JetBrains Mono', monospace"
                 >
                   {displayTime}
                 </text>
@@ -248,26 +306,30 @@ export const TimeSeriesChart: React.FC<Props> = ({
             x={padding.left + plotWidth / 2}
             y={height - 8}
             textAnchor="middle"
-            fill="#94a3b8"
-            fontSize="11"
-            fontWeight="500"
+            fill="#484E48"
+            fontSize="10"
+            fontFamily="'Plus Jakarta Sans', sans-serif"
+            fontWeight="600"
+            letterSpacing="0.02em"
           >
-            {timeUnit.label}
+            {timeUnit.label.toUpperCase()}
           </text>
 
           <text
-            transform={`rotate(-90)`}
+            transform="rotate(-90)"
             x={-(padding.top + plotHeight / 2)}
             y={16}
             textAnchor="middle"
-            fill="#94a3b8"
-            fontSize="11"
-            fontWeight="500"
+            fill="#484E48"
+            fontSize="10"
+            fontFamily="'Plus Jakarta Sans', sans-serif"
+            fontWeight="600"
+            letterSpacing="0.02em"
           >
-            Concentration (mM) / Damage Index
+            CONCENTRATION (mM) / DAMAGE INDEX [D]
           </text>
 
-          {/* Control Trajectory Paths (Dashed) */}
+          {/* Control Trajectory Paths (Subtle Charcoal Dashed) */}
           {controlTrajectory.length > 0 &&
             DEFAULT_SERIES.map((s) => {
               if (!activeSeries[s.key as string]) return null;
@@ -277,15 +339,15 @@ export const TimeSeriesChart: React.FC<Props> = ({
                   key={`ctrl-${s.key as string}`}
                   d={pathD}
                   fill="none"
-                  stroke={s.color}
+                  stroke="#7A8279"
                   strokeWidth="1.5"
-                  strokeDasharray="5 4"
-                  opacity="0.6"
+                  strokeDasharray="4 3"
+                  opacity="0.85"
                 />
               );
             })}
 
-          {/* Treatment Trajectory Paths (Solid) */}
+          {/* Treatment Trajectory Paths (Crisp Calibrated Series) */}
           {treatmentTrajectory.length > 0 &&
             DEFAULT_SERIES.map((s) => {
               if (!activeSeries[s.key as string]) return null;
@@ -302,7 +364,7 @@ export const TimeSeriesChart: React.FC<Props> = ({
               );
             })}
 
-          {/* Interactive Hover Crosshair */}
+          {/* Precision Hover Crosshair */}
           {hoveredPoint && (
             <g>
               <line
@@ -310,9 +372,9 @@ export const TimeSeriesChart: React.FC<Props> = ({
                 y1={padding.top}
                 x2={scaleX(hoveredPoint.t_s)}
                 y2={padding.top + plotHeight}
-                stroke="#e2e8f0"
-                strokeWidth="1.2"
-                strokeDasharray="3 3"
+                stroke="#181B18"
+                strokeWidth="1"
+                strokeDasharray="3 2"
               />
               {DEFAULT_SERIES.map((s) => {
                 if (!activeSeries[s.key as string]) return null;
@@ -322,9 +384,9 @@ export const TimeSeriesChart: React.FC<Props> = ({
                     key={`dot-${s.key as string}`}
                     cx={scaleX(hoveredPoint.t_s)}
                     cy={scaleY(val)}
-                    r="4"
+                    r="3.5"
                     fill={s.color}
-                    stroke="#0f172a"
+                    stroke="#FFFFFF"
                     strokeWidth="1.5"
                   />
                 );
@@ -333,32 +395,30 @@ export const TimeSeriesChart: React.FC<Props> = ({
           )}
         </svg>
 
-        {/* Floating Tooltip Card */}
+        {/* Floating Laboratory Annotation Card */}
         {hoveredPoint && (
-          <div
-            className="absolute top-3 right-3 bg-slate-950/95 border border-slate-700/80 rounded-md p-2.5 shadow-xl text-xs space-y-1.5 pointer-events-none min-w-[210px] backdrop-blur"
-          >
-            <div className="font-semibold text-slate-200 border-b border-slate-800 pb-1 flex justify-between">
+          <div className="absolute top-3 right-3 bg-[#FFFFFF] border border-[#181B18] p-3 shadow-[3px_3px_0px_0px_rgba(24,27,24,0.15)] text-xs space-y-1.5 pointer-events-none min-w-[220px]">
+            <div className="font-mono text-[10px] text-[#484E48] border-b border-[#D8D1C2] pb-1 flex justify-between uppercase">
               <span>t = {(hoveredPoint.t_s / timeUnit.divisor).toFixed(timeUnit.precision)} {timeUnit.label.split(' ')[1].replace(/[()]/g, '')}</span>
-              <span className="text-slate-400 font-mono">({hoveredPoint.t_s.toFixed(0)}s)</span>
+              <span className="text-[#868E85]">({hoveredPoint.t_s.toFixed(0)}s)</span>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 font-mono text-[11px]">
               {DEFAULT_SERIES.map((s) => {
                 if (!activeSeries[s.key as string]) return null;
                 const trtVal = Number(hoveredPoint[s.key]) || 0;
                 const ctrlVal = hoveredControl ? Number(hoveredControl[s.key]) : null;
 
                 return (
-                  <div key={s.key as string} className="flex items-center justify-between gap-3 text-[11px]">
+                  <div key={s.key as string} className="flex items-center justify-between gap-3">
                     <span className="flex items-center gap-1.5" style={{ color: s.color }}>
-                      <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: s.color }} />
-                      <span>{s.label.split(' ')[0]}:</span>
+                      <span className="w-1.5 h-1.5 inline-block" style={{ backgroundColor: s.color }} />
+                      <span className="font-semibold">{s.chemicalFormula}:</span>
                     </span>
-                    <span className="font-mono text-slate-200">
+                    <span className="text-[#181B18]">
                       {trtVal >= 0.01 ? trtVal.toFixed(3) : trtVal.toExponential(2)} {s.unit}
                       {ctrlVal !== null && (
-                        <span className="text-slate-500 ml-1">
+                        <span className="text-[#868E85] ml-1">
                           (ctrl: {ctrlVal >= 0.01 ? ctrlVal.toFixed(3) : ctrlVal.toExponential(1)})
                         </span>
                       )}
@@ -369,6 +429,29 @@ export const TimeSeriesChart: React.FC<Props> = ({
             </div>
           </div>
         )}
+      </div>
+
+      {/* Calibrated Footnote / Legend Reference */}
+      <div className="flex flex-wrap items-center justify-between text-[10.5px] font-mono text-[#666E65] pt-1 border-t border-[#EDE8DE]">
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-0.5 bg-[#286345]" />
+            <span>GSH (Reduced)</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-0.5 bg-[#8F5C1E]" />
+            <span>GSSG (Disulfide)</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-0.5 bg-[#4B466D]" />
+            <span>NADPH</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-3 h-0.5 bg-[#9B332B]" />
+            <span>Damage [D]</span>
+          </span>
+        </div>
+        <span>Units: Intracellular mM // Trajectory points: {primaryTraj.length}</span>
       </div>
     </div>
   );

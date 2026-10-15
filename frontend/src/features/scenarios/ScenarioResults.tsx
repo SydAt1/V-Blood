@@ -2,7 +2,7 @@ import React from 'react';
 import type { ScenarioRunResponse } from '../../types/api';
 import { TimeSeriesChart } from '../../components/TimeSeriesChart';
 import { AlertBox } from '../../components/AlertBox';
-import { FileJson, FileSpreadsheet, ShieldAlert } from 'lucide-react';
+import { FileJson, FileSpreadsheet, Film, ShieldAlert } from 'lucide-react';
 
 interface Props {
   treatmentResult: ScenarioRunResponse | null;
@@ -58,53 +58,56 @@ export const ScenarioResults: React.FC<Props> = ({
 
   return (
     <div className="space-y-5">
-      {/* Run Metadata & Export Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 p-4 rounded-lg border border-slate-800">
+      {/* Run Metadata & Instrument Action Bar */}
+      <div className="bg-[#FFFFFF] border border-[#D8D1C2] p-4 flex flex-wrap items-center justify-between gap-4 shadow-[2px_2px_0px_0px_rgba(24,27,24,0.06)]">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Simulation Run:</span>
-            <span className="text-xs font-mono text-slate-200 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-[#767D75]">
+              RUN IDENTIFIER:
+            </span>
+            <span className="font-mono text-xs font-bold text-[#181B18] bg-[#FAF7F2] px-2 py-0.5 border border-[#B5AC99]">
               {treatmentResult.run_id}
             </span>
             {treatmentResult.has_unverified_compounds && (
-              <span className="text-xs font-semibold text-rose-400 flex items-center gap-1 bg-rose-950/60 px-2 py-0.5 rounded border border-rose-800">
-                <ShieldAlert className="w-3.5 h-3.5" />
-                <span>UNVERIFIED COMPOUNDS</span>
+              <span className="text-[10px] font-mono font-bold text-[#85251E] flex items-center gap-1 bg-[#F7EBEA] px-2 py-0.5 border border-[#962F27]">
+                <ShieldAlert className="w-3 h-3" />
+                <span>UNVERIFIED COMPOUNDS INCLUDED</span>
               </span>
             )}
           </div>
-          <div className="text-xs text-slate-400 mt-1">
-            Trajectory evaluated at {treatmentResult.trajectory_length} points across{' '}
-            {(treatmentResult.scenario_request.duration_s / 60).toFixed(0)} minutes.
+          <div className="text-xs text-[#666E65] mt-1 font-mono">
+            Evaluated at {treatmentResult.trajectory_length} points across{' '}
+            {(treatmentResult.scenario_request.duration_s / 60).toFixed(0)} minutes simulation window.
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2">
+        {/* Action Controls */}
+        <div className="flex flex-wrap items-center gap-2">
           {onOpenPlayback && (
             <button
               onClick={onOpenPlayback}
-              className="px-3 py-1.5 text-xs font-semibold bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800 rounded-md transition-colors"
+              className="px-3 py-1.5 text-xs font-mono font-semibold bg-[#FAF7F2] hover:bg-[#F2ECE1] text-[#9B332B] border border-[#DCB0AC] transition-all shadow-[1px_1px_0px_0px_rgba(24,27,24,0.08)] flex items-center gap-1.5"
             >
-              Play Erythrocyte Animation
+              <Film className="w-3.5 h-3.5" />
+              <span>Play Erythrocyte Animation</span>
             </button>
           )}
 
           <button
             onClick={handleExportCsv}
-            className="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-md flex items-center gap-1.5 transition-colors"
+            className="px-3 py-1.5 text-xs font-mono font-medium bg-[#FFFFFF] hover:bg-[#FAF7F2] text-[#181B18] border border-[#B5AC99] transition-all shadow-[1px_1px_0px_0px_rgba(24,27,24,0.08)] flex items-center gap-1.5"
             title="Download simulation time-series as CSV"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+            <FileSpreadsheet className="w-3.5 h-3.5 text-[#435E4B]" />
             <span>Export CSV</span>
           </button>
 
           <button
             onClick={handleExportJson}
-            className="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-md flex items-center gap-1.5 transition-colors"
+            className="px-3 py-1.5 text-xs font-mono font-medium bg-[#FFFFFF] hover:bg-[#FAF7F2] text-[#181B18] border border-[#B5AC99] transition-all shadow-[1px_1px_0px_0px_rgba(24,27,24,0.08)] flex items-center gap-1.5"
             title="Download complete run payload and provenance as JSON"
           >
-            <FileJson className="w-3.5 h-3.5 text-blue-400" />
+            <FileJson className="w-3.5 h-3.5 text-[#2E5875]" />
             <span>Export JSON</span>
           </button>
         </div>
@@ -118,64 +121,97 @@ export const ScenarioResults: React.FC<Props> = ({
         </AlertBox>
       )}
 
-      {/* Derived Biochemical Metrics Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {/* GSH Nadir */}
-        <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-lg space-y-1">
-          <span className="text-[11px] text-slate-400 block font-medium">GSH Nadir ([GSH]min)</span>
-          <div className="text-lg font-bold font-mono text-emerald-400">
-            {m.gsh_nadir_mM.toFixed(3)} <span className="text-xs font-sans text-slate-400">mM</span>
+      {/* Asymmetric Derived Biochemical Metrics Readout */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+        {/* Primary Critical Readout: GSH Nadir (Hero Column 4 cols) */}
+        <div className="md:col-span-4 bg-[#FFFFFF] border-2 border-[#181B18] p-4 flex flex-col justify-between shadow-[3px_3px_0px_0px_rgba(24,27,24,0.12)]">
+          <div>
+            <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[#767D75]">
+              <span>PRIMARY KINETIC NADIR</span>
+              <span className="text-[#435E4B] font-semibold">[GSH]min</span>
+            </div>
+            <div className="mt-2 flex items-baseline gap-2">
+              <span className="font-editorial text-3xl font-bold text-[#181B18] tracking-tight">
+                {m.gsh_nadir_mM.toFixed(3)}
+              </span>
+              <span className="font-mono text-sm text-[#767D75]">mM</span>
+            </div>
           </div>
-          <span className="text-[10px] text-slate-500 block">Baseline ref: 2.50 mM</span>
+
+          <div className="mt-4 pt-2.5 border-t border-[#EDE8DE] text-[10.5px] font-mono text-[#666E65] flex items-center justify-between">
+            <span>Baseline Ref: 2.500 mM</span>
+            <span
+              className={
+                m.gsh_nadir_mM < 1.0
+                  ? 'text-[#9B332B] font-semibold'
+                  : 'text-[#435E4B] font-semibold'
+              }
+            >
+              {m.gsh_nadir_mM < 1.0 ? 'Depletion Risk' : 'Physiological Buffer'}
+            </span>
+          </div>
         </div>
 
-        {/* Peak GSSG */}
-        <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-lg space-y-1">
-          <span className="text-[11px] text-slate-400 block font-medium">Peak GSSG ([GSSG]max)</span>
-          <div className="text-lg font-bold font-mono text-amber-400">
-            {m.gssg_peak_mM.toFixed(3)} <span className="text-xs font-sans text-slate-400">mM</span>
+        {/* Secondary Metric Grid (8 cols) */}
+        <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {/* Peak GSSG */}
+          <div className="bg-[#FFFFFF] border border-[#D8D1C2] p-3 flex flex-col justify-between shadow-[1px_1px_0px_0px_rgba(24,27,24,0.06)]">
+            <span className="text-[10px] font-mono text-[#767D75] uppercase tracking-wider block">
+              Peak GSSG ([GSSG]max)
+            </span>
+            <div className="my-1.5 text-xl font-bold font-mono text-[#8F5C1E]">
+              {m.gssg_peak_mM.toFixed(3)} <span className="text-xs font-sans text-[#767D75]">mM</span>
+            </div>
+            <span className="text-[10px] font-mono text-[#868E85] block">Ref: 0.025 mM</span>
           </div>
-          <span className="text-[10px] text-slate-500 block">Baseline ref: 0.025 mM</span>
-        </div>
 
-        {/* 90% Recovery Time */}
-        <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-lg space-y-1">
-          <span className="text-[11px] text-slate-400 block font-medium">90% GSH Recovery Time</span>
-          <div className="text-lg font-bold font-mono text-blue-400">
-            {m.time_to_90pct_recovery_s !== null ? (
-              <>
-                {m.time_to_90pct_recovery_s.toFixed(0)}{' '}
-                <span className="text-xs font-sans text-slate-400">s ({(m.time_to_90pct_recovery_s / 60).toFixed(1)}m)</span>
-              </>
-            ) : (
-              <span className="text-xs text-rose-400 font-sans">No recovery observed</span>
-            )}
+          {/* 90% Recovery Time */}
+          <div className="bg-[#FFFFFF] border border-[#D8D1C2] p-3 flex flex-col justify-between shadow-[1px_1px_0px_0px_rgba(24,27,24,0.06)]">
+            <span className="text-[10px] font-mono text-[#767D75] uppercase tracking-wider block">
+              90% Recovery
+            </span>
+            <div className="my-1.5 text-xl font-bold font-mono text-[#2E5875]">
+              {m.time_to_90pct_recovery_s !== null ? (
+                <>
+                  {m.time_to_90pct_recovery_s.toFixed(0)}{' '}
+                  <span className="text-xs font-sans text-[#767D75]">
+                    s ({(m.time_to_90pct_recovery_s / 60).toFixed(1)}m)
+                  </span>
+                </>
+              ) : (
+                <span className="text-xs text-[#9B332B] font-sans font-semibold">No recovery</span>
+              )}
+            </div>
+            <span className="text-[10px] font-mono text-[#868E85] block">T to 90% GSH</span>
           </div>
-          <span className="text-[10px] text-slate-500 block">Threshold: 90% of baseline</span>
-        </div>
 
-        {/* Net Total Glutathione Loss */}
-        <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-lg space-y-1">
-          <span className="text-[11px] text-slate-400 block font-medium">Net Glutathione Loss</span>
-          <div className="text-lg font-bold font-mono text-purple-400">
-            {m.net_total_glutathione_loss_pct.toFixed(1)}%
+          {/* Net Glutathione Loss */}
+          <div className="bg-[#FFFFFF] border border-[#D8D1C2] p-3 flex flex-col justify-between shadow-[1px_1px_0px_0px_rgba(24,27,24,0.06)]">
+            <span className="text-[10px] font-mono text-[#767D75] uppercase tracking-wider block">
+              Glutathione Loss
+            </span>
+            <div className="my-1.5 text-xl font-bold font-mono text-[#4B466D]">
+              {m.net_total_glutathione_loss_pct.toFixed(1)}%
+            </div>
+            <span className="text-[10px] font-mono text-[#868E85] block">Conjugation / Export</span>
           </div>
-          <span className="text-[10px] text-slate-500 block">Via export or conjugation</span>
-        </div>
 
-        {/* Damage Onset Timestamp */}
-        <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-lg space-y-1">
-          <span className="text-[11px] text-slate-400 block font-medium">Damage Onset (D &gt; 0.05)</span>
-          <div className="text-lg font-bold font-mono text-rose-400">
-            {m.damage_onset_time_s !== null ? (
-              <>
-                {m.damage_onset_time_s.toFixed(0)} <span className="text-xs font-sans text-slate-400">s</span>
-              </>
-            ) : (
-              <span className="text-xs text-emerald-400 font-sans">Undetected (&lt; 0.05)</span>
-            )}
+          {/* Damage Onset Time */}
+          <div className="bg-[#FFFFFF] border border-[#D8D1C2] p-3 flex flex-col justify-between shadow-[1px_1px_0px_0px_rgba(24,27,24,0.06)]">
+            <span className="text-[10px] font-mono text-[#767D75] uppercase tracking-wider block">
+              Damage Onset (D &gt; 0.05)
+            </span>
+            <div className="my-1.5 text-xl font-bold font-mono text-[#9B332B]">
+              {m.damage_onset_time_s !== null ? (
+                <>
+                  {m.damage_onset_time_s.toFixed(0)} <span className="text-xs font-sans text-[#767D75]">s</span>
+                </>
+              ) : (
+                <span className="text-xs text-[#435E4B] font-sans font-semibold">Undetected</span>
+              )}
+            </div>
+            <span className="text-[10px] font-mono text-[#868E85] block">D &gt; 0.05 threshold</span>
           </div>
-          <span className="text-[10px] text-slate-500 block">Oxidative stress onset</span>
         </div>
       </div>
 
@@ -189,11 +225,11 @@ export const ScenarioResults: React.FC<Props> = ({
 
       {/* Scientific Interaction Assumptions */}
       {treatmentResult.interaction_assumptions.length > 0 && (
-        <div className="bg-slate-900/80 rounded-lg border border-slate-800 p-4 space-y-2">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Simulation Interaction Assumptions
-          </h4>
-          <ul className="text-xs text-slate-300 space-y-1 list-disc list-inside">
+        <div className="bg-[#FAF8F3] border border-[#D8D1C2] p-4 space-y-2 shadow-[1px_1px_0px_0px_rgba(24,27,24,0.04)]">
+          <div className="font-mono text-[10px] text-[#767D75] uppercase tracking-wider">
+            MEMORANDUM // SIMULATION INTERACTION ASSUMPTIONS
+          </div>
+          <ul className="text-xs text-[#383E38] space-y-1 list-disc list-inside font-sans leading-relaxed">
             {treatmentResult.interaction_assumptions.map((asm, i) => (
               <li key={i}>{asm}</li>
             ))}

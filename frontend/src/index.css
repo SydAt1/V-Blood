@@ -2,25 +2,148 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
+    
+    /* The Computational Biology Field Station — Archival Mineral & Parchment Palette */
+    --canvas-bg: #F5F2EB;
+    --paper-surface: #FCFAF6;
+    --paper-card: #FFFFFF;
+    --paper-subtle: #EDE8DE;
+    --paper-inset: #E5DFD2;
+    --paper-border: #D8D1C2;
+    --paper-border-strong: #B5AC99;
+
+    --ink-primary: #181B18;
+    --ink-secondary: #484E48;
+    --ink-tertiary: #767D75;
+    --ink-faint: #A6AEA5;
+
+    /* Biological Arterial Accent (Muted Oxidized Red) */
+    --crimson-accent: #9B332B;
+    --crimson-hover: #802821;
+    --crimson-subtle: #F6EBEA;
+    --crimson-border: #E2BCB8;
+
+    /* Physiological / Positive Accent (Restrained Sage & Moss) */
+    --sage-accent: #435E4B;
+    --sage-hover: #33493A;
+    --sage-subtle: #EDF3EE;
+    --sage-border: #BCD0C1;
+
+    /* Cautionary Alert (Oxidized Ochre / Amber) */
+    --amber-accent: #8E5A1E;
+    --amber-subtle: #F8F2E8;
+    --amber-border: #E2CEB1;
+
+    /* Cobalt / Prussian Blue (for cofactor/population trace differentiation) */
+    --prussian-accent: #2E5875;
+    --prussian-subtle: #EBF2F7;
+    --prussian-border: #B6CEE0;
   }
 
   body {
     margin: 0;
     padding: 0;
-    background-color: #020617;
-    color: #f1f5f9;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--canvas-bg);
+    color: var(--ink-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-image: 
+      radial-gradient(#D8D1C2 0.75px, transparent 0.75px),
+      radial-gradient(#E8E3D8 0.75px, var(--canvas-bg) 0.75px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+  }
+
+  h1, h2, h3, .font-editorial {
+    font-family: 'Newsreader', Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    letter-spacing: -0.015em;
+  }
+
+  code, pre, .font-technical {
+    font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-feature-settings: "zero" 1;
   }
 }
 
-/* Custom animations */
-@keyframes fadeIn {
+/* Tactile Scientific Hard-Edged Surface Effects */
+.tactile-card {
+  background-color: var(--paper-card);
+  border: 1px solid var(--paper-border);
+  box-shadow: 2px 2px 0px 0px rgba(24, 27, 24, 0.08);
+}
+
+.tactile-card-raised {
+  background-color: var(--paper-card);
+  border: 1px solid var(--paper-border-strong);
+  box-shadow: 3px 3px 0px 0px rgba(24, 27, 24, 0.12);
+}
+
+.tactile-card-interactive {
+  background-color: var(--paper-card);
+  border: 1px solid var(--paper-border);
+  box-shadow: 2px 2px 0px 0px rgba(24, 27, 24, 0.08);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+}
+
+.tactile-card-interactive:hover {
+  border-color: var(--ink-secondary);
+  box-shadow: 3px 3px 0px 0px rgba(24, 27, 24, 0.14);
+  transform: translate(-1px, -1px);
+}
+
+.tactile-card-interactive:active {
+  box-shadow: 1px 1px 0px 0px rgba(24, 27, 24, 0.1);
+  transform: translate(1px, 1px);
+}
+
+.tactile-inset {
+  background-color: var(--paper-inset);
+  border: 1px solid var(--paper-border);
+}
+
+.tactile-subtle {
+  background-color: var(--paper-subtle);
+  border: 1px solid var(--paper-border);
+}
+
+/* Architectural millimeter calibration lines */
+.calibrated-ruler-h {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--paper-border) 0,
+    var(--paper-border) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+  height: 4px;
+}
+
+/* Custom editorial scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--paper-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--paper-border-strong);
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-secondary);
+}
+
+/* Precise micro-animations */
+@keyframes editorialFadeIn {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(3px);
   }
   to {
     opacity: 1;
@@ -29,24 +152,14 @@
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: editorialFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Clean scientific scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+@keyframes pulseGently {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
-::-webkit-scrollbar-track {
-  background: #020617;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+.animate-pulse-slow {
+  animation: pulseGently 2.4s ease-in-out infinite;
 }
