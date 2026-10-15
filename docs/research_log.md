@@ -105,5 +105,36 @@ This log records scientific decisions, model changes, and evidence reviews in ch
 - **Pool Conservation:** Coupled with total pyridine nucleotide conservation $[\text{NADP}^+] = \max(0, [\text{NADP}]_{\text{tot}} - [\text{NADPH}])$.
 - **Deficiency Scenarios:** Simulated across $\alpha \in \{1.0, 0.5, 0.1, 0.0\}$. Under 0.05 mM H2O2 bolus, severe reduction ($\alpha=0.1$) causes minimum [NADPH] to plunge from 0.0339 mM down to 0.0146 mM, demonstrating impaired glutathione regeneration capacity.
 - **Regression Assurance:** Milestone 1 baseline model (`rbc-gsh-redox-v1`) preserved identically without side effects.
-- **Test Suite Status:** 148 total tests passing across all test modules.
+---
+
+## 2026-10-14 — Milestone 3: Dynamic Validation, Sensitivity Benchmarks & Experimental Alignment
+- **Dynamic In Vitro Validation (L3):** Benchmarked $[GSH]$ clearance trajectories against Gaetani et al. (1994) in vitro challenge datasets ($0.05\text{--}0.50$ mM $H_2O_2$ boluses).
+- **Epistemic vs Aleatoric Separation:** Formalized parameter variance bounds for Monte Carlo cohort sampling.
+- **Damage Index Bounds:** Calibrated synthetic rate constants ($k_{\text{damage}}$, $k_{\text{repair}}$) to prevent numerical divergence under severe oxidant loads.
+
+---
+
+## 2026-10-15 — Milestone 4: Chemical Exposure & Scenario Simulation Engine
+- **Mechanism Classes:** Implemented 5 kinetic mechanism classes in `src/vblood/scenarios/mechanisms.py` (Direct Oxidant, GSH Conjugator, Redox Cycler, Enzyme Inhibitor, NADPH Drain).
+- **Compound Catalog & Evidence Grading:** Curated chemical entries in `data/processed/compounds.json` with three-tier evidence badges (`CURATED`, `ESTIMATED`, `UNVERIFIED`). Automatic validation exclusion flag for unverified xenobiotics.
+- **Waveform Delivery:** Supported `BOLUS`, `INFUSION`, and `REPEATED_PULSES` temporal exposure profiles.
+- **Vectorized Monte Carlo Population Simulator:** Implemented in `src/vblood/scenarios/population.py` simulating $N = 100 \dots 5000$ cells with log-normal parameter variance in ~1.2s. Output percentile envelopes ($p_5 \dots p_{95}$) and subpopulation crisis fractions.
+- **Visual State Classifier:** Implemented 4 biochemical cell states (`healthy`, `stressed`, `severely_stressed`, `lysis_risk`).
+
+---
+
+## 2026-10-15 — Milestone 5: Blood Playground Frontend & Field Station Editorial Redesign
+- **Interactive Workstation (React 19 + TypeScript + Vite):** Implemented 5 complete modules:
+  1. Chemical Compound Catalog with monograph modal.
+  2. Single-Cell Scenario Builder with control comparison and multi-channel SVG time-series chart.
+  3. Heterogeneous Population Cohort Simulator with percentile envelope chart.
+  4. Erythrocyte Dynamic Playback with SVG biconcave disc viewer and SSE stream.
+  5. Session Run History logbook with JSON/CSV export.
+- **Field Station Editorial Art Direction:** Redesigned interface into an artisanal scientific workstation: warm mineral/parchment palette (`#F5F2EB`, `#EBE7DD`), Newsreader serif typography, Plus Jakarta Sans controls, and JetBrains Mono telemetry.
+- **Automated Verification:** 176 backend tests passing; 15 frontend tests passing; 0 TypeScript errors.
+
+---
+
+## 2026-10-15 — Milestone 6: LLM-Powered Scientific Interpretation Plan
+- Complete architectural specification, dual-provider strategy (deterministic rule-based engine + external LLM client), grounding guardrails, and forward-looking compound interfaces documented in [`docs/milestone_journal_and_m6_plan.md`](file:///c:/new%20project/V-Blood/docs/milestone_journal_and_m6_plan.md).
 

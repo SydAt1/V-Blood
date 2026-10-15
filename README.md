@@ -82,7 +82,9 @@ pip install -e ".[dev]"
 ```bash
 pytest
 ```
-*Currently 148 automated tests passing across unit, scientific, and API test suites.*
+*Currently 176 automated tests passing across unit, scientific, and API test suites.*
+
+For a comprehensive history of Milestones 1 through 5 and the architecture for Milestone 6, see [docs/milestone_journal_and_m6_plan.md](docs/milestone_journal_and_m6_plan.md).
 
 ---
 
