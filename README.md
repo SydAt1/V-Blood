@@ -2,7 +2,7 @@
 
 **V-Blood** is a research-oriented computational biology platform for the mechanistic simulation of biochemical processes in human blood, featuring uncertainty quantification, population-scale Monte Carlo analysis, and LLM-powered scientific interpretation grounded in physical equations.
 
-> ⚠️ **Research software — pre-alpha.** V-Blood is a hypothesis-generation and model-development tool. It does **not** replace laboratory experiments, clinical assays, or human testing.
+> ⚠️ **Research software - pre-alpha.** V-Blood is a hypothesis-generation and model-development tool. It does **not** replace laboratory experiments, clinical assays, or human testing.
 
 ---
 
@@ -39,11 +39,11 @@ Milestone 6 introduces **LLM-Powered Scientific Interpretation** coupled with a 
 
 ## Retrospective: Milestones 1–5
 
-- **Milestone 1 — Baseline Mechanistic Simulation Core:** ODE systems biology integration (`scipy.integrate.solve_ivp`), Radau/BDF stiff solvers, baseline model `rbc-gsh-redox-v1`, mass conservation checks, and parameter sensitivity auditing.
-- **Milestone 2 — Extended Biology & Scientific Validation:** Model `rbc-g6pd-gsh-v2` with G6PD deficiency factor $\alpha \in [0.0, 1.0]$, NADPH cofactor cycling, and validation against published human red blood cell datasets.
-- **Milestone 3 — Production FastAPI Platform:** Decoupled REST service with model registry, steady-state initial condition computation, and simulation store.
-- **Milestone 4 — Chemical Exposure Scenarios & Compound Library:** Multi-compound mixtures, curated library (`CURATED`, `ESTIMATED`, `UNVERIFIED`), exposure delivery profiles (`BOLUS`, `INFUSION`, `REPEATED_PULSES`), and dense early-time sampling.
-- **Milestone 5 — Blood Playground Frontend Workstation:** Interactive React 19 + Vite interface featuring the Single-Cell Scenario Builder, Population Cohort Visualizer (100–5,000 cells), animated SVG erythrocyte dynamics playback, and session history export.
+- **Milestone 1 - Baseline Mechanistic Simulation Core:** ODE systems biology integration (`scipy.integrate.solve_ivp`), Radau/BDF stiff solvers, baseline model `rbc-gsh-redox-v1`, mass conservation checks, and parameter sensitivity auditing.
+- **Milestone 2 - Extended Biology & Scientific Validation:** Model `rbc-g6pd-gsh-v2` with G6PD deficiency factor $\alpha \in [0.0, 1.0]$, NADPH cofactor cycling, and validation against published human red blood cell datasets.
+- **Milestone 3 - Production FastAPI Platform:** Decoupled REST service with model registry, steady-state initial condition computation, and simulation store.
+- **Milestone 4 - Chemical Exposure Scenarios & Compound Library:** Multi-compound mixtures, curated library (`CURATED`, `ESTIMATED`, `UNVERIFIED`), exposure delivery profiles (`BOLUS`, `INFUSION`, `REPEATED_PULSES`), and dense early-time sampling.
+- **Milestone 5 - Blood Playground Frontend Workstation:** Interactive React 19 + Vite interface featuring the Single-Cell Scenario Builder, Population Cohort Visualizer (100–5,000 cells), animated SVG erythrocyte dynamics playback, and session history export.
 
 *For detailed historical journals and technical designs, see [docs/milestone_journal_and_m6_plan.md](docs/milestone_journal_and_m6_plan.md).*
 
