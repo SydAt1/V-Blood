@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Activity, Database, History, Info, Menu, RefreshCw, Users, X } from 'lucide-react';
+import { Activity, Database, History, Info, Menu, RefreshCw, Sparkles, Users, X } from 'lucide-react';
 import type { HealthResponse } from '../types/api';
 
-export type ActiveTab = 'playground' | 'compounds' | 'population' | 'history' | 'models';
+export type ActiveTab = 'playground' | 'compounds' | 'population' | 'history' | 'models' | 'research';
 
 interface Props {
   activeTab: ActiveTab;
@@ -54,6 +54,13 @@ const NAV_ITEMS: Array<{
     label: 'Model & Evidence',
     descriptor: 'Kinetic boundaries & provenance',
     icon: Info,
+  },
+  {
+    id: 'research',
+    number: '06',
+    label: 'Compound Research',
+    descriptor: 'LLM intelligence & library pipeline',
+    icon: Sparkles,
   },
 ];
 

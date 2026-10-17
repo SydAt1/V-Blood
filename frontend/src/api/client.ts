@@ -18,6 +18,10 @@ import type {
   ScenarioRunResponse,
   VisualFrame,
   VisualTrajectoryResponse,
+  ResearchDossier,
+  ResearchJobStatus,
+  ResearchLifecycleStatus,
+  ResearchSubmissionRequest,
 } from '../types/api';
 
 export class ApiError extends Error {
@@ -204,5 +208,73 @@ export async function interpretCohort(
     method: 'POST',
     body: JSON.stringify(request),
     signal,
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Milestone 7: Compound Research-to-Library API Methods              */
+/* ------------------------------------------------------------------ */
+
+export async function submitResearchJob(
+  req: ResearchSubmissionRequest
+): Promise<ResearchJobStatus> {
+  return apiFetch<ResearchJobStatus>('/research/jobs', {
+    method: 'POST',
+    body: JSON.stringify(req),
+  });
+}
+
+export async function getResearchJob(jobId: string): Promise<ResearchJobStatus> {
+  return apiFetch<ResearchJobStatus>(`/research/jobs/${jobId}`);
+}
+
+export async function getResearchCandidates(
+  statusFilter?: ResearchLifecycleStatus
+): Promise<ResearchDossier[]> {
+  const query = statusFilter ? `?status_filter=${statusFilter}` : '';
+  return apiFetch<ResearchDossier[]>(`/research/candidates${query}`);
+}
+
+export async function getResearchCandidate(candidateId: string): Promise<ResearchDossier> {
+  return apiFetch<ResearchDossier>(`/research/candidates/${candidateId}`);
+}
+
+export async function validateResearchCandidate(
+  candidateId: string
+): Promise<ResearchDossier> {
+  return apiFetch<ResearchDossier>(`/research/candidates/${candidateId}/validate`, {
+    method: 'POST',
+  });
+}
+
+export async function approveResearchCandidate(
+  candidateId: string,
+  actor: string = 'researcher',
+  notes: string = ''
+): Promise<ResearchDossier> {
+  const params = new URLSearchParams({ actor, notes });
+  return apiFetch<ResearchDossier>(
+    `/research/candidates/${candidateId}/approve?${params.toString()}`,
+    { method: 'POST' }
+  );
+}
+
+export async function rejectResearchCandidate(
+  candidateId: string,
+  actor: string = 'researcher',
+  notes: string = ''
+): Promise<ResearchDossier> {
+  const params = new URLSearchParams({ actor, notes });
+  return apiFetch<ResearchDossier>(
+    `/research/candidates/${candidateId}/reject?${params.toString()}`,
+    { method: 'POST' }
+  );
+}
+
+export async function refreshResearchCandidate(
+  candidateId: string
+): Promise<ResearchDossier> {
+  return apiFetch<ResearchDossier>(`/research/candidates/${candidateId}/refresh`, {
+    method: 'POST',
   });
 }

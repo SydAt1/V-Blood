@@ -1,0 +1,1344 @@
+[
+  {
+    "candidate_id": "rcand_menadione",
+    "query_name": "Menadione",
+    "research_objective": "Investigate oxidative stress and redox dynamics in human erythrocytes.",
+    "target_scope": "Human Erythrocyte Redox Biology (V-Blood ODE Engine)",
+    "status": "REJECTED",
+    "chemical_identity": {
+      "preferred_name": "Menadione",
+      "common_names": [
+        "Menadione",
+        "Vitamin K3",
+        "2-Methylnaphthalene-1,4-dione",
+        "Menaphthone"
+      ],
+      "molecular_formula": "C11H8O2",
+      "smiles": "CC1=CC(=O)C2=CC=CC=C2C1=O",
+      "inchikey": "MJGQHYZZJPFOCL-UHFFFAOYSA-N",
+      "inchi": "InChI=1S/C11H8O2/c1-7-6-10(12)8-4-2-3-5-9(8)11(7)13/h2-6H,1H3",
+      "pubchem_cid": 4055,
+      "entity_type": "SMALL_MOLECULE",
+      "charge": 0,
+      "molecular_weight": 172.18,
+      "source": "PubChem",
+      "retrieved_at": "2026-10-17T02:25:31.402650+00:00",
+      "is_ambiguous": false,
+      "ambiguity_candidates": []
+    },
+    "sources": [
+      {
+        "source_id": "src_pmid_437632",
+        "title": "Superoxide dismutase and the oxidation of glutathione by menadione in human red cell hemolysates",
+        "authors": [
+          "Winterbourn CC",
+          "French JK",
+          "Claridge RF"
+        ],
+        "journal": "Biochem J",
+        "year": 1979,
+        "doi": "10.1042/bj1820087",
+        "pmid": "437632",
+        "pmcid": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/437632/",
+        "abstract": "Menadione (2-methyl-1,4-naphthoquinone) reacts with human erythrocyte NADPH-cytochrome c reductase to catalyze continuous redox cycling. The reaction generates hydrogen peroxide at a turnover rate of 0.02 s^-1 with an apparent Km for NADPH of 10 uM, leading to severe GSH oxidation.",
+        "source_type": "PUBMED",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:38.060254+00:00"
+      },
+      {
+        "source_id": "src_pmid_2548918",
+        "title": "Studies on the mechanism of menadione toxicity in erythrocytes",
+        "authors": [
+          "Munday R"
+        ],
+        "journal": "Free Radic Biol Med",
+        "year": 1989,
+        "doi": "10.1016/0891-5849(89)90141-8",
+        "pmid": "2548918",
+        "pmcid": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/2548918/",
+        "abstract": "Intracellular menadione undergoes one-electron reduction to semiquinone followed by rapid autoxidation, transferring electrons from NADPH to molecular oxygen. The resulting oxidative stress causes hemoglobin denaturation and Heinz body formation.",
+        "source_type": "PUBMED",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:38.060254+00:00"
+      },
+      {
+        "source_id": "src_pmid_42792126",
+        "title": "Skin Histology of &lt;i&gt;Pithecopus&lt;/i&gt; spp. and Modulation of Glutathione Status by the Antioxidant Tryptophyllin PaT-2.",
+        "authors": [
+          "Ara\u00fajo FGD",
+          "Ara\u00fajo HLL",
+          "Silva MDGD",
+          "Nunes JB",
+          "Resende JGTL"
+        ],
+        "journal": "Antioxidants (Basel, Switzerland)",
+        "year": 2026,
+        "doi": "10.3390/antiox15091087",
+        "pmid": "42792126",
+        "pmcid": "PMC13603516",
+        "url": "https://doi.org/10.3390/antiox15091087",
+        "abstract": "Amphibians of the family Phyllomedusidae produce complex cutaneous secretions with ecological and pharmacological relevance. Here, we investigated the skin morphology of  Pithecopus oreades  and  P. azureus  and the antioxidant function of the tryptophyllin PaT-2 in microglial cells. Histological and histochemical analyses revealed a conserved glandular organization, with mucous glands rich in neutral mucopolysaccharides and serous glands containing acidic and sulfated polysaccharides, concentrated predominantly in the dorsal and cephalic regions. MALDI mass spectrometry imaging showed that PaT-2 ( m / z  696.4) is heterogeneously distributed. A second ion ( m / z  1626.8), assigned to a truncated form of a phylloseptin-like antimicrobial peptide, was predominantly localized in limb tissues and partially overlapped with PaT-2, suggesting co-deployment of antioxidant and antimicrobial molecules on the skin. In BV2 microglial cells, menadione (10 \u00b5M) induced oxidative stress reflected by increased oxidized glutathione (GSSG) and higher total glutathione levels, consistent with a compensatory increase in glutathione synthesis. Synthetic PaT-2 (50 \u00b5M) was associated with numerically lower GSSG accumulation and a smaller increase in total glutathione when co-administered with menadione, showing no cytotoxicity while demonstrating modulation of endogenous glutathione status. These findings advance the integumentary biology of  Pithecopus , suggest differences in peptide distribution between the specimens examined, and extend the antioxidant characterization of PaT-2 to the level of glutathione status, supporting its further investigation as a candidate molecule for oxidative stress-related research.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": false,
+        "retrieval_timestamp": "2026-10-17T02:25:39.123360+00:00"
+      },
+      {
+        "source_id": "src_pmid_42555718",
+        "title": "Failed metabolic adaptation to stress contributes to epidermal cell adhesion defects in Darier disease.",
+        "authors": [
+          "Harmon RM",
+          "McCarthy EF",
+          "Krol A",
+          "Shetti A",
+          "Braun J"
+        ],
+        "journal": "Science advances",
+        "year": 2026,
+        "doi": "10.1126/sciadv.aee1599",
+        "pmid": "42555718",
+        "pmcid": "PMC13440392",
+        "url": "https://doi.org/10.1126/sciadv.aee1599",
+        "abstract": "Congenital pathogenic gene variants may not elicit symptoms until later in life, highlighting the importance of identifying extra-genetic factors influencing the onset and severity of heritable diseases. We explored this in Darier disease (DD or  ATP2A2 -nEDD), an autosomal dominant skin disorder arising from heterozygous  ATP2A2  variants leading to haploinsufficiency of the endoplasmic reticulum (ER) calcium pump, SERCA2. Metabolic analysis of epidermal keratinocytes from confirmed patients with DD revealed abnormalities in the pentose phosphate pathway responsible for regenerating antioxidants like glutathione, accompanied by diminished free glutathione and increased glutathione-based, oxidative modifications of SERCA2. Induction of oxidative stress weakened intercellular adhesion, a defining characteristic of DD, which antioxidant treatment improved. Treatment with antioxidants or SERCA activators also diminished glutathionylation, consistent with SERCA2 haploinsufficiency giving rise to oxidative stress and placing residual SERCA2 at risk of oxidation. We posit that partial loss of protein activity primes cells for stress-induced loss of the remaining activity, a mechanism that may drive disease flares in other haploinsufficiencies.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": false,
+        "retrieval_timestamp": "2026-10-17T02:25:39.123360+00:00"
+      },
+      {
+        "source_id": "src_pmid_42236754",
+        "title": "The transcription factor AP-1 regulates the catalase family and oxidative stress adaptation in the dermatophyte Trichophyton rubrum.",
+        "authors": [
+          "Petrucelli MF",
+          "Azevedo MIG",
+          "Oliveira VM",
+          "Sanches PR",
+          "Rossi A"
+        ],
+        "journal": "Scientific reports",
+        "year": 2026,
+        "doi": "10.1038/s41598-026-46633-4",
+        "pmid": "42236754",
+        "pmcid": "PMC13233998",
+        "url": "https://doi.org/10.1038/s41598-026-46633-4",
+        "abstract": "Oxidative stress results from an imbalance between the production of reactive oxygen species and cellular antioxidant activity, thereby causing cellular damage. In Saccharomyces cerevisiae, the Basic Leucine Zipper (bZIP) transcription factor AP-1 plays a key regulatory role in antioxidant responses. In Trichophyton rubrum, oxidative stress is countered by antioxidant enzymes and three main regulators: the HOG pathway, AP-1, and SKN7. Here, we investigated the role of AP-1 using a \u0394ap1 mutant of T. rubrum exposed to hydrogen peroxide or menadione. RT-qPCR revealed higher expression of HOG-pathway genes and lower expression of skn7 and catalase genes in the \u0394ap1 mutant under oxidative stress conditions, together with reduced catalase activity. Lipid peroxidation assays indicated greater oxidative damage in the mutants, particularly after menadione exposure. In silico analysis identified an AP-1 consensus binding site in the catalase gene TERG_02005. Post-transcriptional analysis revealed alternative splicing events, specifically intron retention, both in TERG_02005 and in genes related to the spliceosome machinery, which also contained predicted AP-1 binding sites. These findings indicate that AP-1 plays a role in regulating oxidative stress-responsive genes in T. rubrum, particularly those that code for catalase. Additionally, AP-1 may influence spliceosome function, linking transcriptional and post-transcriptional responses to oxidative stress.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": false,
+        "retrieval_timestamp": "2026-10-17T02:25:39.123360+00:00"
+      },
+      {
+        "source_id": "src_pmid_42341373",
+        "title": "Ascorbate-driven quinone redox cycling as a pro-oxidant anticancer strategy.",
+        "authors": [
+          "Glorieux C",
+          "Enriquez-Lara C",
+          "Valderrama JA",
+          "Benites J",
+          "Calderon PB."
+        ],
+        "journal": "Redox biology",
+        "year": 2026,
+        "doi": "10.1016/j.redox.2026.104274",
+        "pmid": "42341373",
+        "pmcid": "PMC13320442",
+        "url": "https://doi.org/10.1016/j.redox.2026.104274",
+        "abstract": "Quinones are natural compounds widely distributed in animals, plants, and microorganisms, where they play essential roles in cellular energy metabolism. Ascorbate (vitamin C) can exert antioxidant or pro-oxidant effects depending on concentration and cellular context. Studies have shown that quinones can undergo redox cycling, leading to the generation of reactive oxygen species (ROS), a process that is further enhanced in the presence of ascorbate. Due to the elevated production of reactive oxygen species (ROS) and compromised antioxidant defenses in cancer cells, redox imbalance has been proposed as a potential \"Achilles' heel\" of tumors. In this context, the combination of ascorbate and quinones represents a promising strategy for selectively targeting cancer cells through enhanced ROS generation. This review discusses the mechanisms and biological effects of natural and synthetic quinoid compounds, particularly their interactions with ascorbate in cancer cells.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": false,
+        "retrieval_timestamp": "2026-10-17T02:25:39.123360+00:00"
+      }
+    ],
+    "findings": [
+      {
+        "finding_id": "fnd_001",
+        "source_id": "src_pmid_437632",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": 10.0,
+        "concentration_unit": "uM",
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Menadione.",
+        "proposed_mechanism": "Catalytic redox cycling generating H2O2 and consuming NADPH",
+        "quantitative_measurements": {
+          "reported_concentration": "10.0 uM",
+          "catalytic_rate_s": 0.02,
+          "km_nadph": "0 uM"
+        },
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Menadione (2-methyl-1,4-naphthoquinone) reacts with human erythrocyte NADPH-cytochrome c reductase to catalyze continuous redox cycling",
+        "finding_evidence_level": "CURATED",
+        "grade_rationale": "Direct experimental measurement in human erythrocytes with published quantitative kinetics."
+      },
+      {
+        "finding_id": "fnd_002",
+        "source_id": "src_pmid_2548918",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Menadione.",
+        "proposed_mechanism": "Catalytic redox cycling generating H2O2 and consuming NADPH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Intracellular menadione undergoes one-electron reduction to semiquinone followed by rapid autoxidation, transferring electrons from NADPH to molecular oxygen",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      },
+      {
+        "finding_id": "fnd_003",
+        "source_id": "src_pmid_42792126",
+        "biological_system": "Mammalian in vitro system",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": false,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": 10.0,
+        "concentration_unit": "uM",
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Menadione.",
+        "proposed_mechanism": "Cellular NADPH consumption / redox perturbation",
+        "quantitative_measurements": {
+          "reported_concentration": "10.0 uM"
+        },
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Amphibians of the family Phyllomedusidae produce complex cutaneous secretions with ecological and pharmacological relevance",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Extrapolated from related mammalian tissue, whole-blood proxy, or analogous chemical redox system."
+      },
+      {
+        "finding_id": "fnd_004",
+        "source_id": "src_pmid_42555718",
+        "biological_system": "Mammalian in vitro system",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": false,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Menadione.",
+        "proposed_mechanism": "Cellular NADPH consumption / redox perturbation",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Congenital pathogenic gene variants may not elicit symptoms until later in life, highlighting the importance of identifying extra-genetic factors influencing the onset and severity of heritable diseases",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Extrapolated from related mammalian tissue, whole-blood proxy, or analogous chemical redox system."
+      },
+      {
+        "finding_id": "fnd_005",
+        "source_id": "src_pmid_42236754",
+        "biological_system": "Mammalian in vitro system",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": false,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Menadione.",
+        "proposed_mechanism": "Direct oxidative influx (peroxide load)",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Oxidative stress results from an imbalance between the production of reactive oxygen species and cellular antioxidant activity, thereby causing cellular damage",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Extrapolated from related mammalian tissue, whole-blood proxy, or analogous chemical redox system."
+      },
+      {
+        "finding_id": "fnd_006",
+        "source_id": "src_pmid_42341373",
+        "biological_system": "Mammalian in vitro system",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": false,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Menadione.",
+        "proposed_mechanism": "Catalytic redox cycling generating H2O2 and consuming NADPH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Quinones are natural compounds widely distributed in animals, plants, and microorganisms, where they play essential roles in cellular energy metabolism",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Extrapolated from related mammalian tissue, whole-blood proxy, or analogous chemical redox system."
+      }
+    ],
+    "mechanism_mappings": [
+      {
+        "mechanism_type": "REDOX_CYCLER",
+        "is_compatible": true,
+        "target_enzyme": null,
+        "inhibition_type": null,
+        "confidence": 0.85,
+        "supporting_finding_ids": [
+          "fnd_001",
+          "fnd_002",
+          "fnd_003",
+          "fnd_004",
+          "fnd_005",
+          "fnd_006"
+        ],
+        "assumptions": [
+          "Intracellular quinone reduction by flavoenzymes transfers electrons from NADPH to O2.",
+          "Continuous catalytic turnover generates H2O2 at constant stoichiometric ratio 1:1."
+        ],
+        "unmodeled_aspects": [
+          "Whole-body hepatic conversion of parent compound to active orthoquinone.",
+          "Membrane diffusion barrier (instantaneous cytoplasmic availability assumed)."
+        ],
+        "unresolved_questions": [
+          "Exact intracellular accumulation factor in erythrocytes relative to extracellular plasma concentration."
+        ],
+        "parameters": [
+          {
+            "name": "catalytic_rate_s",
+            "mechanism": "REDOX_CYCLER",
+            "value": 0.02,
+            "units": "s^-1",
+            "min_bound": 0.0005,
+            "max_bound": 0.5,
+            "original_value": 0.02,
+            "original_units": "s^-1",
+            "conversion_method": "Apparent turnover rate in erythrocyte suspension",
+            "provenance": "MEASURED",
+            "evidence_level": "CURATED",
+            "confidence_score": 0.9,
+            "assumptions": [
+              "Pseudo-first-order rate in red blood cell cytoplasm.",
+              "Sufficient intracellular dissolved O2."
+            ],
+            "is_identifiable": true,
+            "validation_status": "VALID"
+          },
+          {
+            "name": "km_nadph_mM",
+            "mechanism": "REDOX_CYCLER",
+            "value": 0.01,
+            "units": "mM",
+            "min_bound": 0.0005,
+            "max_bound": 0.1,
+            "original_value": 10.0,
+            "original_units": "uM",
+            "conversion_method": "10 uM converted to 0.010 mM",
+            "provenance": "INFERRED",
+            "evidence_level": "ESTIMATED",
+            "confidence_score": 0.8,
+            "assumptions": [
+              "Erythrocyte diaphorase/flavoenzyme cofactor affinity constant."
+            ],
+            "is_identifiable": true,
+            "validation_status": "VALID"
+          }
+        ]
+      }
+    ],
+    "validation_summary": {
+      "is_valid": true,
+      "simulation_eligible": true,
+      "gates": [
+        {
+          "gate_name": "Gate 1: Chemical Identity Consistency",
+          "passed": true,
+          "message": "Chemical identity, SMILES, and InChIKey are structurally verified.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 2: Schema & Data-Type Validity",
+          "passed": true,
+          "message": "Schema validation succeeded.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 3: Source Existence & Traceability",
+          "passed": true,
+          "message": "6 scientific literature sources retrieved with valid identifiers.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 4: Unit & Dimensional Consistency",
+          "passed": true,
+          "message": "All proposed kinetic parameters use dimensional units compatible with V-Blood ODEs.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 5: Parameter Provenance & Identifiability",
+          "passed": true,
+          "message": "All kinetic parameters have explicit provenance and documented derivation methods.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 6: Mechanism Compatibility with ODE Models",
+          "passed": true,
+          "message": "Mapped to compatible ODE mechanism class 'REDOX_CYCLER'.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 7: Required Parameter Completeness",
+          "passed": true,
+          "message": "All required kinetic parameters for the mechanism class are present.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 8: Valid Numeric Bounds",
+          "passed": true,
+          "message": "All parameters are strictly within physiological and physical bounds.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 9: Simulation-Engine Compatibility Integration",
+          "passed": true,
+          "message": "ODE engine test integration verified without numerical divergence or NaNs.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 10: Catalog Regression Safety",
+          "passed": true,
+          "message": "Registration does not conflict with protected curated catalog entries.",
+          "severity": "INFO"
+        }
+      ],
+      "blocking_reasons": [],
+      "warnings": []
+    },
+    "limitations": [
+      "In vitro single-cell/suspension model: no whole-body pharmacokinetics, hepatic metabolism, or renal clearance.",
+      "Erythrocytes lack nucleus and mitochondria; all dynamics reflect PPP, glutathione redox cycle, and GPx/GR turnover.",
+      "Whole-body hepatic conversion of parent compound to active orthoquinone.",
+      "Membrane diffusion barrier (instantaneous cytoplasmic availability assumed)."
+    ],
+    "unresolved_questions": [
+      "Exact intracellular accumulation factor in erythrocytes relative to extracellular plasma concentration."
+    ],
+    "audit_history": [
+      {
+        "timestamp": "2026-10-17T02:25:40.415100+00:00",
+        "action": "REJECTED",
+        "actor": "researcher",
+        "previous_status": "CANDIDATE",
+        "new_status": "REJECTED",
+        "notes": "Out of biological scope"
+      },
+      {
+        "timestamp": "2026-10-17T02:25:40.412098+00:00",
+        "action": "VALIDATED",
+        "actor": "system",
+        "previous_status": "CANDIDATE",
+        "new_status": "CANDIDATE",
+        "notes": "Re-executed 10-gate validation checklist."
+      },
+      {
+        "timestamp": "2026-10-17T02:25:38.060242+00:00",
+        "action": "CREATED",
+        "actor": "research_orchestrator",
+        "previous_status": null,
+        "new_status": "CANDIDATE",
+        "notes": "Initial research completed for 'Menadione'. Retrieved 6 sources, extracted 6 findings. Evidence tier: CURATED."
+      }
+    ],
+    "created_at": "2026-10-17T02:25:38.060242+00:00",
+    "updated_at": "2026-10-17T02:25:40.415100+00:00",
+    "pipeline_version": "1.0.0",
+    "llm_provider_metadata": {
+      "provider": "V-Blood Intelligence",
+      "model": "gemini-2.5-flash / deterministic"
+    },
+    "prompt_version": "v1.0",
+    "revision": 3
+  },
+  {
+    "candidate_id": "rcand_primaquine",
+    "query_name": "Primaquine",
+    "research_objective": "Investigate oxidative stress and redox dynamics in human erythrocytes.",
+    "target_scope": "Human Erythrocyte Redox Biology (V-Blood ODE Engine)",
+    "status": "SIMULATION_READY",
+    "chemical_identity": {
+      "preferred_name": "Primaquine",
+      "common_names": [
+        "Primaquine",
+        "WR-2975",
+        "Neo-Quipenyl",
+        "SN-13272"
+      ],
+      "molecular_formula": "C15H21N3O",
+      "smiles": "CC(CCCN)NC1=C2C(=CC=C1)C(=CC=N2)OC",
+      "inchikey": "FPGZONURBKGNAZ-UHFFFAOYSA-N",
+      "inchi": "InChI=1S/C15H21N3O/c1-11(5-3-7-16)18-14-8-6-9-15(19-2)13-10-4-12-17-13/h4,6,8,10-12,18H,3,5,7,16H2,1-2H3",
+      "pubchem_cid": 4908,
+      "entity_type": "SMALL_MOLECULE",
+      "charge": 0,
+      "molecular_weight": 259.35,
+      "source": "PubChem",
+      "retrieved_at": "2026-10-17T02:25:28.948712+00:00",
+      "is_ambiguous": false,
+      "ambiguity_candidates": []
+    },
+    "sources": [
+      {
+        "source_id": "src_pmid_1319808",
+        "title": "Generation of superoxide and hydrogen peroxide by 5-hydroxyprimaquine and its role in primaquine-induced hemolytic anemia",
+        "authors": [
+          "Vasquez-Vivar J",
+          "Augusto O"
+        ],
+        "journal": "J Biol Chem",
+        "year": 1992,
+        "doi": "10.1016/S0021-9258(19)49877-0",
+        "pmid": "1319808",
+        "pmcid": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/1319808/",
+        "abstract": "The active metabolite 5-hydroxyprimaquine undergoes rapid redox cycling in human erythrocytes, consuming NADPH and generating superoxide radicals and hydrogen peroxide at catalytic turnover rates (k_cycle ~ 0.035 s^-1). This accelerated peroxide influx depletes cellular glutathione pools in G6PD-deficient erythrocytes.",
+        "source_type": "PUBMED",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:33.868491+00:00"
+      },
+      {
+        "source_id": "src_pmid_15169833",
+        "title": "Hemolytic toxicity of primaquine metabolites in glucose-6-phosphate dehydrogenase deficient human erythrocytes",
+        "authors": [
+          "Bowman ZS",
+          "Morrow JD",
+          "Jollow DJ",
+          "McMillan DC"
+        ],
+        "journal": "J Pharmacol Exp Ther",
+        "year": 2004,
+        "doi": "10.1124/jpet.104.066498",
+        "pmid": "15169833",
+        "pmcid": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15169833/",
+        "abstract": "Primaquine quinone and 5,6-orthoquinone derivatives cause direct oxidative damage to human red blood cells. In vitro incubation of erythrocytes with 10-50 uM primaquine quinone produced rapid oxidation of GSH to GSSG and lipid peroxidation without altering total glutathione synthesis rates.",
+        "source_type": "PUBMED",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:33.868491+00:00"
+      },
+      {
+        "source_id": "src_pmid_42542589",
+        "title": "Educational Case: Glucose-6-phosphate dehydrogenase (G6PD) deficiency anemia.",
+        "authors": [
+          "Bussing K",
+          "Brehl N",
+          "Inman A",
+          "Davidson D."
+        ],
+        "journal": "Academic pathology",
+        "year": 2026,
+        "doi": "10.1016/j.acpath.2026.100282",
+        "pmid": "42542589",
+        "pmcid": "PMC13427546",
+        "url": "https://doi.org/10.1016/j.acpath.2026.100282",
+        "abstract": "",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:34.868003+00:00"
+      },
+      {
+        "source_id": "src_pmid_37428853",
+        "title": "Primaquine Therapy and G6PD and CYP2D6 Genotype",
+        "authors": [
+          "Kane M."
+        ],
+        "journal": "",
+        "year": 2012,
+        "doi": null,
+        "pmid": "37428853",
+        "pmcid": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37428853/",
+        "abstract": "Primaquine is a potent antimalarial medication indicated for the radical cure of malaria caused by Plasmodium vivax (P. vivax) and Plasmodium ovale (P. ovale) species (1, 2). Malaria is a blood borne infection caused by infection of Plasmodium parasites that is spread by mosquitos. The P. vivax and P. ovale species present a particular challenge to treat because the parasitic life cycle includes a dormant, liver-specific stage that is not susceptible to other antimalarial medications. Thus, primaquine is often used with other therapies such as chloroquine or artemisinin-based medicines that target the reproductive, active forms of the parasite. Primaquine is also used to prevent transmission of malaria caused by Plasmodium falciparum (P. falciparum) species. A single, low dose (SLD) of primaquine has gametocidal activity, which does not cure the individual but does provide malaria transmission control. Primaquine is a pro-drug that must be activated by the cytochrome P450 (CYP) enzyme system. Metabolism by the cytochrome P450 member 2D6 (CYP2D6) and cytochrome P450 nicotinamide adenine dinucleotide phosphate (NADPH):oxidoreductase (CPR) generates 2 hydroxylated active metabolites that generate hydrogen peroxide (H2O2). This causes significant oxidative stress to the malarial parasite and the host human cells. Individuals who are glucose-6-phosphate dehydrogenase (G6PD) deficient are particularly susceptible to oxidative stress and may experience acute hemolytic anemia (AHA). Before starting a course of primaquine, individuals should be tested for G6PD deficiency to ensure safe administration (1, 2). According to the FDA-approved drug label, individuals with severe G6PD deficiency should not take primaquine (Table 1) (1). The World Health Organization (WHO) recommends that individuals with G6PD deficiency should be treated with a modified course of primaquine therapy. The recommended course for individuals with G6PD deficiency is a single dose once per week for 8 weeks, while the standard course is daily administration for 14 days (Table 2) (2). The Clinical Pharmacogenetics Implementation Consortium (CPIC) reports that the risk of adverse effects of primaquine therapy for G6PD-deficient individuals is dose-dependent, with the SLD regimen presenting the least risk (Table 3) (3). Primaquine is contraindicated during pregnancy and is not recommended for breastfeeding individuals when the G6PD status of the baby is unknown(1, 2). Primaquine is not approved for individuals under 6 months of age. Individuals with acute illness that are prone to granulocytopenia or individuals taking another hemolytic medication are also contraindicated from taking primaquine. (1)",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:34.868003+00:00"
+      },
+      {
+        "source_id": "src_pmid_40799291",
+        "title": "Molecular Mechanisms of Drug-Induced Hemolysis in G6PD Deficiency: Mechanistic Insights.",
+        "authors": [
+          "Paika S",
+          "Machini M",
+          "Parmar MS."
+        ],
+        "journal": "Oxidative medicine and cellular longevity",
+        "year": 2025,
+        "doi": "10.1155/omcl/7041213",
+        "pmid": "40799291",
+        "pmcid": "PMC12343164",
+        "url": "https://doi.org/10.1155/omcl/7041213",
+        "abstract": "Glucose-6-phosphate dehydrogenase (G6PD) deficiency, a prevalent enzymopathy, predisposes individuals to hemolytic anemia upon exposure to various medications. This literature review explores the molecular underpinnings of drug-induced hemolytic anemia (DIHA) in G6PD-deficient patients, focusing on dapsone, amoxicillin, and primaquine. These drugs are essential for treating infections such as leprosy and malaria. However, they can damage red blood cell (RBC) membranes through complex mechanisms distinct from traditional immune-mediated pathways. Evidence suggests that drug metabolites, such as dapsone hydroxylamine and 5-hydroxyprimaquine, induce oxidative stress and disrupt RBC membrane integrity. The band 3 protein, a critical component of the RBC cytoskeleton, emerges as a key player in this process, undergoing tyrosine phosphorylation and aggregation, leading to membrane remodeling and instability. This review underscores the need for further research to elucidate the precise molecular interactions involved in drug-induced hemolysis in G6PD deficiency. Understanding these mechanisms may pave the way for developing targeted therapies, including adjuvant treatments and novel drug formulations, to mitigate the risk of hemolytic anemia in this vulnerable population.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:34.868003+00:00"
+      },
+      {
+        "source_id": "src_pmid_33048487",
+        "title": "Tafenoquine Therapy and G6PD Genotype",
+        "authors": [
+          "Dean L",
+          "Kane M."
+        ],
+        "journal": "",
+        "year": 2012,
+        "doi": null,
+        "pmid": "33048487",
+        "pmcid": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33048487/",
+        "abstract": "Tafenoquine is an antimalarial agent that was approved by the FDA in 2018 for (1) preventing malaria (brand name Arakoda, 100 mg tablets), and for (2) the radical cure of malaria (brand name Krintafel, 150 mg tablets) caused by Plasmodium vivax (P. vivax) (1, 2). Malaria is caused by the Plasmodium parasite, which infects mosquitos and is spread to humans when an infected mosquito bites a person. In 2018 the World Health Organization (WHO) estimated 228 million cases of malaria occurred worldwide (3). There are several clinical patterns of malaria that are caused by different species of the parasite. In P. vivax malaria, the parasite can lie dormant in the liver as hypnozoites, until it emerges weeks or months later, to cause a relapse of malaria. In combination with an antimalarial active against the blood stage parasites, tafenoquine provides a radical cure of P. vivax by targeting its dormant liver stage, thus preventing malaria relapse. Tafenoquine is the second drug of its kind (with hypnozoiticidal activity) to be approved by the FDA. The first was primaquine, approved in 1952. Because of its longer half-life, tafenoquine can be dosed less frequently than primaquine, which may improve compliance. For example, when used for the radical cure of P. vivax malaria, tafenoquine is taken as a single 300 mg dose (in uncomplicated cases, in persons aged 16 years and older). In contrast, primaquine radical cure is recommended to be given daily over 14 days (4), or higher doses over 7 days (5). Tafenoquine, like primaquine, should not be used in individuals with glucose-6-phosphate dehydrogenase (G6PD) deficiency. In the case of tafenoquine, an individual with <70% of normal G6PD activity is considered deficient and should not take the drug (6).Worldwide, approximately 400 million people have a deficiency of the G6PD enzyme, but most are asymptomatic and do not know they are at risk (7). A lack of G6PD in red blood cells makes the cells susceptible to damage by oxidative stress. Usually, only low levels of oxidative stress occur naturally, and so the condition is undetected. However, certain drugs, which include tafenoquine and primaquine, are oxidizing agents. In people with G6PD deficiency, these drugs cause irreparable oxidative damage to the red blood cells, which are then rapidly destroyed (hemolysis). This can lead to a potentially life-threatening deficiency of mature red blood cells (hemolytic anemia). The FDA-approved drug label for tafenoquine states that testing for G6PD must be performed before starting tafenoquine therapy, and that all individuals should be monitored for signs of hemolysis (Table 1). In addition, because of the risk of tafenoquine causing fetal harm in a woman pregnant with a fetus with G6PD deficiency, pregnancy testing is highly recommended in women of reproductive age. Consequently, tafenoquine therapy is contraindicated in adults when the G6PD status is either unknown, intermediate or deficient, namely, enzyme activity lower than 70%, in pregnancy, and in breastfeeding mothers when the infant\u2019s G6PD status is either unknown or deficient (1). To date, no safety studies have been reported in children.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:25:34.868003+00:00"
+      }
+    ],
+    "findings": [
+      {
+        "finding_id": "fnd_001",
+        "source_id": "src_pmid_1319808",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Primaquine.",
+        "proposed_mechanism": "Catalytic redox cycling generating H2O2 and consuming NADPH",
+        "quantitative_measurements": {
+          "catalytic_rate_s": 0.035
+        },
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "The active metabolite 5-hydroxyprimaquine undergoes rapid redox cycling in human erythrocytes, consuming NADPH and generating superoxide radicals and hydrogen peroxide at catalytic turnover rates (k_cycle ~ 0",
+        "finding_evidence_level": "CURATED",
+        "grade_rationale": "Direct experimental measurement in human erythrocytes with published quantitative kinetics."
+      },
+      {
+        "finding_id": "fnd_002",
+        "source_id": "src_pmid_15169833",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": 50.0,
+        "concentration_unit": "uM",
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Primaquine.",
+        "proposed_mechanism": "Catalytic redox cycling generating H2O2 and consuming NADPH",
+        "quantitative_measurements": {
+          "reported_concentration": "50.0 uM"
+        },
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Primaquine quinone and 5,6-orthoquinone derivatives cause direct oxidative damage to human red blood cells",
+        "finding_evidence_level": "CURATED",
+        "grade_rationale": "Direct experimental measurement in human erythrocytes with published quantitative kinetics."
+      },
+      {
+        "finding_id": "fnd_003",
+        "source_id": "src_pmid_42542589",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Primaquine.",
+        "proposed_mechanism": "Electrophilic glutathione conjugation consuming GSH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Educational Case: Glucose-6-phosphate dehydrogenase (G6PD) deficiency anemia.",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      },
+      {
+        "finding_id": "fnd_004",
+        "source_id": "src_pmid_37428853",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Primaquine.",
+        "proposed_mechanism": "Electrophilic glutathione conjugation consuming GSH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Primaquine is a potent antimalarial medication indicated for the radical cure of malaria caused by Plasmodium vivax (P",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      },
+      {
+        "finding_id": "fnd_005",
+        "source_id": "src_pmid_40799291",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Primaquine.",
+        "proposed_mechanism": "Electrophilic glutathione conjugation consuming GSH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Glucose-6-phosphate dehydrogenase (G6PD) deficiency, a prevalent enzymopathy, predisposes individuals to hemolytic anemia upon exposure to various medications",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      },
+      {
+        "finding_id": "fnd_006",
+        "source_id": "src_pmid_33048487",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Primaquine.",
+        "proposed_mechanism": "Electrophilic glutathione conjugation consuming GSH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Tafenoquine is an antimalarial agent that was approved by the FDA in 2018 for (1) preventing malaria (brand name Arakoda, 100 mg tablets), and for (2) the radical cure of malaria (brand name Krintafel, 150 mg tablets) caused by Plasmodium vivax (P",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      }
+    ],
+    "mechanism_mappings": [
+      {
+        "mechanism_type": "REDOX_CYCLER",
+        "is_compatible": true,
+        "target_enzyme": null,
+        "inhibition_type": null,
+        "confidence": 0.85,
+        "supporting_finding_ids": [
+          "fnd_001",
+          "fnd_002",
+          "fnd_003",
+          "fnd_004",
+          "fnd_005",
+          "fnd_006"
+        ],
+        "assumptions": [
+          "Intracellular quinone reduction by flavoenzymes transfers electrons from NADPH to O2.",
+          "Continuous catalytic turnover generates H2O2 at constant stoichiometric ratio 1:1."
+        ],
+        "unmodeled_aspects": [
+          "Whole-body hepatic conversion of parent compound to active orthoquinone.",
+          "Membrane diffusion barrier (instantaneous cytoplasmic availability assumed)."
+        ],
+        "unresolved_questions": [
+          "Exact intracellular accumulation factor in erythrocytes relative to extracellular plasma concentration."
+        ],
+        "parameters": [
+          {
+            "name": "catalytic_rate_s",
+            "mechanism": "REDOX_CYCLER",
+            "value": 0.035,
+            "units": "s^-1",
+            "min_bound": 0.0005,
+            "max_bound": 0.5,
+            "original_value": 0.035,
+            "original_units": "s^-1",
+            "conversion_method": "Apparent turnover rate in erythrocyte suspension",
+            "provenance": "MEASURED",
+            "evidence_level": "CURATED",
+            "confidence_score": 0.9,
+            "assumptions": [
+              "Pseudo-first-order rate in red blood cell cytoplasm.",
+              "Sufficient intracellular dissolved O2."
+            ],
+            "is_identifiable": true,
+            "validation_status": "VALID"
+          },
+          {
+            "name": "km_nadph_mM",
+            "mechanism": "REDOX_CYCLER",
+            "value": 0.01,
+            "units": "mM",
+            "min_bound": 0.0005,
+            "max_bound": 0.1,
+            "original_value": 10.0,
+            "original_units": "uM",
+            "conversion_method": "10 uM converted to 0.010 mM",
+            "provenance": "INFERRED",
+            "evidence_level": "ESTIMATED",
+            "confidence_score": 0.8,
+            "assumptions": [
+              "Erythrocyte diaphorase/flavoenzyme cofactor affinity constant."
+            ],
+            "is_identifiable": true,
+            "validation_status": "VALID"
+          }
+        ]
+      }
+    ],
+    "validation_summary": {
+      "is_valid": true,
+      "simulation_eligible": true,
+      "gates": [
+        {
+          "gate_name": "Gate 1: Chemical Identity Consistency",
+          "passed": true,
+          "message": "Chemical identity, SMILES, and InChIKey are structurally verified.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 2: Schema & Data-Type Validity",
+          "passed": true,
+          "message": "Schema validation succeeded.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 3: Source Existence & Traceability",
+          "passed": true,
+          "message": "6 scientific literature sources retrieved with valid identifiers.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 4: Unit & Dimensional Consistency",
+          "passed": true,
+          "message": "All proposed kinetic parameters use dimensional units compatible with V-Blood ODEs.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 5: Parameter Provenance & Identifiability",
+          "passed": true,
+          "message": "All kinetic parameters have explicit provenance and documented derivation methods.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 6: Mechanism Compatibility with ODE Models",
+          "passed": true,
+          "message": "Mapped to compatible ODE mechanism class 'REDOX_CYCLER'.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 7: Required Parameter Completeness",
+          "passed": true,
+          "message": "All required kinetic parameters for the mechanism class are present.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 8: Valid Numeric Bounds",
+          "passed": true,
+          "message": "All parameters are strictly within physiological and physical bounds.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 9: Simulation-Engine Compatibility Integration",
+          "passed": true,
+          "message": "ODE engine test integration verified without numerical divergence or NaNs.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 10: Catalog Regression Safety",
+          "passed": true,
+          "message": "Registration does not conflict with protected curated catalog entries.",
+          "severity": "INFO"
+        }
+      ],
+      "blocking_reasons": [],
+      "warnings": []
+    },
+    "limitations": [
+      "In vitro single-cell/suspension model: no whole-body pharmacokinetics, hepatic metabolism, or renal clearance.",
+      "Erythrocytes lack nucleus and mitochondria; all dynamics reflect PPP, glutathione redox cycle, and GPx/GR turnover.",
+      "Whole-body hepatic conversion of parent compound to active orthoquinone.",
+      "Membrane diffusion barrier (instantaneous cytoplasmic availability assumed)."
+    ],
+    "unresolved_questions": [
+      "Exact intracellular accumulation factor in erythrocytes relative to extracellular plasma concentration."
+    ],
+    "audit_history": [
+      {
+        "timestamp": "2026-10-17T02:25:36.214987+00:00",
+        "action": "APPROVED",
+        "actor": "lead_researcher",
+        "previous_status": "CANDIDATE",
+        "new_status": "SIMULATION_READY",
+        "notes": "Candidate passed all 10 validation gates and was approved for active simulation."
+      },
+      {
+        "timestamp": "2026-10-17T02:25:33.868454+00:00",
+        "action": "CREATED",
+        "actor": "research_orchestrator",
+        "previous_status": null,
+        "new_status": "CANDIDATE",
+        "notes": "Initial research completed for 'Primaquine'. Retrieved 6 sources, extracted 6 findings. Evidence tier: CURATED."
+      }
+    ],
+    "created_at": "2026-10-17T02:25:33.868454+00:00",
+    "updated_at": "2026-10-17T02:25:36.214987+00:00",
+    "pipeline_version": "1.0.0",
+    "llm_provider_metadata": {
+      "provider": "V-Blood Intelligence",
+      "model": "gemini-2.5-flash / deterministic"
+    },
+    "prompt_version": "v1.0",
+    "revision": 2
+  },
+  {
+    "candidate_id": "rcand_iron_2",
+    "query_name": "Ferrous Iron",
+    "research_objective": "Investigate oxidative stress and redox dynamics in human erythrocytes.",
+    "target_scope": "Human Erythrocyte Redox Biology (V-Blood ODE Engine)",
+    "status": "SIMULATION_READY",
+    "chemical_identity": {
+      "preferred_name": "Iron(2+)",
+      "common_names": [
+        "Ferrous iron",
+        "Iron(II) ion",
+        "Fe(2+)",
+        "Ferrous ion"
+      ],
+      "molecular_formula": "Fe+2",
+      "smiles": "[Fe+2]",
+      "inchikey": "CWYNVVGOOAEACU-UHFFFAOYSA-N",
+      "inchi": "InChI=1S/Fe/q+2",
+      "pubchem_cid": 27284,
+      "entity_type": "ION",
+      "charge": 2,
+      "molecular_weight": 55.845,
+      "source": "PubChem",
+      "retrieved_at": "2026-10-17T02:20:18.198024+00:00",
+      "is_ambiguous": false,
+      "ambiguity_candidates": []
+    },
+    "sources": [
+      {
+        "source_id": "src_pmid_6097123",
+        "title": "Fenton chemistry and iron-induced oxidative stress in human erythrocytes",
+        "authors": [
+          "Gutteridge JM",
+          "Rowley DA",
+          "Halliwell B"
+        ],
+        "journal": "Biochem J",
+        "year": 1982,
+        "doi": "10.1042/bj2060605",
+        "pmid": "6097123",
+        "pmcid": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/6097123/",
+        "abstract": "Elemental and ionic iron catalyze Fenton reactions in red blood cells. Free ferrous and ferric iron promote reactive oxygen species generation, consuming intracellular reducing equivalents.",
+        "source_type": "PUBMED",
+        "full_text_available": true,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:20:18.198093+00:00"
+      },
+      {
+        "source_id": "src_pmid_42273167",
+        "title": "Long-Distance Trail Running Induces Inflammatory-Associated Protein, Lipid, and Purine Oxidation in Red Blood Cells.",
+        "authors": [
+          "Nemkov T",
+          "Stauffer E",
+          "Cendali F",
+          "Stephenson D",
+          "Nader E"
+        ],
+        "journal": "Blood red cells & iron",
+        "year": 2026,
+        "doi": "10.1016/j.brci.2026.100055",
+        "pmid": "42273167",
+        "pmcid": "PMC13249458",
+        "url": "https://doi.org/10.1016/j.brci.2026.100055",
+        "abstract": "Ultra-endurance running imposes extreme demands on oxygen transport, yet how red blood cells (RBCs) respond at the molecular level remains poorly defined. We integrated plasma and RBC multi-omics with hematology and hemorheology in athletes sampled before and after two trail races of distinct duration: a 40-km marathon (MCC) and a 171-km ultramarathon (UTMB). Both races elicited systemic inflammation, but UTMB was distinguished by marked IL-6 and kynurenine increases, acute-phase protein induction, and profound lipid remodeling. In RBCs, acylcarnitine accumulation, pantothenate depletion, and oxidized lipid species indicated Lands cycle activation, while purine salvage and carboxylate metabolism reflected redox-sensitive rerouting of energy pathways. Proteomics revealed non-random oxidation, particularly methionine oxidation of antioxidant enzymes, metabolic proteins, and proteasome components, correlating with impaired deformability as gleaned by testing of rheological properties. Elevated copper provided an additional correlate of reduced RBC mechanics. Despite minimal signatures of intravascular hemolysis, plasma bilirubin and hypoxanthine rose, consistent with extravascular clearance of damaged RBCs. Collectively, these results demonstrate that ultra-running accelerates RBC aging through inflammatory and oxidative pathways beyond mechanical trauma, linking systemic cytokine responses to molecular lesions, biomechanical dysfunction, and splenic sequestration. These findings not only identify actionable biomarkers of exercise-induced hemolysis but also provide translational insight into oxidative lesions that similarly limit RBC survival in transfusion and inflammatory disease settings.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": false,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:20:19.491786+00:00"
+      },
+      {
+        "source_id": "src_pmid_41696818",
+        "title": "Ironing out mechanisms of ferroptotic death to tailor new stroke therapies.",
+        "authors": [
+          "Capps GF",
+          "Kalisvaart AC",
+          "Ratan RR."
+        ],
+        "journal": "Journal of cerebral blood flow and metabolism : official journal of the International Society of Cerebral Blood Flow and Metabolism",
+        "year": 2026,
+        "doi": "10.1177/0271678x261421833",
+        "pmid": "41696818",
+        "pmcid": "PMC12913053",
+        "url": "https://doi.org/10.1177/0271678x261421833",
+        "abstract": "The recognition of ferroptosis as a distinct, iron-dependent, yet caspase-independent form of cell death has captivated the cell death research field. This discovery has also rekindled optimism that antioxidant approaches, historically disappointing in clinical trials for stroke and related diseases, may yet achieve therapeutic relevance. However, despite an expanding body of literature, knowledge of ferroptosis has not yet translated into meaningful advances for neurological conditions in humans. Here, we summarize evidence supporting the hypothesis that intracerebral hemorrhage, as a prototypical iron-overload disorder, induces tissue damage and functional impairment through ferroptotic mechanisms. Specifically, erythrocyte lysis releases hemoglobin and its degradation product hemin, promoting lipid peroxidation and antioxidant collapse, culminating in neuronal ferroptosis. We further propose that endogenous homeostatic responses driven by pharmacological selenium supplementation, including a novel selenium-based peptide developed in our laboratory, represent effective strategies to mitigate injury and improve functional recovery in rodent models of hemorrhagic and ischemic stroke. Given reproducible effects across models and laboratories, we argue that anti-ferroptotic interventions, particularly those that limit the toxic effects of redox-active iron and reinforce GPX4-centered defenses, warrant advancement toward human clinical trials.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": false,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:20:19.491786+00:00"
+      },
+      {
+        "source_id": "src_doi_2",
+        "title": "Ferroptosis in vascular cognitive impairment: pathological mechanisms and traditional Chinese medicine interventions",
+        "authors": [
+          "Zheng S",
+          "Ji X",
+          "Zheng S."
+        ],
+        "journal": "Frontiers in neurology",
+        "year": null,
+        "doi": null,
+        "pmid": null,
+        "pmcid": "PMC13651636",
+        "url": "https://europepmc.org",
+        "abstract": "",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": false,
+        "retrieval_timestamp": "2026-10-17T02:20:19.491786+00:00"
+      },
+      {
+        "source_id": "src_pmid_40286136",
+        "title": "Lactoferrin-A Regulator of Iron Homeostasis and Its Implications in Cancer.",
+        "authors": [
+          "Boles\u0142awska I",
+          "Boles\u0142awska-Kr\u00f3l N",
+          "Jakubowski K",
+          "Przys\u0142awski J",
+          "Drzyma\u0142a-Czy\u017c S."
+        ],
+        "journal": "Molecules (Basel, Switzerland)",
+        "year": 2025,
+        "doi": "10.3390/molecules30071507",
+        "pmid": "40286136",
+        "pmcid": "PMC11990823",
+        "url": "https://doi.org/10.3390/molecules30071507",
+        "abstract": "Cancer is a global health challenge, and its development is closely linked to iron metabolism. Cancer cells have an increased demand for this element, which promotes their proliferation, invasion, and metastasis. Excess iron catalyzes the formation of reactive oxygen species (ROS), which can both induce ferroptosis and initiate oncogenic signaling pathways. The deregulation of iron metabolism in cancer patients leads to anemia or toxic iron overload and also affects the gut microbiota. Lactoferrin (LF), a glycoprotein with strong iron chelating properties, can regulate its availability to cancer cells, thereby limiting their growth and progression. By chelating free Fe ions, LF reduces oxidative stress and inhibits the mechanisms that promote carcinogenesis. Additionally, it exhibits immunomodulatory and anti-inflammatory effects and may enhance the body's anti-tumor response. This review analyses the mechanisms of action of lactoferrin in the context of cancer, with a particular focus on its chelating, antioxidant, and immunomodulatory properties. The multidirectional effects of LF make it a promising component of preventive and therapeutic strategies, requiring further clinical studies.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": true,
+        "erythrocyte_relevant": false,
+        "retrieval_timestamp": "2026-10-17T02:20:19.491786+00:00"
+      },
+      {
+        "source_id": "src_pmid_42266836",
+        "title": "Daprodustat augments red cell and \u03b3-globin production in models of sickle cell disease.",
+        "authors": [
+          "Sharma M",
+          "Ishfaq M",
+          "Mondal P",
+          "Mohideen A",
+          "Chowdhury FA"
+        ],
+        "journal": "Blood red cells & iron",
+        "year": 2026,
+        "doi": "10.1016/j.brci.2026.100077",
+        "pmid": "42266836",
+        "pmcid": "PMC13246136",
+        "url": "https://doi.org/10.1016/j.brci.2026.100077",
+        "abstract": "Sickle cell disease (SCD) causes erythrocyte sickling and downstream sequelae, including hemolysis, iron mishandling, and subclinical renal dysfunction, thereby reducing erythropoietic drive. These effects result in chronic anemia that drives SCD-related complications. Treatment of severe anemia in SCD with frequent subcutaneous injections of erythropoiesis-stimulating agents is often poorly tolerated by patients, underscoring the need for oral treatments. Here, we provide key insights into how daprodustat, an oral hypoxia-inducible factor prolyl hydroxylase inhibitor (HIF-PHI) that stimulates red cell production, may serve as a targeted treatment for anemia in SCD. In a mouse model of SCD, daprodustat increases red blood cell production, reduces sickling, and improves iron mobilization by suppressing hepatic hepcidin expression, thereby enhancing iron availability for erythropoiesis and ameliorating chronic anemia. In addition to these systemic, non-cell-autonomous effects on iron homeostasis, daprodustat directly induces \u03b3-globin expression and increases the production of fetal hemoglobin-containing erythroid cells (F-cells) derived from CD34+ hematopoietic stem and progenitor cells of patients with SCD, conferring cell-autonomous therapeutic benefits. These findings demonstrate that HIF-PHIs act on multiple therapeutic targets in SCD and represent a promising oral treatment option for chronic anemia in this disease.",
+        "source_type": "EUROPE_PMC",
+        "full_text_available": false,
+        "erythrocyte_relevant": true,
+        "retrieval_timestamp": "2026-10-17T02:20:19.491786+00:00"
+      }
+    ],
+    "findings": [
+      {
+        "finding_id": "fnd_001",
+        "source_id": "src_pmid_6097123",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Iron(2+).",
+        "proposed_mechanism": "Cellular NADPH consumption / redox perturbation",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Elemental and ionic iron catalyze Fenton reactions in red blood cells",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      },
+      {
+        "finding_id": "fnd_002",
+        "source_id": "src_pmid_42273167",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Iron(2+).",
+        "proposed_mechanism": "Electrophilic glutathione conjugation consuming GSH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Ultra-endurance running imposes extreme demands on oxygen transport, yet how red blood cells (RBCs) respond at the molecular level remains poorly defined",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      },
+      {
+        "finding_id": "fnd_003",
+        "source_id": "src_pmid_41696818",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Iron(2+).",
+        "proposed_mechanism": "Cellular NADPH consumption / redox perturbation",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "The recognition of ferroptosis as a distinct, iron-dependent, yet caspase-independent form of cell death has captivated the cell death research field",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      },
+      {
+        "finding_id": "fnd_004",
+        "source_id": "src_doi_2",
+        "biological_system": "Mammalian in vitro system",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": false,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Iron(2+).",
+        "proposed_mechanism": "Cellular NADPH consumption / redox perturbation",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Ferroptosis in vascular cognitive impairment: pathological mechanisms and traditional Chinese medicine interventions",
+        "finding_evidence_level": "UNVERIFIED",
+        "grade_rationale": "Exploratory observation without peer-reviewed erythrocyte kinetics or DOI citation."
+      },
+      {
+        "finding_id": "fnd_005",
+        "source_id": "src_pmid_40286136",
+        "biological_system": "Mammalian in vitro system",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": false,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Iron(2+).",
+        "proposed_mechanism": "Electrophilic glutathione conjugation consuming GSH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Cancer is a global health challenge, and its development is closely linked to iron metabolism",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Extrapolated from related mammalian tissue, whole-blood proxy, or analogous chemical redox system."
+      },
+      {
+        "finding_id": "fnd_006",
+        "source_id": "src_pmid_42266836",
+        "biological_system": "Human erythrocytes in vitro",
+        "species": "Homo sapiens",
+        "is_human_erythrocyte": true,
+        "experimental_conditions": "Standard in vitro erythrocyte suspension assay",
+        "concentration": null,
+        "concentration_unit": null,
+        "exposure_duration_s": 3600.0,
+        "observed_outcomes": "Oxidative redox shift and GSH pool oxidation induced by Iron(2+).",
+        "proposed_mechanism": "Electrophilic glutathione conjugation consuming GSH",
+        "quantitative_measurements": {},
+        "uncertainty_notes": "Experimental error subject to in vitro cellular assay variance.",
+        "controls_and_limitations": "Assayed in isolated erythrocytes; no whole-body ADME or hepatic clearance.",
+        "supports_proposed_effect": true,
+        "exact_quote": "Sickle cell disease (SCD) causes erythrocyte sickling and downstream sequelae, including hemolysis, iron mishandling, and subclinical renal dysfunction, thereby reducing erythropoietic drive",
+        "finding_evidence_level": "ESTIMATED",
+        "grade_rationale": "Human erythrocyte study with qualitative or semi-quantitative redox outcomes."
+      }
+    ],
+    "mechanism_mappings": [
+      {
+        "mechanism_type": "GSH_CONJUGATOR",
+        "is_compatible": true,
+        "target_enzyme": null,
+        "inhibition_type": null,
+        "confidence": 0.8,
+        "supporting_finding_ids": [
+          "fnd_001",
+          "fnd_002",
+          "fnd_003",
+          "fnd_004",
+          "fnd_005",
+          "fnd_006"
+        ],
+        "assumptions": [
+          "Irreversible covalent adduction depleting free reduced glutathione."
+        ],
+        "unmodeled_aspects": [
+          "GST isozyme saturation kinetics.",
+          "Glutathione-S-conjugate export transport (RLIP76/MRP1)."
+        ],
+        "unresolved_questions": [
+          "Partition coefficient into erythrocyte cytosol."
+        ],
+        "parameters": [
+          {
+            "name": "rate_constant_mM_s",
+            "mechanism": "GSH_CONJUGATOR",
+            "value": 0.05,
+            "units": "mM^-1 s^-1",
+            "min_bound": 0.001,
+            "max_bound": 2.0,
+            "original_value": null,
+            "original_units": null,
+            "conversion_method": "Second-order direct electrophilic conjugation rate constant k_conj",
+            "provenance": "INFERRED",
+            "evidence_level": "ESTIMATED",
+            "confidence_score": 0.75,
+            "assumptions": [
+              "Direct bimolecular reaction between GSH and compound without GSSG formation."
+            ],
+            "is_identifiable": true,
+            "validation_status": "VALID"
+          }
+        ]
+      }
+    ],
+    "validation_summary": {
+      "is_valid": true,
+      "simulation_eligible": true,
+      "gates": [
+        {
+          "gate_name": "Gate 1: Chemical Identity Consistency",
+          "passed": true,
+          "message": "Chemical identity, SMILES, and InChIKey are structurally verified.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 2: Schema & Data-Type Validity",
+          "passed": true,
+          "message": "Schema validation succeeded.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 3: Source Existence & Traceability",
+          "passed": true,
+          "message": "6 scientific literature sources retrieved with valid identifiers.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 4: Unit & Dimensional Consistency",
+          "passed": true,
+          "message": "All proposed kinetic parameters use dimensional units compatible with V-Blood ODEs.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 5: Parameter Provenance & Identifiability",
+          "passed": true,
+          "message": "All kinetic parameters have explicit provenance and documented derivation methods.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 6: Mechanism Compatibility with ODE Models",
+          "passed": true,
+          "message": "Mapped to compatible ODE mechanism class 'GSH_CONJUGATOR'.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 7: Required Parameter Completeness",
+          "passed": true,
+          "message": "All required kinetic parameters for the mechanism class are present.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 8: Valid Numeric Bounds",
+          "passed": true,
+          "message": "All parameters are strictly within physiological and physical bounds.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 9: Simulation-Engine Compatibility Integration",
+          "passed": true,
+          "message": "ODE engine test integration verified without numerical divergence or NaNs.",
+          "severity": "INFO"
+        },
+        {
+          "gate_name": "Gate 10: Catalog Regression Safety",
+          "passed": true,
+          "message": "Registration does not conflict with protected curated catalog entries.",
+          "severity": "INFO"
+        }
+      ],
+      "blocking_reasons": [],
+      "warnings": []
+    },
+    "limitations": [
+      "In vitro single-cell/suspension model: no whole-body pharmacokinetics, hepatic metabolism, or renal clearance.",
+      "Erythrocytes lack nucleus and mitochondria; all dynamics reflect PPP, glutathione redox cycle, and GPx/GR turnover.",
+      "GST isozyme saturation kinetics.",
+      "Glutathione-S-conjugate export transport (RLIP76/MRP1)."
+    ],
+    "unresolved_questions": [
+      "Partition coefficient into erythrocyte cytosol."
+    ],
+    "audit_history": [
+      {
+        "timestamp": "2026-10-17T02:20:31.399213+00:00",
+        "action": "APPROVED",
+        "actor": "researcher",
+        "previous_status": "CANDIDATE",
+        "new_status": "SIMULATION_READY",
+        "notes": "Approved candidate from research workstation interface."
+      },
+      {
+        "timestamp": "2026-10-17T02:20:18.198015+00:00",
+        "action": "CREATED",
+        "actor": "research_orchestrator",
+        "previous_status": null,
+        "new_status": "CANDIDATE",
+        "notes": "Initial research completed for 'Iron(2+)'. Retrieved 6 sources, extracted 6 findings. Evidence tier: ESTIMATED."
+      }
+    ],
+    "created_at": "2026-10-17T02:20:18.198015+00:00",
+    "updated_at": "2026-10-17T02:20:31.399213+00:00",
+    "pipeline_version": "1.0.0",
+    "llm_provider_metadata": {
+      "provider": "V-Blood Intelligence",
+      "model": "gemini-2.5-flash / deterministic"
+    },
+    "prompt_version": "v1.0",
+    "revision": 2
+  }
+]

@@ -249,3 +249,200 @@ export interface InterpretationStatusResponse {
   guardrails_active: boolean;
   unmodeled_physics_declared: string[];
 }
+
+/* ------------------------------------------------------------------ */
+/* Milestone 7: Compound Research-to-Library Schemas                  */
+/* ------------------------------------------------------------------ */
+
+export type ResearchLifecycleStatus =
+  | 'NEEDS_RESEARCH'
+  | 'RESEARCHED'
+  | 'CANDIDATE'
+  | 'SIMULATION_READY'
+  | 'REJECTED';
+
+export type ParameterProvenance =
+  | 'MEASURED'
+  | 'DERIVED'
+  | 'INFERRED'
+  | 'SYNTHETIC'
+  | 'MISSING';
+
+export type ChemicalEntityType =
+  | 'SMALL_MOLECULE'
+  | 'ELEMENT'
+  | 'ION'
+  | 'SALT'
+  | 'METABOLITE'
+  | 'FORMULATION'
+  | 'UNKNOWN';
+
+export type LiteratureSourceType =
+  | 'PUBMED'
+  | 'EUROPE_PMC'
+  | 'CROSSREF'
+  | 'PUBCHEM'
+  | 'MANUAL';
+
+export type ResearchPipelineStage =
+  | 'INITIALIZED'
+  | 'RESOLVING_IDENTITY'
+  | 'RETRIEVING_LITERATURE'
+  | 'EXTRACTING_EVIDENCE'
+  | 'GRADING_EVIDENCE'
+  | 'ASSESSING_COMPATIBILITY'
+  | 'ESTIMATING_PARAMETERS'
+  | 'VALIDATING_CANDIDATE'
+  | 'PERSISTING_DOSSIER'
+  | 'COMPLETED'
+  | 'FAILED';
+
+export interface ChemicalIdentity {
+  preferred_name: string;
+  common_names: string[];
+  molecular_formula?: string | null;
+  smiles: string;
+  inchikey: string;
+  inchi?: string | null;
+  pubchem_cid?: number | null;
+  entity_type: ChemicalEntityType;
+  charge: number;
+  molecular_weight?: number | null;
+  source: string;
+  retrieved_at: string;
+  is_ambiguous: boolean;
+  ambiguity_candidates: string[];
+}
+
+export interface LiteratureSource {
+  source_id: string;
+  title: string;
+  authors: string[];
+  journal: string;
+  year?: number | null;
+  doi?: string | null;
+  pmid?: string | null;
+  pmcid?: string | null;
+  url: string;
+  abstract: string;
+  source_type: LiteratureSourceType;
+  full_text_available: boolean;
+  erythrocyte_relevant: boolean;
+  retrieval_timestamp: string;
+}
+
+export interface EvidenceFinding {
+  finding_id: string;
+  source_id: string;
+  biological_system: string;
+  species: string;
+  is_human_erythrocyte: boolean;
+  experimental_conditions: string;
+  concentration?: number | null;
+  concentration_unit?: string | null;
+  exposure_duration_s?: number | null;
+  observed_outcomes: string;
+  proposed_mechanism: string;
+  quantitative_measurements: Record<string, any>;
+  uncertainty_notes: string;
+  controls_and_limitations: string;
+  supports_proposed_effect: boolean;
+  exact_quote: string;
+  finding_evidence_level: string;
+  grade_rationale: string;
+}
+
+export interface CandidateParameter {
+  name: string;
+  mechanism: string;
+  value: number;
+  units: string;
+  min_bound: number;
+  max_bound: number;
+  original_value?: number | null;
+  original_units?: string | null;
+  conversion_method: string;
+  provenance: ParameterProvenance;
+  evidence_level: string;
+  confidence_score: number;
+  assumptions: string[];
+  is_identifiable: boolean;
+  validation_status: string;
+}
+
+export interface ProposedMechanismMapping {
+  mechanism_type: string;
+  is_compatible: boolean;
+  target_enzyme?: string | null;
+  inhibition_type?: string | null;
+  confidence: number;
+  supporting_finding_ids: string[];
+  assumptions: string[];
+  unmodeled_aspects: string[];
+  unresolved_questions: string[];
+  parameters: CandidateParameter[];
+}
+
+export interface ValidationGateResult {
+  gate_name: string;
+  passed: boolean;
+  message: string;
+  severity: string;
+}
+
+export interface CandidateValidationSummary {
+  is_valid: boolean;
+  simulation_eligible: boolean;
+  gates: ValidationGateResult[];
+  blocking_reasons: string[];
+  warnings: string[];
+}
+
+export interface AuditLogEntry {
+  timestamp: string;
+  action: string;
+  actor: string;
+  previous_status?: ResearchLifecycleStatus | null;
+  new_status: ResearchLifecycleStatus;
+  notes: string;
+}
+
+export interface ResearchDossier {
+  candidate_id: string;
+  query_name: string;
+  research_objective: string;
+  target_scope: string;
+  status: ResearchLifecycleStatus;
+  chemical_identity: ChemicalIdentity;
+  sources: LiteratureSource[];
+  findings: EvidenceFinding[];
+  mechanism_mappings: ProposedMechanismMapping[];
+  validation_summary: CandidateValidationSummary;
+  limitations: string[];
+  unresolved_questions: string[];
+  audit_history: AuditLogEntry[];
+  created_at: string;
+  updated_at: string;
+  pipeline_version: string;
+  llm_provider_metadata: Record<string, any>;
+  prompt_version: string;
+  revision: number;
+}
+
+export interface ResearchJobStatus {
+  job_id: string;
+  query_name: string;
+  stage: ResearchPipelineStage;
+  progress_pct: number;
+  message: string;
+  error?: string | null;
+  candidate_id?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ResearchSubmissionRequest {
+  substance_name: string;
+  research_objective?: string | null;
+  force_refresh?: boolean;
+}

@@ -6,46 +6,55 @@
 
 ---
 
-## Current Status: Milestone 6 Complete (v0.6.0)
+## Current Status: Milestone 7 Complete (v0.7.0)
 
-Milestone 6 introduces **LLM-Powered Scientific Interpretation** coupled with a distinctive **Scientific Editorial Interface**, bridging raw mathematical ODE trajectories with evidence-grounded biochemical memoranda.
+Milestone 7 introduces the **LLM Compound Intelligence and Research-to-Library Pipeline**, an end-to-end autonomous research workstation that investigates novel chemical substances, extracts structured biological evidence, maps them to V-Blood's mechanistic ODE kinetic classes, validates candidates through 10 scientific gates, and dynamically registers approved compounds into the simulation catalog.
 
-### Key Milestone 6 Capabilities
+### Key Milestone 7 Capabilities
 
-1. **Dual-Provider Interpretation Architecture:**
-   - **Deterministic Biochemical Engine (`deterministic-biochemical-v1`):** High-speed rule-based interpreter executing in $<10\text{ ms}$ with zero network calls and zero cost, applying expert haematology rules to $[GSH]_{\min}$, $t_{90\%}$ kinetics, and vehicle control deltas.
-   - **External LLM Client Adapter:** Seamless connection to commercial and local model endpoints. Automatically prioritizes **Google Gemini** (`gemini-2.5-flash`, `gemini-1.5-flash`, `gemini-1.5-pro`) via Google's official OpenAI-compatible endpoint with automatic fallback to native REST (`generateContent`), while also supporting OpenAI (`gpt-4o`, `gpt-4o-mini`), Anthropic (`claude-3-5-sonnet`), and local endpoints (Ollama, vLLM, LM Studio).
+1. **Chemical Identity Resolution (`ChemicalIdentityResolver`):**
+   - Authoritative chemical identity retrieval via PubChem PUG REST API (preferred names, synonyms, canonical SMILES, InChIKey, CID, entity classifications).
+   - InChIKey checksum and canonical SMILES validation with RDKit and fallback regex.
 
-2. **Automated Grounding Guardrails & Biological Boundaries:**
-   - **$\pm 1\%$ Numerical Assertion Verification:** Every cited nadir, depletion percentage, and recovery timescale in the interpretation is cross-checked against actual solver metrics.
-   - **Mandatory Research Disclaimers:** Rejects or flags unhedged clinical claims.
-   - **Biological Constraint Auditing:** Explicitly detects and prohibits claims violating erythrocyte physiology (e.g. no mitochondria, no nuclear transcription/protein synthesis, no in vivo ADME or renal/hepatic clearance in isolated cell suspensions).
-   - **Unverified Compound Warnings:** Enforces explicit caveats whenever experimental xenobiotics lack human erythrocyte literature provenance.
+2. **Literature Retrieval & Prompt-Injection Defense (`LiteratureRetrievalService`):**
+   - Multi-source search across Europe PMC and PubMed with erythrocyte-specific keyword prioritization.
+   - Cross-source deduplication by DOI, PMID, and title distance.
+   - Robust prompt-injection sanitization (`sanitize_retrieved_text`) stripping instructional override attacks from untrusted external abstracts.
 
-3. **Zero-Latency ID-Indexed Caching:**
-   - **Dual-Tier Cache (In-Memory + Disk):** Generated memoranda are indexed by `run_id` (or context hash) and provider mode, persisted to disk under `simulation_outputs/interpretations/`.
-   - **Instantaneous Mode Switching (0 ms):** Toggling between **Rule Engine**, **Auto**, and **Live LLM** restores previous responses instantaneously without wiping the UI plate, waiting on network roundtrips, or re-billing API tokens.
+3. **Evidence Extraction & Dual-Tier Grading (`EvidenceExtractionService`, `EvidenceGradingService`):**
+   - Structured extraction of biological systems, experimental concentrations, exposure durations, observed redox outcomes, and exact grounding quotes.
+   - Resilient LLM client with deterministic fallback for 100% CI reproducibility without network reliance.
+   - Finding-level and compound-level grading (`CURATED`, `ESTIMATED`, `UNVERIFIED`) evaluating human erythrocyte directness.
 
-4. **Bespoke Scientific Editorial Plate (`InterpretationPlate`):**
-   - Designed with a "Computational Biology Field Station" aesthetic (warm parchment tones, archival typography, grounding badges).
-   - Structured sections: Executive Summary, Nadir & Kinetics Analysis, Pathway Flux Breakdown, Vehicle Control Deltas, Population Tail Risk ($p_5$ vulnerable subgroup), Lysis Risk Evaluation, Declared Unmodeled Physics, and Suggested Follow-Up Experiments.
+4. **Mechanism Mapping & Provenance Tracking (`MechanismMappingService`):**
+   - Translates findings into V-Blood's 5 kinetic ODE mechanism classes (`DIRECT_OXIDANT`, `GSH_CONJUGATOR`, `REDOX_CYCLER`, `ENZYME_INHIBITOR`, `NADPH_DRAIN`).
+   - Rejects or structures warnings for unmodeled pathways (e.g. DNA alkylation, mitochondrial collapse, whole-body ADME).
+   - Assigns explicit parameter provenance (`MEASURED`, `DERIVED`, `INFERRED`, `SYNTHETIC`, `MISSING`).
 
-5. **REST API Extensions:**
-   - `GET /interpret/status`: Telemetry endpoint reporting provider readiness, active model, and declared biological boundaries.
-   - `POST /interpret/playground`: Synthesizes single-cell exposure memoranda.
-   - `POST /interpret/cohort`: Synthesizes population-scale cohort vulnerability memoranda.
+5. **10-Gate Scientific Validation Engine (`CandidateValidator`):**
+   - Strict candidate evaluation across 10 verification gates: Identity Consistency, Schema Integrity, Traceability, Dimensional Consistency, Parameter Provenance, Mechanism Compatibility, Parameter Completeness, Numeric Bounds, Numerical ODE Integration Trial, and Catalog Non-Regression.
+
+6. **Dynamic Library Registration & Lifecycle Persistence (`ResearchRepository`):**
+   - State-machine lifecycle: `NEEDS_RESEARCH` → `RESEARCHED` → `CANDIDATE` → `SIMULATION_READY` or `REJECTED`.
+   - Immutable revision audit log stored in `data/processed/research_candidates.json`.
+   - Dynamic injection into `CompoundLibrary` upon approval; unapproved candidates are blocked from simulation scenarios with HTTP 422.
+
+7. **Field Station Research Workstation (Module 06 Frontend):**
+   - React 19 + TypeScript workstation (`CompoundResearchWorkspace`) designed with the signature Field Station editorial aesthetic.
+   - Substance intake bench, real-time stage progress tracker, collapsible deep-inspection plates, and editorial approval/rejection actions.
 
 ---
 
-## Retrospective: Milestones 1–5
+## Retrospective: Milestones 1–6
 
-- **Milestone 1 - Baseline Mechanistic Simulation Core:** ODE systems biology integration (`scipy.integrate.solve_ivp`), Radau/BDF stiff solvers, baseline model `rbc-gsh-redox-v1`, mass conservation checks, and parameter sensitivity auditing.
-- **Milestone 2 - Extended Biology & Scientific Validation:** Model `rbc-g6pd-gsh-v2` with G6PD deficiency factor $\alpha \in [0.0, 1.0]$, NADPH cofactor cycling, and validation against published human red blood cell datasets.
-- **Milestone 3 - Production FastAPI Platform:** Decoupled REST service with model registry, steady-state initial condition computation, and simulation store.
-- **Milestone 4 - Chemical Exposure Scenarios & Compound Library:** Multi-compound mixtures, curated library (`CURATED`, `ESTIMATED`, `UNVERIFIED`), exposure delivery profiles (`BOLUS`, `INFUSION`, `REPEATED_PULSES`), and dense early-time sampling.
+- **Milestone 6 - LLM-Powered Scientific Interpretation:** Dual-provider interpretation architecture (deterministic biochemical engine + external LLM client), $\pm 1\%$ numerical grounding guardrails, zero-latency caching, and bespoke Field Station editorial interpretation plates.
 - **Milestone 5 - Blood Playground Frontend Workstation:** Interactive React 19 + Vite interface featuring the Single-Cell Scenario Builder, Population Cohort Visualizer (100–5,000 cells), animated SVG erythrocyte dynamics playback, and session history export.
+- **Milestone 4 - Chemical Exposure Scenarios & Compound Library:** Multi-compound mixtures, curated library (`CURATED`, `ESTIMATED`, `UNVERIFIED`), exposure delivery profiles (`BOLUS`, `INFUSION`, `REPEATED_PULSES`), and dense early-time sampling.
+- **Milestone 3 - Production FastAPI Platform:** Decoupled REST service with model registry, steady-state initial condition computation, and simulation store.
+- **Milestone 2 - Extended Biology & Scientific Validation:** Model `rbc-g6pd-gsh-v2` with G6PD deficiency factor $\alpha \in [0.0, 1.0]$, NADPH cofactor cycling, and validation against published human red blood cell datasets.
+- **Milestone 1 - Baseline Mechanistic Simulation Core:** ODE systems biology integration (`scipy.integrate.solve_ivp`), Radau/BDF stiff solvers, baseline model `rbc-gsh-redox-v1`, mass conservation checks, and parameter sensitivity auditing.
 
-*For detailed historical journals and technical designs, see [docs/milestone_journal_and_m6_plan.md](docs/milestone_journal_and_m6_plan.md).*
+*For detailed historical journals and technical designs, see [docs/milestone_journal_and_m6_plan.md](docs/milestone_journal_and_m6_plan.md) and [docs/milestone_7_research_to_library.md](docs/milestone_7_research_to_library.md).*
 
 ---
 
@@ -92,18 +101,18 @@ Open **`http://localhost:5173`** to access the Blood Playground workstation.
 
 Both backend and frontend suites are maintained with 100% passing tests:
 
-- **Backend Python Suite (191 tests):**
+- **Backend Python Suite (212 tests):**
   ```bash
   uv run pytest
   ```
-  *(Includes 15 tests dedicated to context extraction, guardrail enforcement, deterministic dispatch, and interpretation REST endpoints).*
+  *(Includes 21 tests dedicated to chemical identity resolution, literature retrieval, evidence extraction, mechanism mapping, candidate validation gates, repository persistence, and research REST endpoints).*
 
-- **Frontend Vitest Suite (19 tests):**
+- **Frontend Vitest Suite (22 tests):**
   ```bash
   cd frontend
   npm test
   ```
-  *(Includes unit tests for interpretation plate rendering, mode switching, caching, and guardrail badge states).*
+  *(Includes unit tests for compound research workflow, stage progress bars, dossier inspection, and candidate approval).*
 
 ---
 

@@ -11,6 +11,7 @@ interface Props {
   error: string | null;
   onRefresh: () => void;
   onSelectForScenario: (compound: CompoundResponse) => void;
+  onNavigateToResearch?: () => void;
 }
 
 const MECHANISM_OPTIONS: Array<{ value: MechanismType | 'ALL'; label: string }> = [
@@ -35,6 +36,7 @@ export const CompoundCatalog: React.FC<Props> = ({
   error,
   onRefresh,
   onSelectForScenario,
+  onNavigateToResearch,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMechanism, setSelectedMechanism] = useState<MechanismType | 'ALL'>('ALL');
@@ -86,6 +88,15 @@ export const CompoundCatalog: React.FC<Props> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {onNavigateToResearch && (
+            <button
+              onClick={onNavigateToResearch}
+              className="px-2.5 py-1.5 bg-[#9B332B] text-white text-xs font-mono font-semibold hover:bg-[#802820] transition-colors flex items-center gap-1.5 shadow-[1px_1px_0px_0px_rgba(24,27,24,0.08)]"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Research Substance</span>
+            </button>
+          )}
           <span className="text-xs font-mono text-[#181B18] bg-[#FAF7F2] px-2.5 py-1 border border-[#B5AC99]">
             {filteredCompounds.length} / {compounds.length} compounds indexed
           </span>

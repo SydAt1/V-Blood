@@ -138,3 +138,16 @@ This log records scientific decisions, model changes, and evidence reviews in ch
 ## 2026-10-15 — Milestone 6: LLM-Powered Scientific Interpretation Plan
 - Complete architectural specification, dual-provider strategy (deterministic rule-based engine + external LLM client), grounding guardrails, and forward-looking compound interfaces documented in [`docs/milestone_journal_and_m6_plan.md`](file:///c:/new%20project/V-Blood/docs/milestone_journal_and_m6_plan.md).
 
+---
+
+## 2026-10-17 — Milestone 7: LLM Compound Intelligence and Research-to-Library Pipeline
+- **Overview:** Implemented end-to-end literature research and chemical candidate registration system with human-in-the-loop validation gates, preserving mechanistic ODE integrity while expanding xenobiotic capability.
+- **Identity Resolution & Validation:** Implemented `ChemicalIdentityResolver` connecting to PubChem PUG REST with InChIKey/canonical SMILES validation and offline fallback caching.
+- **Literature Harvesting & Prompt-Injection Defense:** Implemented `LiteratureRetrievalService` querying Europe PMC and PubMed with erythrocyte prioritization, multi-identifier deduplication, and input prompt-injection sanitization.
+- **Evidence Extraction & Grading:** Implemented `EvidenceExtractionService` (with LLM extraction and deterministic fallback) and `EvidenceGradingService` supporting finding-level and compound-level grading (`CURATED`, `ESTIMATED`, `UNVERIFIED`).
+- **Mechanism Mapping & Provenance:** Implemented `MechanismMappingService` translating empirical literature findings into V-Blood's 5 kinetic ODE classes (`DIRECT_OXIDANT`, `GSH_CONJUGATOR`, `REDOX_CYCLER`, `ENZYME_INHIBITOR`, `NADPH_DRAIN`) with structured parameter provenance tags (`MEASURED`, `DERIVED`, `INFERRED`, `SYNTHETIC`, `MISSING`).
+- **10-Gate Scientific Validation:** Implemented `CandidateValidator` enforcing strict mathematical, dimensional, chemical, and trial ODE integration checks before simulation readiness.
+- **Dynamic Catalog Registration & Ineligibility Gating:** Implemented `ResearchRepository` with JSON persistence (`data/processed/research_candidates.json`), audit trails, and dynamic injection into `CompoundLibrary`. Unapproved or rejected candidates are strictly blocked from simulation scenarios with HTTP 422.
+- **Field Station Editorial Workstation (Module 06):** Built `CompoundResearchWorkspace` in React 19 + TypeScript adhering to the warm mineral/parchment palette, featuring live stage tracking, collapsible deep-inspection plates, and interactive approval/rejection workflows.
+- **Test Suite Expansion:** Added 21 backend tests (17 unit, 4 API) and 3 frontend tests. All 212 backend tests and 22 frontend tests passing.
+

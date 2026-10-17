@@ -14,6 +14,7 @@ export default defineConfig({
       '/health': 'http://127.0.0.1:8000',
       '/simulations': 'http://127.0.0.1:8000',
       '/interpret': 'http://127.0.0.1:8000',
+      '/research': 'http://127.0.0.1:8000',
     },
   },
   test: {

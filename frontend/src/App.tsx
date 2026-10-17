@@ -15,6 +15,7 @@ import { PopulationBuilder } from './features/population/PopulationBuilder';
 import { PopulationResults } from './features/population/PopulationResults';
 import { SessionRunHistory } from './features/runs/SessionRunHistory';
 import { ModelInfoView } from './features/models/ModelInfoView';
+import { CompoundResearchWorkspace } from './features/research/CompoundResearchWorkspace';
 import { getCompounds, getHealth, getModels, runPopulationScenario } from './api/client';
 import { AlertBox } from './components/AlertBox';
 
@@ -192,6 +193,7 @@ export const App: React.FC = () => {
               {activeTab === 'population' && 'Heterogeneous Cohort Simulator'}
               {activeTab === 'history' && 'Workstation Simulation Ledger'}
               {activeTab === 'models' && 'Mechanistic Model Specifications'}
+              {activeTab === 'research' && 'LLM Compound Intelligence & Research Pipeline'}
             </span>
           </div>
 
@@ -243,6 +245,7 @@ export const App: React.FC = () => {
               error={compoundsError}
               onRefresh={fetchCompounds}
               onSelectForScenario={handleSelectCompoundFromCatalog}
+              onNavigateToResearch={() => setActiveTab('research')}
             />
           )}
 
@@ -280,6 +283,17 @@ export const App: React.FC = () => {
               models={models}
               loading={modelsLoading}
               error={modelsError}
+            />
+          )}
+
+          {/* Module 6: Compound Intelligence & Research */}
+          {activeTab === 'research' && (
+            <CompoundResearchWorkspace
+              onLoadIntoScenario={(comp) => {
+                setCompoundToLoad(comp);
+                setActiveTab('playground');
+              }}
+              onRefreshLibrary={fetchCompounds}
             />
           )}
         </main>

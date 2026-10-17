@@ -122,6 +122,10 @@ class CompoundLibrary:
         """Filter compounds by mechanism class."""
         return [c for c in self._compounds.values() if c.mechanism_type == mechanism_type]
 
+    def register_compound(self, entry: CompoundEntry) -> None:
+        """Register a dynamic compound (e.g. from research candidate approval)."""
+        self._compounds[entry.compound_id] = entry
+
 
 # Singleton default compound library
 _GLOBAL_LIBRARY: CompoundLibrary | None = None

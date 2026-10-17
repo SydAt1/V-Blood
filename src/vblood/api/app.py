@@ -49,6 +49,14 @@ from vblood.schemas.simulation import (
     SolverStatus,
 )
 from vblood.simulation.engine import _MODEL_REGISTRY, run_simulation
+from vblood.intelligence.pipeline import get_research_orchestrator
+from vblood.intelligence.repository import get_research_repository
+from vblood.intelligence.schemas import (
+    ResearchDossier,
+    ResearchJobStatus,
+    ResearchLifecycleStatus,
+    ResearchSubmissionRequest,
+)
 
 
 def create_app(store: SimulationStore | None = None) -> FastAPI:
@@ -372,7 +380,17 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
     )
     def create_scenario(req: ScenarioRequest) -> ScenarioRunResponse:
         """Simulate single-cell redox dynamics under one or more chemical exposures."""
+        repo = get_research_repository()
         for c in req.compounds:
+            cand = repo.get(c.compound_id)
+            if cand and cand.status != ResearchLifecycleStatus.SIMULATION_READY:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                    detail=(
+                        f"Compound '{c.compound_id}' has research lifecycle status '{cand.status.value}' "
+                        f"and is not approved for active simulation. Only compounds with SIMULATION_READY status can be simulated."
+                    ),
+                )
             if c.dose_mM > 20.0:
                 raise HTTPException(
                     status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
@@ -434,6 +452,17 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
     )
     def create_population_scenario(req: PopulationRequest) -> PopulationResult:
         """Simulate cohort variability across N cells sampled from biological priors."""
+        repo = get_research_repository()
+        for c in req.scenario_request.compounds:
+            cand = repo.get(c.compound_id)
+            if cand and cand.status != ResearchLifecycleStatus.SIMULATION_READY:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                    detail=(
+                        f"Compound '{c.compound_id}' has research lifecycle status '{cand.status.value}' "
+                        f"and is not approved for active simulation."
+                    ),
+                )
         if req.n_cells > 5000:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
@@ -544,6 +573,162 @@ def create_app(store: SimulationStore | None = None) -> FastAPI:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Cohort interpretation failed: {exc}",
+            )
+
+    # =========================================================================
+    # Milestone 7: Compound Research-to-Library Endpoints
+    # =========================================================================
+
+    @app.post(
+        "/research/jobs",
+        response_model=ResearchJobStatus,
+        status_code=status.HTTP_202_ACCEPTED,
+        summary="Submit chemical substance for automated research",
+    )
+    async def submit_research_job(req: ResearchSubmissionRequest) -> ResearchJobStatus:
+        """Submit substance name to resolve identity, retrieve literature, and evaluate candidates."""
+        orchestrator = get_research_orchestrator()
+        try:
+            job_id = orchestrator.submit_job(
+                substance_name=req.substance_name,
+                research_objective=req.research_objective,
+                force_refresh=req.force_refresh,
+            )
+            job = orchestrator.get_job(job_id)
+            if job is None:
+                raise HTTPException(status_code=500, detail="Job scheduling failed.")
+            return job
+        except Exception as exc:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail=f"Failed to submit substance research request: {exc}",
+            )
+
+    @app.get(
+        "/research/jobs/{job_id}",
+        response_model=ResearchJobStatus,
+        summary="Get progress status of a background research job",
+    )
+    def get_research_job(job_id: str) -> ResearchJobStatus:
+        """Retrieve execution progress and stage for a research job."""
+        orchestrator = get_research_orchestrator()
+        job = orchestrator.get_job(job_id)
+        if job is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Research job '{job_id}' not found.",
+            )
+        return job
+
+    @app.get(
+        "/research/candidates",
+        response_model=list[ResearchDossier],
+        summary="List all compound research dossiers and candidates",
+    )
+    def list_research_candidates(
+        status_filter: ResearchLifecycleStatus | None = None,
+    ) -> list[ResearchDossier]:
+        """List registered research dossiers, optionally filtered by status."""
+        repo = get_research_repository()
+        return repo.list_all(status_filter=status_filter)
+
+    @app.get(
+        "/research/candidates/{candidate_id}",
+        response_model=ResearchDossier,
+        summary="Retrieve complete research dossier by candidate ID",
+    )
+    def get_research_candidate(candidate_id: str) -> ResearchDossier:
+        """Retrieve chemical identity, literature sources, findings, and validation results."""
+        repo = get_research_repository()
+        dossier = repo.get(candidate_id)
+        if dossier is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Research candidate dossier '{candidate_id}' not found.",
+            )
+        return dossier
+
+    @app.post(
+        "/research/candidates/{candidate_id}/validate",
+        response_model=ResearchDossier,
+        summary="Re-execute the 10-gate scientific validation checklist",
+    )
+    def validate_research_candidate(candidate_id: str) -> ResearchDossier:
+        """Re-validate candidate parameters, sources, and ODE compatibility."""
+        repo = get_research_repository()
+        try:
+            return repo.revalidate_candidate(candidate_id)
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=str(exc),
+            )
+
+    @app.post(
+        "/research/candidates/{candidate_id}/approve",
+        response_model=ResearchDossier,
+        summary="Approve research candidate and register into simulation catalog",
+    )
+    def approve_research_candidate(
+        candidate_id: str,
+        actor: str = "researcher",
+        notes: str = "",
+    ) -> ResearchDossier:
+        """Promote candidate to SIMULATION_READY and register into active simulation library."""
+        repo = get_research_repository()
+        try:
+            return repo.approve_candidate(candidate_id, actor=actor, notes=notes)
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail=str(exc),
+            )
+
+    @app.post(
+        "/research/candidates/{candidate_id}/reject",
+        response_model=ResearchDossier,
+        summary="Reject research candidate during scientific review",
+    )
+    def reject_research_candidate(
+        candidate_id: str,
+        actor: str = "researcher",
+        notes: str = "",
+    ) -> ResearchDossier:
+        """Mark candidate as REJECTED."""
+        repo = get_research_repository()
+        try:
+            return repo.reject_candidate(candidate_id, actor=actor, notes=notes)
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=str(exc),
+            )
+
+    @app.post(
+        "/research/candidates/{candidate_id}/refresh",
+        response_model=ResearchDossier,
+        summary="Refresh literature and re-run research pipeline for substance",
+    )
+    def refresh_research_candidate(candidate_id: str) -> ResearchDossier:
+        """Re-query literature databases and re-extract evidence for this compound."""
+        repo = get_research_repository()
+        dossier = repo.get(candidate_id)
+        if dossier is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Research candidate '{candidate_id}' not found.",
+            )
+        orchestrator = get_research_orchestrator()
+        try:
+            return orchestrator.run_pipeline(
+                substance_name=dossier.query_name,
+                research_objective=dossier.research_objective,
+                force_refresh=True,
+            )
+        except Exception as exc:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Refresh failed: {exc}",
             )
 
     return app
